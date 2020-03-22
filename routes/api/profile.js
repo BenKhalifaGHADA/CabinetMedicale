@@ -54,18 +54,22 @@ router.post('/',passport.authenticate('jwt',{session:false}),async (req,res)=>{
     const profileFields = {};
     profileFields.user = req.user.id;
     if (req.body.handle) profileFields.handle = req.body.handle;
-    // if (req.body.company) profileFields.company = req.body.company;
-    // if (req.body.website) profileFields.website = req.body.website;
-    // if (req.body.location) profileFields.location = req.body.location;
+    if (req.body.firstname) profileFields.firstname=req.body.firstname;
+    if (req.body.lastname) profileFields.lastname=req.body.lastname;
+    if (req.body.gender) profileFields.gender=req.body.gender;
+    if (req.body.birthdate) profileFields.birthdate=req.body.birthdate;
+    if (req.body.phone) profileFields.phone=req.body.phone;
+    
+    //Adresse
+    profileFields.address = {};
+    if (req.body.region) profileFields.address.region = req.body.region
+    if (req.body.Country) profileFields.address.Country = req.body.Country;
+    if (req.body.State) profileFields.address.State = req.body.State;
+    if (req.body.ZipCode) profileFields.address.ZipCode = req.body.ZipCode;
+    
+    
+   
     if (req.body.bio) profileFields.bio = req.body.bio;
-    // if (req.body.status) profileFields.status = req.body.status;
-    // if (req.body.githubusername)
-    //   profileFields.githubusername = req.body.githubusername;
-    // // Skills - Spilt into array
-    // if (typeof req.body.skills !== 'undefined') {
-    //   profileFields.skills = req.body.skills.split(',');
-    // }
-
     // Social
     profileFields.social = {};
     if (req.body.youtube) profileFields.social.youtube = req.body.youtube;

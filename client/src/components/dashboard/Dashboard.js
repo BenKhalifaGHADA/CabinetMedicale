@@ -54,14 +54,14 @@ class Dashboard extends Component {
                     />
                     <span className="status online"></span>
                   </span>
-                  <span>{user.name}</span>
-                  <span>{console.log('test user',user)}</span>
+                  <span> {user.name} </span>
+                  {/* <span>{console.log('test user',user)}</span> */}
                 </a>
                 <div className="dropdown-menu">
                   <Link className="dropdown-item" to="/dashboard/profile">
                     My Profile
                   </Link>
-                  <Link className="dropdown-item" to="/dashboard/createprofile">
+                  <Link className="dropdown-item" to="/dashboard/editprofile">
                     Edit Profile
                   </Link>
                  

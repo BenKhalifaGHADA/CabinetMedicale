@@ -3,46 +3,13 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const UserSchema = new Schema({
-  firstname: {
-    type: String,
-    required: true,
-  },
-  lastname: {
-    type: String,
-    required: true,
-  },
-  address: {
-    region: {
-      type: String,
-      required: true,
-    },
-    State: {
-      type: String,
-    },
-    Country:{
-      type:String,
-    },
-    ZipCode:{
-      type:String,
-    }
-  },
-  isonline: {
-    type: Boolean,
-    default: false,
-  },
-  birthdate:{
-    type: Date
-  },
+  name:{
+    type:String,
+    required:true
+},
   email: {
     type: String,
     required: true
-  },
-  gender: {
-    type: String,
-  },
-  phone: {
-    type: String,
-    required: true,
   },
   password: {
     type: String,

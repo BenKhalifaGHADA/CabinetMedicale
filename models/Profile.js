@@ -9,8 +9,45 @@ const ProfileSchema = new Schema({
   },
   handle: {
     type: String,
-    required: true,
+    required:true,
     max: 40
+  },
+  firstname: {
+    type: String,
+    
+  },
+  lastname: {
+    type: String,
+   
+  },
+  address: {
+    region: {
+      type: String
+     
+    },
+    State: {
+      type: String
+    },
+    Country:{
+      type:String,
+    },
+    ZipCode:{
+      type:String
+    }
+  },
+  isonline: {
+    type: Boolean,
+    default: false,
+  },
+  birthdate:{
+    type: Date
+  },
+  gender: {
+    type: String,
+  },
+  phone: {
+    type: String,
+    
   },
   bio: {
     type: String
