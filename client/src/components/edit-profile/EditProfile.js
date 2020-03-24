@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import TextFieldGroup from '../common/TextFieldGroup';
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup';
 import InputGroup from '../common/InputGroup';
 import SelectListGroup from '../common/SelectListGroup';
@@ -18,6 +17,7 @@ class EditProfile extends Component {
             firstname: '',
             lastname: '',
             gender: '',
+            birthdate:'',
             phone: '',
             region: '',
             State: '',
@@ -29,7 +29,7 @@ class EditProfile extends Component {
             linkedin: '',
             youtube: '',
             instagram: '',
-           
+
             errors: {}
         };
 
@@ -48,10 +48,11 @@ class EditProfile extends Component {
             const profile = nextProps.profile.profile;
 
             //if profile fiels doesn't exit, make emty string
-            
+
             profile.firstname = !isEmpty(profile.firstname) ? profile.firstname : '';
             profile.lastname = !isEmpty(profile.lastname) ? profile.lastname : '';
             profile.gender = !isEmpty(profile.gender) ? profile.gender : '';
+            profile.birthdate = !isEmpty(profile.birthdate) ? profile.birthdate : '';
             profile.phone = !isEmpty(profile.phone) ? profile.phone : '';
 
             profile.address = !isEmpty(profile.address) ? profile.address : {};
@@ -93,6 +94,7 @@ class EditProfile extends Component {
                 firstname: profile.firstname,
                 lastname: profile.lastname,
                 gender: profile.gender,
+                birthdate:profile.birthdate,
                 phone: profile.phone,
                 region: profile.region,
                 Country: profile.Country,
@@ -115,6 +117,7 @@ class EditProfile extends Component {
             firstname: this.state.firstname,
             lastname: this.state.lastname,
             gender: this.state.gender,
+            birth:this.state.birthd,
             phone: this.state.phone,
             region: this.state.region,
             Country: this.state.Country,
@@ -211,7 +214,7 @@ class EditProfile extends Component {
                         </div>
                     </div>
                     <form onSubmit={this.onSubmit}>
-                     
+
                         <div className="card-box">
                             <h3 className="card-title">Basic Informations</h3>
                             <div className="row">
@@ -254,7 +257,14 @@ class EditProfile extends Component {
                                                 <div className="form-group form-focus">
                                                     <label className="focus-label">Birth Date</label>
                                                     <div className="cal-icon">
-                                                        <input className="form-control floating datetimepicker" type="text" value="05/06/1985" />
+                                                        <input className="form-control floating datetimepicker" type="text" value={this.state.birthdate}
+                                                            onChange={this.onChange}
+                                                            error={errors.birthdate} />
+                                                        {/* <InputGroup
+                                                            name="birth"
+                                                            type="date"
+                                                            
+                                                        /> */}
                                                     </div>
                                                 </div>
                                             </div>
@@ -283,18 +293,18 @@ class EditProfile extends Component {
                         <div className="card-box">
                             <h3 className="card-title">Account Informations</h3>
                             <div className="row">
-                            <div className="col-md-6">
-                                                <div className="form-group form-focus">
-                                                    <label className="focus-label">Username</label>
-                                                    <InputGroup
-                                                        placeholder="Your username"
-                                                        name="handle"
-                                                        value={this.state.handle}
-                                                        onChange={this.onChange}
-                                                        error={errors.handle} />
-                                                </div>
-                                                {console.log(this.state.password)}
-                                            </div>
+                                <div className="col-md-6">
+                                    <div className="form-group form-focus">
+                                        <label className="focus-label">Username</label>
+                                        <InputGroup
+                                            placeholder="Your username"
+                                            name="handle"
+                                            value={this.state.handle}
+                                            onChange={this.onChange}
+                                            error={errors.handle} />
+                                    </div>
+                                    {console.log(this.state.password)}
+                                </div>
                             </div>
                         </div>
 
@@ -311,7 +321,7 @@ class EditProfile extends Component {
                                             value={this.state.region}
                                             onChange={this.onChange}
                                             error={errors.region} />
-                                            {console.log(this.state.address)}
+                                        {console.log(this.state.address)}
                                     </div>
                                 </div>
 
@@ -338,7 +348,7 @@ class EditProfile extends Component {
                                             onChange={this.onChange}
                                             error={errors.Country} />
 
-                                            
+
                                     </div>
                                 </div>
 
@@ -366,7 +376,7 @@ class EditProfile extends Component {
                                             onChange={this.onChange}
                                             error={errors.phone} />
 
-                                            
+
                                     </div>
                                 </div>
 
@@ -396,24 +406,24 @@ class EditProfile extends Component {
                         </div>
 
                         <div class="card-box">
-                        <h3 class="card-title">Description</h3>
-                        <div class="row">
+                            <h3 class="card-title">Description</h3>
+                            <div class="row">
                                 <div class="col-md-12">
-                                <TextAreaFieldGroup
-                                    placeholder="Short Bio"
-                                    name="bio"
-                                    value={this.state.bio}
-                                    onChange={this.onChange}
-                                    error={errors.bio}
-                                    info="Tell us a little about yourself"
-                                />
+                                    <TextAreaFieldGroup
+                                        placeholder="Short Bio"
+                                        name="bio"
+                                        value={this.state.bio}
+                                        onChange={this.onChange}
+                                        error={errors.bio}
+                                        info="Tell us a little about yourself"
+                                    />
                                 </div>
-                        </div>
+                            </div>
                         </div>
 
                         <div class="text-center m-t-20">
-                        <button class="btn btn-primary submit-btn" type="submit">Save</button>
-                    </div>
+                            <button class="btn btn-primary submit-btn" type="submit">Save</button>
+                        </div>
 
 
 

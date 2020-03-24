@@ -73,7 +73,72 @@ const ProfileSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
-  }
+  },
+  patient:[{
+    firstname: {
+        type: String,
+    },
+    lastname: {
+        type: String,
+     },
+    email: {
+        type: String,
+    },
+    adresse:{
+      type:String,
+    },
+    zipcode:{
+      type:String,
+    },
+    state:{
+      type:String,
+    },
+    country:{
+      type:String,
+    },
+    gender: {
+        type: String,
+    },
+    phone:{
+      type: String,
+    },
+    Datebirth: {
+        type: Date,
+        
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    }
+}],
+rendezvous:[{
+    date: {
+        type: Date,
+        default: Date.now(),
+        required: true
+    },
+    time:{
+        type:Date,
+        default: Date.time,
+    },
+    Message:{
+        type: String
+    },
+
+    statusAppointment:{
+        type:Boolean,
+        default:false,
+    },
+    typeVisite: {
+        type: String,
+        required: true
+    },
+   
+    NbreVisiteEffectuer: {
+        type: Number,
+        required: true,
+    }
+}]  
 });
 
 module.exports = Profile = mongoose.model('profile', ProfileSchema);

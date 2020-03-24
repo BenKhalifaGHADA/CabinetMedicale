@@ -3,6 +3,7 @@ const router=express.Router();
 const mongoose=require('mongoose');
 const passport=require('passport');
 const validateProfileInput=require('../../validation/profile');
+const validatePatientInput = require('../../validation/patient');
 //Load Profile model
 const Profile=require('../../models/Profile');
 //Load User model
@@ -57,7 +58,6 @@ router.post('/',passport.authenticate('jwt',{session:false}),async (req,res)=>{
     if (req.body.firstname) profileFields.firstname=req.body.firstname;
     if (req.body.lastname) profileFields.lastname=req.body.lastname;
     if (req.body.gender) profileFields.gender=req.body.gender;
-    if (req.body.birthdate) profileFields.birthdate=req.body.birthdate;
     if (req.body.phone) profileFields.phone=req.body.phone;
     
     //Adresse
@@ -118,4 +118,104 @@ router.delete(
   }
 );
 
+// @route   POST api/profile/patient
+// @desc    Add patient to profile
+// @access  Private
+router.post(
+  '/patient',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validatePatientInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newPat = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        email: req.body.email,
+        adresse: req.body.adresse,
+        gender:req.body.gender,
+        phone:req.body.phone,
+        zipcode:req.body.zipcode,
+        state:req.body.state,
+        country:req.body.country,
+        Datebirth:req.body.Datebirth,
+      
+       
+      };
+
+      // Add to exp array
+      profile.patient.unshift(newPat);
+
+      profile.save().then(profile => res.json(profile));
+    });
+  }
+);
+
+// @route   DELETE api/profile/patient/:exp_id
+// @desc    Delete patient from profile
+// @access  Private
+router.delete(
+  '/patient/:exp_id',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        // Get remove index
+        const removeIndex = profile.patient
+          .map(item => item.id)
+          .indexOf(req.params.exp_id);
+
+        // Splice out of array
+        profile.patient.splice(removeIndex, 1);
+
+        // Save
+        profile.save().then(profile => res.json(profile));
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
+
+// @route   UPDATE api/profile/patient/update/:exp_id
+// @desc    Update patient from profile
+// @access  Private
+
+router.post(
+  '/patient/update/:exp_id',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const profileFields = {};
+    profileFields.user= req.user.id;
+    // if (req.body.firstname1) profileFields.patient.firstname=req.body.firstname1;
+    // if (req.body.firstname) profileFields.firstname=req.body.firstname;
+    // if (req.body.lastname) profileFields.lastname=req.body.lastname;
+    // if (req.body.gender) profileFields.gender=req.body.gender;
+    // if (req.body.phone) profileFields.phone=req.body.phone;
+    
+    // Patient
+    profileFields.patient = {};
+    if (req.body.firstnamepatient) profileFields.patient.firstname = req.body.firstnamepatient;
+    if (req.body.lastnamepatient) profileFields.patient.lastname = req.body.lastnamepatient;
+    if (req.body.emailpatient) profileFields.patient.email = req.body.emailpatient;
+    if (req.body.adressepatient) profileFields.patient.adresse = req.body.adressepatient;
+    if (req.body.zipcodepatient) profileFields.patient.zipcode = req.body.zipcodepatient;
+    if (req.body.statepatient) profileFields.patient.state = req.body.statepatient;
+    if (req.body.countrypatient) profileFields.patient.country = req.body.countrypatient;
+    if (req.body.genderpatient) profileFields.patient.gender = req.body.genderpatient;
+    if (req.body.phonepatient) profileFields.patient.phone = req.body.phonepatient;
+    if (req.body.Datebirthpatient) profileFields.patient.Datebirth = req.body.Datebirthpatient;
+    
+    Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { $set: profileFields },
+      { new: true }
+    ).then(profile => res.json(profile))
+      .catch(err => res.status(404).json(err));
+  }
+);
 module.exports=router;

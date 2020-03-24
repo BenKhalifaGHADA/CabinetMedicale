@@ -22,7 +22,7 @@ import Rendezvous from "./components/rendezvous/Rendezvous";
 import Addrendezvous from "./components/rendezvous/Addrendezvous";
 import Editrendezvous from "./components/rendezvous/Editrendezvous";
 
-import CreateProfile from "./components/create-profile/CreateProfile";
+
 import EditProfile from "./components/edit-profile/EditProfile";
 
 
@@ -74,7 +74,7 @@ class App extends Component {
               <PrivateRoute exact path="/dashboard/AddRendezvous" component={Addrendezvous} />
               <PrivateRoute exact path="/dashboard/EditRendezvous" component={Editrendezvous} />
 
-              <PrivateRoute exact path="/dashboard/createprofile"  component={CreateProfile}/>
+             
               <PrivateRoute exact path="/dashboard/editprofile"  component={EditProfile}/>
              </Switch>
           </div>
