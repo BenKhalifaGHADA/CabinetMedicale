@@ -49,7 +49,7 @@ class Dashboard extends Component {
                     <span className="user-img">
                       <img
                         className="rounded-circle"
-                        src="assets/img/user.jpg"
+                        src={user.avatar}
                         width="24"
                         alt="Admin"
                       />
@@ -126,7 +126,7 @@ class Dashboard extends Component {
                         <i className="fa fa-calendar"></i> <span>Calendar</span>
                       </Link>
                     </li>
-                    {/* <Patient patient={profile.patient}/> */}
+                    
                   </ul>
 
 
@@ -142,13 +142,19 @@ class Dashboard extends Component {
       } else {
         // User is logged in but has no profile
         dashboardContent = (
-          <div>
-            <p className="lead text-muted">Welcome {user.name}</p>
-            <p>You have not yet setup a profile, please add some info</p>
-            <Link to="/dashboard/editprofile" className="btn btn-lg btn-info">
-              Create Profile
-            </Link>
+         <div className="main-wrapper account-wrapper">
+          <div className="account-page">
+            <div className="account-center">
+              <div className="account-box">
+              <h4 className="page-title">Welcome {user.name}</h4>
+              <p>You have not yet setup a profile, please add some info</p>
+              <Link to="/dashboard/editprofile" className="btn btn-primary">
+                Create Profile
+              </Link>
+              </div>
+            </div>
           </div>
+        </div>
         );
       }
     }

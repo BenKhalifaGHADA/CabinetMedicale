@@ -9,6 +9,7 @@ const InputGroup = ({
   error,
   icon,
   type,
+  disabled,
   onChange
 }) => {
   return (
@@ -21,6 +22,8 @@ const InputGroup = ({
         name={name}
         value={value}
         onChange={onChange}
+        disabled={disabled}
+        type={type}
       />
       {error && <div className="invalid-feedback">{error}</div>}
     </div>

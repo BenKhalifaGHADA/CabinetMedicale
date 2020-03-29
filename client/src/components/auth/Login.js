@@ -48,7 +48,7 @@ class Login extends Component {
     };
 
     this.props.loginUser(userData);
-    this.props.history.push('/dashboard')
+    
   };
 
   render() {
@@ -59,15 +59,14 @@ class Login extends Component {
         <div className="account-page">
           <div className="account-center">
             <div className="account-box">
-              <form noValidate onSubmit={this.onSubmit} className="form-signin">
+             <form noValidate onSubmit={this.onSubmit} className="form-signin">
                 <div className="account-logo">
                   <Link to="/">
                     <img src={require("../img/logo-dark.png")} alt="" />
                   </Link>
                 </div>
                 <div className="form-group"> 
-               
-
+                         
                   <label htmlFor="email">Email</label>
                   <input
                     autofocus=""
@@ -77,13 +76,14 @@ class Login extends Component {
                     id="email"
                     type="email"
                     className={classnames("form-control form-control-lg", {
-                      "is-invalid": errors.email || errors.emailnotfound
+                      "is-invalid": errors.email 
                     })}
                   />
 
                   {errors.email && (
                     <div className="invalid-feedback">{errors.email}</div>
                   )}
+                  
                 </div>
                 <div className="form-group">
                   <label htmlFor="password">Password</label>
@@ -95,7 +95,7 @@ class Login extends Component {
                     id="password"
                     type="password"
                     className={classnames("form-control form-control-lg", {
-                      "is-invalid": errors.password || errors.passwordincorrect
+                      "is-invalid": errors.password 
                     })}
                   />
                   {errors.password && (

@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const passport = require("passport");
+const gravatar = require('gravatar');
 
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
@@ -29,10 +30,16 @@ router.post("/register", (req, res) => {
     if (user) {
       return res.status(400).json({ email: "Email already exists" });
     } else {
+      const avatar = gravatar.url(req.body.email, {
+        s: '200',
+        r: 'pg',
+        d: 'mm'
+    });
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        avatar
       });
 
       // Hash password before saving in database
@@ -76,7 +83,7 @@ router.post('/login', (req, res) => {
     bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
         // User Matched
-        const payload = { id: user.id, name: user.name, avatar: user.avatar }; // Create JWT Payload
+        const payload = { id: user.id, name: user.name,email:user.email,password:user.password, avatar: user.avatar}; // Create JWT Payload
 
         // Sign Token
         jwt.sign(
@@ -108,7 +115,8 @@ router.get(
     res.json({
       id: req.user.id,
       name: req.user.firstname,
-      email: req.user.email
+      email: req.user.email,
+      password: req.user.password,
     });
   }
 );

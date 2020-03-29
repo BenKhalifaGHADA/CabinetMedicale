@@ -7,6 +7,8 @@ import InputGroup from '../common/InputGroup';
 import SelectListGroup from '../common/SelectListGroup';
 import { createProfile, getCurrentProfile } from '../../actions/profileActions';
 import isEmpty from '../../validation/is-empty';
+// import Moment from 'react-moment';
+
 
 class EditProfile extends Component {
     constructor(props) {
@@ -29,6 +31,7 @@ class EditProfile extends Component {
             linkedin: '',
             youtube: '',
             instagram: '',
+            email:'',
 
             errors: {}
         };
@@ -46,7 +49,7 @@ class EditProfile extends Component {
         }
         if (nextProps.profile.profile) {
             const profile = nextProps.profile.profile;
-
+            
             //if profile fiels doesn't exit, make emty string
 
             profile.firstname = !isEmpty(profile.firstname) ? profile.firstname : '';
@@ -116,6 +119,7 @@ class EditProfile extends Component {
             handle: this.state.handle,
             firstname: this.state.firstname,
             lastname: this.state.lastname,
+            birthdate:this.state.birthdate,
             gender: this.state.gender,
             birth:this.state.birthd,
             phone: this.state.phone,
@@ -143,7 +147,7 @@ class EditProfile extends Component {
 
     render() {
         const { errors, displaySocialInputs } = this.state;
-
+        const {user}=this.props.auth;
         let socialInputs;
 
         if (displaySocialInputs) {
@@ -203,7 +207,7 @@ class EditProfile extends Component {
             { label: 'Female', value: 'Female' },
             { label: 'Male', value: 'Male' }
         ];
-
+        
         return (
 
             <div className="page-wrapper">
@@ -220,7 +224,7 @@ class EditProfile extends Component {
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="profile-img-wrap">
-                                        <img className="inline-block" src="../assets/img/user.jpg" alt="user" />
+                                        <img className="inline-block" src={user.avatar} alt={user.name} />
                                         <div className="fileupload btn">
                                             <span className="btn-text">edit</span>
                                             <input className="upload" type="file" />
@@ -230,7 +234,7 @@ class EditProfile extends Component {
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <div className="form-group form-focus">
-                                                    <label className="focus-label">First Name</label>
+                                                    <label className="focus-label">Firstname</label>
                                                     <InputGroup
                                                         placeholder="Your firstname"
                                                         name="firstname"
@@ -241,7 +245,7 @@ class EditProfile extends Component {
                                             </div>
                                             <div className="col-md-6">
                                                 <div className="form-group form-focus">
-                                                    <label className="focus-label">Last Name</label>
+                                                    <label className="focus-label">Lastname</label>
                                                     <InputGroup
                                                         placeholder="Your lastname"
                                                         name="lastname"
@@ -255,16 +259,17 @@ class EditProfile extends Component {
 
                                             <div className="col-md-6">
                                                 <div className="form-group form-focus">
-                                                    <label className="focus-label">Birth Date</label>
+                                                <label className="focus-label">Birth Date</label>
                                                     <div className="cal-icon">
-                                                        <input className="form-control floating datetimepicker" type="text" value={this.state.birthdate}
-                                                            onChange={this.onChange}
-                                                            error={errors.birthdate} />
-                                                        {/* <InputGroup
-                                                            name="birth"
-                                                            type="date"
-                                                            
-                                                        /> */}
+                                                   
+                                                    <InputGroup
+                                                        placeholder="Your birth Date"
+                                                        name="birthdate"
+                                                        value= {this.state.birthdate}
+                                                        onChange={this.onChange}
+                                                        error={errors.birthdate} />
+                                                        
+                                                      
                                                     </div>
                                                 </div>
                                             </div>
@@ -305,6 +310,20 @@ class EditProfile extends Component {
                                     </div>
                                     {console.log(this.state.password)}
                                 </div>
+
+                                <div className="col-md-6">
+                                    <div className="form-group form-focus">
+                                        <label className="focus-label">Email</label>
+                                        <InputGroup
+                                            placeholder="Your username"
+                                            name="email"
+                                            value={user.email}
+                                            onChange={this.onChange}
+                                            error={errors.email} 
+                                            disabled="disabled"/>
+                                    </div>
+                                   
+                                </div>
                             </div>
                         </div>
 
@@ -313,15 +332,15 @@ class EditProfile extends Component {
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group form-focus">
-                                        <label class="focus-label">Address</label>
-                                        {/* <input type="text" class="form-control floating" value="4487 Snowbird Lane" /> */}
+                                    <label class="focus-label">Address</label>
+                                        {/* <input type="text" class="form-control floating" value="New York"/> */}
                                         <InputGroup
-                                            placeholder="Your adress"
-                                            name="adress"
+                                            placeholder="Your state"
+                                            name="region"
                                             value={this.state.region}
                                             onChange={this.onChange}
-                                            error={errors.region} />
-                                        {console.log(this.state.address)}
+                                             />
+                                     
                                     </div>
                                 </div>
 
@@ -331,7 +350,7 @@ class EditProfile extends Component {
                                         {/* <input type="text" class="form-control floating" value="New York"/> */}
                                         <InputGroup
                                             placeholder="Your state"
-                                            name="state"
+                                            name="State"
                                             value={this.state.State}
                                             onChange={this.onChange}
                                             error={errors.State} />
@@ -343,7 +362,7 @@ class EditProfile extends Component {
                                         {/* <input type="text" class="form-control floating" value="United States"/> */}
                                         <InputGroup
                                             placeholder="Your Country"
-                                            name="country"
+                                            name="Country"
                                             value={this.state.Country}
                                             onChange={this.onChange}
                                             error={errors.Country} />
@@ -358,7 +377,7 @@ class EditProfile extends Component {
                                         {/* <input type="text" class="form-control floating" value="10523"/> */}
                                         <InputGroup
                                             placeholder="Your Zip code"
-                                            name="zipcode"
+                                            name="ZipCode"
                                             value={this.state.ZipCode}
                                             onChange={this.onChange}
                                             error={errors.ZipCode} />
@@ -440,13 +459,15 @@ class EditProfile extends Component {
 EditProfile.propTypes = {
     profile: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
-    createProfile: PropTypes.func.isRequired
+    createProfile: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
 
 };
 
 const mapStateToProps = state => ({
     profile: state.profile,
-    errors: state.errors
+    errors: state.errors,
+    auth: state.auth
 });
 
 export default connect(mapStateToProps, { createProfile, getCurrentProfile })(

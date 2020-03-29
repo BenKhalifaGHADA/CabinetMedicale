@@ -69,13 +69,14 @@ class App extends Component {
               {/* <PrivateRoute exact path="/dashboard/edit-profile"  component={EditMyProfile}/> */}
               <PrivateRoute exact path="/dashboard/patients"  component={Showpatient}/>
               <PrivateRoute exact path="/dashboard/Addpatient" component={Addpatient} />
-              <PrivateRoute exact path="/dashboard/Editpatient" component={Editpatient} />
+              {/* <PrivateRoute exact path="/dashboard/Editpatient" component={Editpatient} /> */}
               <PrivateRoute exact path="/dashboard/Rendezvous" component={Rendezvous} />
               <PrivateRoute exact path="/dashboard/AddRendezvous" component={Addrendezvous} />
               <PrivateRoute exact path="/dashboard/EditRendezvous" component={Editrendezvous} />
 
              
               <PrivateRoute exact path="/dashboard/editprofile"  component={EditProfile}/>
+              <PrivateRoute exact path="/dashboard/editpatient/:id"  component={Editpatient}/>
              </Switch>
           </div>
         </Router>

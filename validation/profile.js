@@ -14,9 +14,7 @@ module.exports = function validateProfileInput(data) {
     errors.handle = 'Handle needs to between 2 and 4 characters';
   }
    
-  if (!Validator.isEmail(data.email)) {
-    errors.email = "Email is invalid";
-  }
+  
   if (Validator.isEmpty(data.handle)) {
     errors.handle = 'Profile handle is required';
   }

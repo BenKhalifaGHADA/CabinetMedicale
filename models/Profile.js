@@ -106,18 +106,25 @@ const ProfileSchema = new Schema({
         type: Date,
         
     },
+    avatar: {
+      type: String,
+      default: 'default.jpg',
+    },
     date: {
         type: Date,
         default: Date.now
     }
 }],
 rendezvous:[{
+    libelle:{
+        type: String,
+    },
     date: {
         type: Date,
         default: Date.now(),
-        required: true
+        
     },
-    time:{
+    time: {
         type:Date,
         default: Date.time,
     },
@@ -131,12 +138,12 @@ rendezvous:[{
     },
     typeVisite: {
         type: String,
-        required: true
+        
     },
    
     NbreVisiteEffectuer: {
         type: Number,
-        required: true,
+       
     }
 }]  
 });

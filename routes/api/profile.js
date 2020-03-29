@@ -2,8 +2,11 @@ const express=require('express');
 const router=express.Router();
 const mongoose=require('mongoose');
 const passport=require('passport');
+const gravatar = require('gravatar');
+
 const validateProfileInput=require('../../validation/profile');
 const validatePatientInput = require('../../validation/patient');
+const validateAppointmentInput=require('../../validation/appointment');
 //Load Profile model
 const Profile=require('../../models/Profile');
 //Load User model
@@ -21,22 +24,22 @@ router.get('/test', (req, res) => res.json({ msg: 'Profile Works' }));
 //@desc GET current users profile
 //@access Private
 router.get('/',passport.authenticate('jwt',{session:false}),async (req,res)=>{
-    try {
-        const errors={};
-        
-        const profile = await Profile.findOne({
-          user: req.user.id,
-        }).populate('users', ['firstname', 'lastname', 'address', 'phone']);
-    
-        if (!profile) {
-          errors.noprofile='There is no profile for this user';
-          return res.status(400).json(errors);
-        }
-        res.json(profile);
-      } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
+  try {
+      const errors={};
+      
+      const profile = await Profile.findOne({
+        user: req.user.id,
+      }).populate('users', ['firstname', 'lastname', 'address', 'phone',]);
+  
+      if (!profile) {
+        errors.noprofile='There is no profile for this user';
+        return res.status(400).json(errors);
       }
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
 });
 
 //@route POST api/profile
@@ -59,6 +62,7 @@ router.post('/',passport.authenticate('jwt',{session:false}),async (req,res)=>{
     if (req.body.lastname) profileFields.lastname=req.body.lastname;
     if (req.body.gender) profileFields.gender=req.body.gender;
     if (req.body.phone) profileFields.phone=req.body.phone;
+    if (req.body.birthdate) profileFields.birthdate=req.body.birthdate
     
     //Adresse
     profileFields.address = {};
@@ -103,6 +107,7 @@ router.post('/',passport.authenticate('jwt',{session:false}),async (req,res)=>{
     });
 });
 
+
 // @route   DELETE api/profile
 // @desc    Delete user and profile
 // @access  Private
@@ -118,6 +123,7 @@ router.delete(
   }
 );
 
+// -----------------------------Begin CRUD Patient----------------------//
 // @route   POST api/profile/patient
 // @desc    Add patient to profile
 // @access  Private
@@ -134,6 +140,11 @@ router.post(
     }
 
     Profile.findOne({ user: req.user.id }).then(profile => {
+      const avatar = gravatar.url(req.body.email, {
+        s: '200',
+        r: 'pg',
+        d: 'mm'
+    });
       const newPat = {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
@@ -145,7 +156,7 @@ router.post(
         state:req.body.state,
         country:req.body.country,
         Datebirth:req.body.Datebirth,
-      
+        avatar 
        
       };
 
@@ -181,22 +192,37 @@ router.delete(
   }
 );
 
+// @route   GET api/profile/patient/:patient_id
+// @desc    Get patient from doctor by id
+// @access  Private
+router.get(
+    '/patient/:patient_id',
+    passport.authenticate('jwt', { session: false }),
+    async (req, res) => {
+  try {
+    const foundPatient = await Profile.findOne({ user: req.user.id });
+
+    const myPatient = foundPatient.patient.filter(
+      patient => patient._id.toString() === req.params.patient_id
+    )[0];
+    res.json(myPatient);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+
 // @route   UPDATE api/profile/patient/update/:exp_id
 // @desc    Update patient from profile
 // @access  Private
-
 router.post(
   '/patient/update/:exp_id',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     const profileFields = {};
     profileFields.user= req.user.id;
-    // if (req.body.firstname1) profileFields.patient.firstname=req.body.firstname1;
-    // if (req.body.firstname) profileFields.firstname=req.body.firstname;
-    // if (req.body.lastname) profileFields.lastname=req.body.lastname;
-    // if (req.body.gender) profileFields.gender=req.body.gender;
-    // if (req.body.phone) profileFields.phone=req.body.phone;
-    
+        
     // Patient
     profileFields.patient = {};
     if (req.body.firstnamepatient) profileFields.patient.firstname = req.body.firstnamepatient;
@@ -218,4 +244,96 @@ router.post(
       .catch(err => res.status(404).json(err));
   }
 );
+
+ // -----------------------------END CRUD Patient----------------------//
+
+//-----------------------------BEGIN CRUD Appointment----------------//
+// @route   POST api/profile/appointment
+// @desc    Add appointment to profile
+// @access  Private
+router.post(
+  '/appointment',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateAppointmentInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newRendezvous = {
+              libelle: req.body.libelle,
+              Message: req.body.Message,
+              statusAppointment: req.body.statusAppointment,
+              typeVisite: req.body.typeVisite,
+              NbreVisiteEffectuer: req.body.NbreVisiteEffectuer,
+              
+            };
+
+      // Add to exp array
+      profile.rendezvous.unshift(newRendezvous);
+
+      profile.save().then(profile => res.json(profile));
+    });
+  }
+);
+
+// @route   DELETE api/profile/appointment/:exp_id
+// @desc    Delete appointment from profile
+// @access  Private
+router.delete(
+  '/appointment/:exp_id',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        // Get remove index
+        const removeIndex = profile.rendezvous
+          .map(item => item.id)
+          .indexOf(req.params.exp_id);
+
+        // Splice out of array
+        profile.rendezvous.splice(removeIndex, 1);
+
+        // Save
+        profile.save().then(profile => res.json(profile));
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
+
+// @route   UPDATE api/profile/appointment/update/:exp_id
+// @desc    Update apointment from profile
+// @access  Private
+
+router.post(
+  '/appointment/update/:exp_id',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const profileFields = {};
+    profileFields.user= req.user.id;
+        
+    // Patient
+    profileFields.patient = {};
+    if (req.body.libelle) profileFields.patient.libelle = req.body.libelle;
+    if (req.body.date) profileFields.patient.date = req.body.date;
+    if (req.body.time) profileFields.patient.time = req.body.time;
+    if (req.body.Message) profileFields.patient.Message = req.body.Message;
+    if (req.body.statusAppointment) profileFields.patient.statusAppointment = req.body.statusAppointment;
+    if (req.body.typeVisite) profileFields.patient.typeVisite = req.body.typeVisite;
+    if (req.body.NbreVisiteEffectuer) profileFields.patient.NbreVisiteEffectuer = req.body.NbreVisiteEffectuer;
+   
+    
+    Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { $set: profileFields },
+      { new: true }
+    ).then(profile => res.json(profile))
+      .catch(err => res.status(404).json(err));
+  }
+);
+//-----------------------------END CRUD Appointment----------------//
 module.exports=router;

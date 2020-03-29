@@ -1,13 +1,15 @@
 import {
   GET_PROFILE,
   PROFILE_LOADING,
-  CLEAR_CURRENT_PROFILE
+  CLEAR_CURRENT_PROFILE,
+  GET_PATIENT
 } from '../actions/types';
 
 const initialState = {
   profile: null,
   profiles: null,
-  loading: false
+  loading: false,
+  patient: null,
 };
 
 export default function(state = initialState, action) {
@@ -28,6 +30,15 @@ export default function(state = initialState, action) {
         ...state,
         profile: null
       };
+    
+    case GET_PATIENT:{
+      return {
+        ...state,
+        patient: action.payload,
+        
+        
+      };
+    }   
     default:
       return state;
   }

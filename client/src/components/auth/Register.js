@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
 import classnames from "classnames";
-
-
 class Register extends Component {
   constructor() {
     super();
@@ -17,14 +15,12 @@ class Register extends Component {
       errors: {}
     };
   }
-
   componentDidMount() {
     // If logged in and user navigates to Register page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/dashboard");
     }
   }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({
@@ -32,14 +28,11 @@ class Register extends Component {
       });
     }
   }
-
   onChange = e => {
     this.setState({ [e.target.id]: e.target.value });
   };
-
   onSubmit = e => {
     e.preventDefault();
-
     const newUser = {
       name: this.state.name,
       email: this.state.email,
@@ -52,7 +45,6 @@ class Register extends Component {
 
   render() {
     const { errors } = this.state;
-
     return (
       <div class="main-wrapper  account-wrapper">
         <div class="account-page">
@@ -64,7 +56,6 @@ class Register extends Component {
                     <img src={require('../img/logo-dark.png')} alt="" />
                     </Link>
                 </div>
-          
                 <div class="form-group">
                   <label htmlFor="name">Username</label>
                   <input
@@ -129,9 +120,7 @@ class Register extends Component {
                     <div className="invalid-feedback">{errors.password2}</div>
                   )}
                 </div>
-                
-               
-                <div class="form-group text-center">
+                 <div class="form-group text-center">
                   <button class="btn btn-primary account-btn" type="submit">
                     Signup
                   </button>

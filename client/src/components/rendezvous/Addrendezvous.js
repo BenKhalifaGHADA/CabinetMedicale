@@ -1,43 +1,87 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { addAppointment } from '../../actions/profileActions';
+import InputGroup from '../common/InputGroup';
+import SelectListGroup from '../common/SelectListGroup';
+import { getCurrentProfile} from '../../actions/profileActions';
 
+class Addrendezvous extends Component {
+    componentDidMount() {
+        this.props.getCurrentProfile();
+      }
+    constructor(props) {
+        super(props);
+        this.state = {
+            libelle: '',
+            date: '',
+            time: '',
+            Message: '',
+            statusAppointment: '',
+            typeVisite: '',
+            errors: {}
+        }
+        this.onChange = this.onChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
+        }
+    }
+    onSubmit(e) {
+        e.preventDefault();
 
-import spinner from "../common/spinner.gif";
+        const patData = {
+            libelle: this.state.libelle,
+            // date: this.state.date,
+            // time: this.state.time,
+            Message:this.state.Message,
+            // statusAppointment: this.state.statusAppointment,
+            typeVisite: this.state.typeVisite,
+           
+        };
 
-const Addrendezvous = ({
- 
- 
-  loading,
-}) => {
- 
+        this.props.addAppointment(patData, this.props.history);
+    }
 
-  
-  if (loading )
-    return (
-        <img
-        src={spinner}
-        style={{ width: "200px", margin: "auto", display: "block" }}
-        alt="Loading...    "
-      />
-    );
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+    }
 
-  return (
-    <div className="page-wrapper">
-            <div className="content">
-                <div className="row">
-                    <div className="col-lg-8 offset-lg-2">
-                        <h4 className="page-title">Add Appointment</h4>
+    render() {
+        const { errors } = this.state;
+        // Select options for type appointment
+         const options = [
+            { label: '* Type', value: 0 },
+            { label: 'Controle', value: 'Controle' },
+            { label: 'Consultation', value: 'Consultation' }
+        ];
+        return (
+            <div className="page-wrapper">
+                <div className="content">
+                    <div className="row">
+                        <div className="col-lg-8 offset-lg-2">
+                            <h4 className="page-title">Add Appointment</h4>
+                        </div>
                     </div>
-                </div>
-                <div className="row">
+                    <div className="row">
                     <div className="col-lg-8 offset-lg-2">
-                        <form>
+                        <form onSubmit={this.onSubmit}>
                             <div className="row">
                                 <div className="col-md-6">
                                     <div className="form-group">
-										<label>Appointment ID</label>
-										<input className="form-control" type="text" value="APT-0001" readonly=""/>
-									</div>
+										<label>Appointment Name</label>
+										{/* <input className="form-control" type="text" value="APT-0001" readonly=""/> */}
+                                        <InputGroup
+                                                placeholder="Libelle"
+                                                name="libelle"
+                                                value={this.state.libelle}
+                                                onChange={this.onChange}
+                                                error={errors.libelle} />
+                                    </div>
                                 </div>
                                 <div className="col-md-6">
 									<div className="form-group">
@@ -54,12 +98,15 @@ const Addrendezvous = ({
                                 <div className="col-md-6">
                                     <div className="form-group">
                                         <label>Type de visite</label>
-                                        <select className="select">
-                                            <option>Select</option>
-                                            <option>Controle</option>
-                                            <option>Consultation</option>
-                                           
-                                        </select>
+                                        <SelectListGroup
+                                                        
+                                                        name="type"
+                                                        value={this.state.typeVisite}
+                                                        onChange={this.onChange}
+                                                        options={options}
+                                                        error={errors.typeVisite}
+
+                                                    />
                                     </div>
                                 </div>
                                 
@@ -69,7 +116,13 @@ const Addrendezvous = ({
                                     <div className="form-group">
                                         <label>Date</label>
                                         <div className="cal-icon">
-                                            <input type="text" className="form-control datetimepicker"/>
+                                            {/* <input type="text" className="form-control datetimepicker"/> */}
+                                            <InputGroup
+                                                        placeholder="date"
+                                                        name="date"
+                                                        value={this.state.date}
+                                                        onChange={this.onChange}
+                                                        error={errors.date} />
                                         </div>
                                     </div>
                                 </div>
@@ -77,7 +130,13 @@ const Addrendezvous = ({
                                     <div className="form-group">
                                         <label>Time</label>
                                         <div className="time-icon">
-                                            <input type="text" className="form-control" id="datetimepicker3"/>
+                                            {/* <input type="text" className="form-control" id="datetimepicker3"/> */}
+                                            <InputGroup
+                                                        placeholder="time"
+                                                        name="time"
+                                                        value={this.state.time}
+                                                        onChange={this.onChange}
+                                                        error={errors.time} />
                                         </div>
                                     </div>
                                 </div>
@@ -99,6 +158,7 @@ const Addrendezvous = ({
                             <div className="form-group">
                                 <label>Message</label>
                                 <textarea cols="30" rows="4" className="form-control"></textarea>
+                                
                             </div>
                             <div className="form-group">
                                 <label className="display-block">Appointment Status</label>
@@ -121,10 +181,25 @@ const Addrendezvous = ({
                         </form>
                     </div>
                 </div>
+                </div>
             </div>
-			
-        </div>
-  );
+        );
+    }
+}
+Addrendezvous.propTypes = {
+    addAppointment: PropTypes.func.isRequired,
+    profile: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
+    getCurrentProfile: PropTypes.object.isRequired
 };
+const mapStateToProps = state => ({
+    profile: state.profile,
+    errors: state.errors,
+    auth: state.auth
+});
 
-export default Addrendezvous;
+
+export default connect(mapStateToProps, { getCurrentProfile,addAppointment })(
+    withRouter(Addrendezvous)
+);
