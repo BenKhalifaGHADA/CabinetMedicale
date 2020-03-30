@@ -144,6 +144,9 @@ rendezvous:[{
     NbreVisiteEffectuer: {
         type: Number,
        
+    },
+    namepatient:{
+      type:String,
     }
 }]  
 });

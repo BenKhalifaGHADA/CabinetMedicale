@@ -1,14 +1,16 @@
 import React from 'react';
-import spinner from './spinner.gif';
+// import spinner from './spinner.gif';
+import './Spinner.css';
 
-export default()=>{
-    return(
+export default () => {
+    return (
         <div>
-            <img 
-             src={spinner}
-             style={{width:'200px', margin: 'auto',display:'block'}}
-             alt="Loading...    "
-            />
+           <div className="cssload-thecube">
+                <div className="cssload-cube cssload-c1"></div>
+                <div className="cssload-cube cssload-c2"></div>
+                <div className="cssload-cube cssload-c4"></div>
+                <div className="cssload-cube cssload-c3"></div>
+            </div>
         </div>
     )
 }

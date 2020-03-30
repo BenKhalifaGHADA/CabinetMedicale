@@ -15,6 +15,7 @@ const InputGroup = ({
   return (
     <div className="input-group mb-3">
         <input
+         type={type}
         className={classnames('form-control floating', {
           'is-invalid': error
         })}
@@ -23,7 +24,7 @@ const InputGroup = ({
         value={value}
         onChange={onChange}
         disabled={disabled}
-        type={type}
+       
       />
       {error && <div className="invalid-feedback">{error}</div>}
     </div>

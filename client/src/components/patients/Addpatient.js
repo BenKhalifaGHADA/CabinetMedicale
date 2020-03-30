@@ -259,21 +259,7 @@ class Addpatient extends Component {
                                 
                                   
                                 </div>
-                                {/* <div className="form-group">
-                                    <label className="display-block">Status</label>
-                                    <div className="form-check form-check-inline">
-                                        <input className="form-check-input" type="radio" name="status" id="patient_active" value="option1" checked />
-                                        <label className="form-check-label" for="patient_active">
-                                            Active
-                          </label>
-                                    </div>
-                                    <div className="form-check form-check-inline">
-                                        <input className="form-check-input" type="radio" name="status" id="patient_inactive" value="option2" />
-                                        <label className="form-check-label" for="patient_inactive">
-                                            Inactive
-                          </label>
-                                    </div>
-                                </div> */}
+                           
                                 <div className="m-t-20 text-center">
                                     <button className="btn btn-primary submit-btn">Create Patient</button>
                                 </div>

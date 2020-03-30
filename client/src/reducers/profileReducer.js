@@ -34,7 +34,7 @@ export default function(state = initialState, action) {
     case GET_PATIENT:{
       return {
         ...state,
-        patient: action.payload,
+        patient:action.payload,
         
         
       };

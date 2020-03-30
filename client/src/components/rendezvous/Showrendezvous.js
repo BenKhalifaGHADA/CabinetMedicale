@@ -15,10 +15,11 @@ class Showrendezvous extends Component {
   }
 
   render() {
+    const {user}=this.props.auth;  
     const appointment = this.props.rendezvous.map(exp => (
         <tr key={exp._id}>
                                     <td>APT0001</td>
-                                    <td><img width="28" height="28" src="assets/img/user.jpg" className="rounded-circle m-r-5" alt=""/> Denise Stevens</td>
+                                    <td><img width="28" height="28" src="assets/img/user.jpg" className="rounded-circle m-r-5" alt=""/> {user.name}</td>
                                     <td>35</td>
                                     <td>Henry Daniels</td>
                                     <td>Cardiology</td>

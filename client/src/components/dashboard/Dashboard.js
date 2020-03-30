@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { getCurrentProfile, clearCurrentProfile } from '../../actions/profileActions';
 import Spinner from '../common/Spinner';
 import { logoutUser } from '../../actions/authActions';
+import './Dashboard.css'
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -22,11 +23,17 @@ class Dashboard extends Component {
     let dashboardContent;
 
     if (profile === null || loading) {
-      dashboardContent = <Spinner />;
-    } else {
+      dashboardContent = 
+      <div className="main-wrapper">
+        <Spinner />
+      </div>;
+    } 
+    else {
       // Check if logged in user has profile data
-      if (Object.keys(profile).length > 0) {
-        dashboardContent =
+      {console.log("msg",Object.keys(profile).length)}
+      if (Object.keys(profile).length > 0)
+       {
+        dashboardContent = 
           <div className="main-wrapper">
             <div className="header">
               <div className="header-left">
@@ -56,7 +63,7 @@ class Dashboard extends Component {
                       <span className="status online"></span>
                     </span>
                     <span> {user.name} </span>
-                    {/* <span>{console.log('test user',user)}</span> */}
+                 
                   </a>
                   <div className="dropdown-menu">
                     <Link className="dropdown-item" to="/dashboard/profile">
@@ -85,12 +92,13 @@ class Dashboard extends Component {
                         <i className="fa fa-dashboard"></i> <span>Dashboard</span>
                       </Link>
                     </li>
+                    
                     <li className="submenu">
                       <Link to="/dashboard/patients">
                         <i className="fa fa-wheelchair"></i> <span> Patients </span>
-                        <span className="menu-arrow"></span>
+                        {/* <span className="menu-arrow"></span> */}
                       </Link>
-                      <ul style={{ display: "none;" }}>
+                      <ul style={{ display: "none" }}>
                         <li>
                           <Link to="/dashboard/patients">Patient List</Link>
                         </li>
@@ -109,7 +117,7 @@ class Dashboard extends Component {
                         <i className="fa fa-envelope"></i> <span> Email</span>{" "}
                         <span className="menu-arrow"></span>
                       </Link>
-                      <ul style={{ display: "none;" }}>
+                      <ul style={{ display: "none" }}>
                         <li>
                           <Link to="compose.html">Compose Mail</Link>
                         </li>
@@ -139,16 +147,17 @@ class Dashboard extends Component {
           </div>
 
           ;
-      } else {
+      } 
+      else {
         // User is logged in but has no profile
         dashboardContent = (
-         <div className="main-wrapper account-wrapper">
+         <div className="main-wrapper dashboardbg">
           <div className="account-page">
             <div className="account-center">
-              <div className="account-box">
+              <div className="account-box dashboardbox">
               <h4 className="page-title">Welcome {user.name}</h4>
               <p>You have not yet setup a profile, please add some info</p>
-              <Link to="/dashboard/editprofile" className="btn btn-primary">
+              <Link to="/dashboard/editprofile" className="btn text-white btn-primary dashboardbtn">
                 Create Profile
               </Link>
               </div>

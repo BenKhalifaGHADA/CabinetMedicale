@@ -6,11 +6,13 @@ import PropTypes from 'prop-types';
 import { addAppointment } from '../../actions/profileActions';
 import InputGroup from '../common/InputGroup';
 import SelectListGroup from '../common/SelectListGroup';
-import { getCurrentProfile} from '../../actions/profileActions';
+import {  getallPatients,getCurrentProfile} from '../../actions/profileActions';
 
 class Addrendezvous extends Component {
     componentDidMount() {
         this.props.getCurrentProfile();
+        let patients=this.props. getallPatients();
+        console.log("hello",this.props.patients)
       }
     constructor(props) {
         super(props);
@@ -21,6 +23,7 @@ class Addrendezvous extends Component {
             Message: '',
             statusAppointment: '',
             typeVisite: '',
+            patient:{},
             errors: {}
         }
         this.onChange = this.onChange.bind(this);
@@ -41,7 +44,7 @@ class Addrendezvous extends Component {
             Message:this.state.Message,
             // statusAppointment: this.state.statusAppointment,
             typeVisite: this.state.typeVisite,
-           
+            patient:this.state.patient,
         };
 
         this.props.addAppointment(patData, this.props.history);
@@ -58,6 +61,13 @@ class Addrendezvous extends Component {
             { label: '* Type', value: 0 },
             { label: 'Controle', value: 'Controle' },
             { label: 'Consultation', value: 'Consultation' }
+        ];
+
+        // Select options for type appointment
+        const optionsPatient = [
+            { label: '* Patient', value: 0 },
+            { label: 'patient1', value: 'patient1' },
+            { label: 'patient2', value: 'patient2' }
         ];
         return (
             <div className="page-wrapper">
@@ -85,12 +95,21 @@ class Addrendezvous extends Component {
                                 </div>
                                 <div className="col-md-6">
 									<div className="form-group">
-										<label>Patient Name</label>
-										<select className="select">
+                                    <label>Patient Name</label>
+                                                    <SelectListGroup
+                                                        placeholder="Gender"
+                                                        name="gender"
+                                                        value={this.state.patient}
+                                                        onChange={this.onChange}
+                                                        options={optionsPatient}
+                                                    />
+                                    {errors && <div className="invalid-feedback">{errors.patient}</div>}
+									
+										{/* <select className="select">
 											<option>Select</option>
 											<option>Jennifer Robinson</option>
 											<option>Terry Baker</option>
-										</select>
+										</select> */}
 									</div>
                                 </div>
                             </div>
@@ -164,13 +183,13 @@ class Addrendezvous extends Component {
                                 <label className="display-block">Appointment Status</label>
 								<div className="form-check form-check-inline">
 									<input className="form-check-input" type="radio" name="status" id="product_active" value="option1" checked/>
-									<label className="form-check-label" for="product_active">
+									<label className="form-check-label" htmlFor="product_active">
 									Active
 									</label>
 								</div>
 								<div className="form-check form-check-inline">
 									<input className="form-check-input" type="radio" name="status" id="product_inactive" value="option2"/>
-									<label className="form-check-label" for="product_inactive">
+									<label className="form-check-label" htmlFor="product_inactive">
 									Inactive
 									</label>
 								</div>
@@ -191,7 +210,8 @@ Addrendezvous.propTypes = {
     profile: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
-    getCurrentProfile: PropTypes.object.isRequired
+    getCurrentProfile: PropTypes.func.isRequired,
+    getallPatients: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
     profile: state.profile,
@@ -200,6 +220,6 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps, { getCurrentProfile,addAppointment })(
+export default connect(mapStateToProps, {  getallPatients,getCurrentProfile,addAppointment })(
     withRouter(Addrendezvous)
 );

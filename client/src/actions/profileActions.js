@@ -80,6 +80,7 @@ export const clearCurrentProfile = () => {
 // ------------------------------Begin CRUD For patient--------------//
 // Add patient
 export const addPatient = (expData, history) =>async dispatch => {
+  
   await axios
     .post('/api/profile/patient', expData)
     .then(res => history.push('/dashboard/patients'))
@@ -92,6 +93,7 @@ export const addPatient = (expData, history) =>async dispatch => {
 };
 // Delete patient
 export const deletePatient = id =>async dispatch => {
+  
   await axios
      .delete(`/api/profile/patient/${id}`)
      .then(res =>
@@ -110,6 +112,7 @@ export const deletePatient = id =>async dispatch => {
 
  // get patient by id
 export const getPatientById = patient_id => async dispatch => {
+  
   try {
     const res = await axios.get(`/api/profile/patient/${patient_id}`);
     dispatch({
@@ -125,8 +128,8 @@ export const getPatientById = patient_id => async dispatch => {
 };
  
 //update patient bu id
-
 export const updatePatient=(id,patient,history)=>async dispatch=>{
+  
   await axios
   // .put(`/patient/update/${id}`,patient).
   .post(`/api/profile/patient/update/${id}`,patient)
@@ -135,6 +138,24 @@ export const updatePatient=(id,patient,history)=>async dispatch=>{
     // dispatch(getCurrentProfile()))
 }
 
+// get all patients
+export const getallPatients = () => async dispatch => {
+  await axios
+   .get('/api/profile/patient/all')
+   .then(res =>
+     dispatch({
+       type: GET_PROFILE,
+       payload: res.data
+     })
+   )
+   .catch(err =>
+     dispatch({
+       type: GET_PROFILE,
+       payload: {}
+     })
+   );
+};
+ 
 // ------------------------------End CRUD For patient--------------//
 
 // ------------------------------Begin CRUD For Appointment--------------//
@@ -142,7 +163,7 @@ export const updatePatient=(id,patient,history)=>async dispatch=>{
 export const addAppointment = (expData, history) => async dispatch => {
   await axios
     .post('/api/profile/appointment', expData)
-    .then(res => history.push('/dashboard'))
+    .then(res => history.push('/dashboard/Rendezvous'))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,

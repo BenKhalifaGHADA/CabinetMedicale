@@ -124,6 +124,27 @@ router.delete(
 );
 
 // -----------------------------Begin CRUD Patient----------------------//
+// @access  Public
+// @route   GET api/profile/patient/all
+// @desc    Get all patient for one profile
+
+router.get(
+  '/patient/all',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+try {
+  const foundPatient = await Profile.findOne({ user: req.user.id });
+
+  // const myPatient = foundPatient.patient.filter(
+  //   patient => patient._id.toString() === req.params.patient_id
+  // )[0];
+  res.json(foundPatient.patient);
+} catch (err) {
+  console.error(err.message);
+  res.status(500).send('Server Error');
+}
+});
+
 // @route   POST api/profile/patient
 // @desc    Add patient to profile
 // @access  Private
@@ -240,9 +261,17 @@ router.post(
       { user: req.user.id },
       { $set: profileFields },
       { new: true }
-    ).then(profile => res.json(profile))
+    ).then(profile =>
+      
+      {res.json(profile);
+       // Save Profile
+       new Profile(profileFields.patient).save().then(profile => res.json(profile)); 
+      }
+        )
       .catch(err => res.status(404).json(err));
   }
+
+  
 );
 
  // -----------------------------END CRUD Patient----------------------//

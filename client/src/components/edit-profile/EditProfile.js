@@ -327,13 +327,13 @@ class EditProfile extends Component {
                             </div>
                         </div>
 
-                        <div class="card-box">
-                            <h3 class="card-title">Contact Informations</h3>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group form-focus">
-                                    <label class="focus-label">Address</label>
-                                        {/* <input type="text" class="form-control floating" value="New York"/> */}
+                        <div className="card-box">
+                            <h3 className="card-title">Contact Informations</h3>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="form-group form-focus">
+                                    <label className="focus-label">Address</label>
+                                        {/* <input type="text" className="form-control floating" value="New York"/> */}
                                         <InputGroup
                                             placeholder="Your state"
                                             name="region"
@@ -344,10 +344,10 @@ class EditProfile extends Component {
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group form-focus">
-                                        <label class="focus-label">State</label>
-                                        {/* <input type="text" class="form-control floating" value="New York"/> */}
+                                <div className="col-md-6">
+                                    <div className="form-group form-focus">
+                                        <label className="focus-label">State</label>
+                                        {/* <input type="text" className="form-control floating" value="New York"/> */}
                                         <InputGroup
                                             placeholder="Your state"
                                             name="State"
@@ -356,10 +356,10 @@ class EditProfile extends Component {
                                             error={errors.State} />
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-focus">
-                                        <label class="focus-label">Country</label>
-                                        {/* <input type="text" class="form-control floating" value="United States"/> */}
+                                <div className="col-md-6">
+                                    <div className="form-group form-focus">
+                                        <label className="focus-label">Country</label>
+                                        {/* <input type="text" className="form-control floating" value="United States"/> */}
                                         <InputGroup
                                             placeholder="Your Country"
                                             name="Country"
@@ -371,10 +371,10 @@ class EditProfile extends Component {
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group form-focus">
-                                        <label class="focus-label">Pin Code</label>
-                                        {/* <input type="text" class="form-control floating" value="10523"/> */}
+                                <div className="col-md-6">
+                                    <div className="form-group form-focus">
+                                        <label className="focus-label">Pin Code</label>
+                                        {/* <input type="text" className="form-control floating" value="10523"/> */}
                                         <InputGroup
                                             placeholder="Your Zip code"
                                             name="ZipCode"
@@ -384,10 +384,10 @@ class EditProfile extends Component {
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group form-focus">
-                                        <label class="focus-label">Phone Number</label>
-                                        {/* <input type="text" class="form-control floating" value="631-889-3206"/> */}
+                                <div className="col-md-6">
+                                    <div className="form-group form-focus">
+                                        <label className="focus-label">Phone Number</label>
+                                        {/* <input type="text" className="form-control floating" value="631-889-3206"/> */}
                                         <InputGroup
                                             placeholder="Your Number Phone"
                                             name="phone"
@@ -402,10 +402,10 @@ class EditProfile extends Component {
                             </div>
                         </div>
 
-                        <div class="card-box">
-                            <h3 class="card-title">Social Network</h3>
-                            <div class="row">
-                                <div class="col-md-12">
+                        <div className="card-box">
+                            <h3 className="card-title">Social Network</h3>
+                            <div className="row">
+                                <div className="col-md-12">
                                     <div className="mb-3">
                                         <button
                                             type="button"
@@ -424,10 +424,10 @@ class EditProfile extends Component {
                             </div>
                         </div>
 
-                        <div class="card-box">
-                            <h3 class="card-title">Description</h3>
-                            <div class="row">
-                                <div class="col-md-12">
+                        <div className="card-box">
+                            <h3 className="card-title">Description</h3>
+                            <div className="row">
+                                <div className="col-md-12">
                                     <TextAreaFieldGroup
                                         placeholder="Short Bio"
                                         name="bio"
@@ -440,8 +440,8 @@ class EditProfile extends Component {
                             </div>
                         </div>
 
-                        <div class="text-center m-t-20">
-                            <button class="btn btn-primary submit-btn" type="submit">Save</button>
+                        <div className="text-center m-t-20">
+                            <button className="btn btn-primary submit-btn" type="submit">Save</button>
                         </div>
 
 
