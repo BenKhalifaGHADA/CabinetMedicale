@@ -7,6 +7,10 @@ const ProfileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'users'
   },
+  profilephoto: {
+    type: String,
+    default: 'default.jpg',
+  },
   handle: {
     type: String,
     required:true,
@@ -110,6 +114,15 @@ const ProfileSchema = new Schema({
       type: String,
       default: 'default.jpg',
     },
+    CNAM:{
+      type: String,
+    },
+    Assurance:{
+      type: String,
+    },  
+    profession:{
+      type:String,
+    },
     date: {
         type: Date,
         default: Date.now
@@ -148,7 +161,16 @@ rendezvous:[{
     namepatient:{
       type:String,
     }
-}]  
+}] ,
+consultation:[{
+  observation:{
+    type: String,
+  }, 
+  date:{
+    type:Date,
+    default:Date.now(),
+  }
+}] 
 });
 
 module.exports = Profile = mongoose.model('profile', ProfileSchema);

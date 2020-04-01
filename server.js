@@ -8,6 +8,9 @@ const users = require("./routes/api/users");
 const profile = require('./routes/api/profile');
 const app = express();
 
+//package for upload image 
+const fileUpload = require('express-fileupload');
+
 // Bodyparser middleware
 app.use(
   bodyParser.urlencoded({
@@ -19,6 +22,9 @@ app.use(bodyParser.json());
 // DB Config
 const db = require("./config/keys").mongoURI;
 
+//upload image 
+app.use(fileUpload());
+app.use(express.static(__dirname + '/client/public/uploads'));
 
 // Connect to MongoDB
 mongoose.set('useFindAndModify', false);

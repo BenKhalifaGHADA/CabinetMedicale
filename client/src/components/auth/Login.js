@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import classnames from "classnames";
+import './Login.css'
 
 
 class Login extends Component {
@@ -55,14 +56,15 @@ class Login extends Component {
     const { errors } = this.state;
 
     return (
-      <div className="main-wrapper account-wrapper">
+      <div className="main-wrapper homepagecontainer">
         <div className="account-page">
           <div className="account-center">
-            <div className="account-box">
+            <div className="account-box homepagebox">
              <form noValidate onSubmit={this.onSubmit} className="form-signin">
                 <div className="account-logo">
                   <Link to="/">
                     <img src={require("../img/logo-dark.png")} alt="" />
+                    <p className="preclinic-logo">Preclinic</p>
                   </Link>
                 </div>
                 <div className="form-group"> 
@@ -106,7 +108,7 @@ class Login extends Component {
                             <a href="forgot-password.html">Forgot your password?</a>
                         </div> */}
                 <div className="form-group text-center">
-                  <button type="submit" className="btn btn-primary account-btn">
+                  <button type="submit" className="btn btn-primary account-btn loginbtn">
                     Login
                   </button>
                 </div>

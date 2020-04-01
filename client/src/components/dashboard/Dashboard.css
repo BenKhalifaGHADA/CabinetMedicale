@@ -94,3 +94,9 @@
     border-radius: 20px;
     box-shadow: 10px 10px 12px rgba(0, 0, 0, 0.513);
 }
+
+.mynavbar {
+        box-shadow: 0px 5px 20px rgba(1, 41, 71, 0.616);
+        height: 50px;
+        width: 100%;
+}

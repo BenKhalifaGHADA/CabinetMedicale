@@ -1,6 +1,6 @@
 import {
   GET_PROFILE,
-  PROFILE_LOADING,
+  // PROFILE_LOADING,
   CLEAR_CURRENT_PROFILE,
   GET_PATIENT
 } from '../actions/types';
@@ -8,17 +8,17 @@ import {
 const initialState = {
   profile: null,
   profiles: null,
-  loading: false,
+  loading: true,
   patient: null,
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case PROFILE_LOADING:
-      return {
-        ...state,
-        loading: true
-      };
+    // case PROFILE_LOADING:
+    //   return {
+    //     ...state,
+    //     loading: true
+    //   };
     case GET_PROFILE:
       return {
         ...state,

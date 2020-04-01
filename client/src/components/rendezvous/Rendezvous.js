@@ -11,10 +11,9 @@ class Rendezvous extends Component {
 	
 	render() {
 		const { profile } = this.props.profile;
-		return (
+		return profile!==null &&
 			<Showrendezvous rendezvous={profile.rendezvous} />
-		
-		);
+	
 	}
 }
 

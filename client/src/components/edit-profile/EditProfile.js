@@ -1,475 +1,421 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup';
 import InputGroup from '../common/InputGroup';
 import SelectListGroup from '../common/SelectListGroup';
-import { createProfile, getCurrentProfile } from '../../actions/profileActions';
+import {
+  createProfile,
+  getCurrentProfile,
+  uploadPhoto,
+} from '../../actions/profileActions';
 import isEmpty from '../../validation/is-empty';
 // import Moment from 'react-moment';
 
+const EditProfile = ({
+  auth: { user },
+  location: { myprofile },
+  profile,
+  history,
+  getCurrentProfile,
+  createProfile,
+  uploadPhoto,
+}) => {
+  const [formData, setFormData] = useState({
+    displaySocialInputs: false,
+    handle: myprofile ? myprofile.handle : '',
+    firstname: myprofile ? myprofile.firstname : '',
+    lastname: myprofile ? myprofile.lastname : '',
+    gender: myprofile ? myprofile.gender : '',
+    birthdate: myprofile ? myprofile.birthdate : '',
+    phone: myprofile ? myprofile.phone : '',
+    region: myprofile ? myprofile.region : '',
+    State: myprofile ? myprofile.State : '',
+    Country: myprofile ? myprofile.Country : '',
+    ZipCode: myprofile ? myprofile.ZipCode : '',
+    bio: myprofile ? myprofile.bio : '',
+    twitter: myprofile ? myprofile.twitter : '',
+    facebook: myprofile ? myprofile.facebook : '',
+    linkedin: myprofile ? myprofile.linkedin : '',
+    youtube: myprofile ? myprofile.youtube : '',
+    instagram: myprofile ? myprofile.instagram : '',
+    email: '',
+    errors: {},
+  });
+  const [file, setFile] = useState('');
+  useEffect(() => {
+    getCurrentProfile();
+  }, []);
 
-class EditProfile extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            displaySocialInputs: false,
-            handle: '',
-            firstname: '',
-            lastname: '',
-            gender: '',
-            birthdate:'',
-            phone: '',
-            region: '',
-            State: '',
-            Country: '',
-            ZipCode: '',
-            bio: '',
-            twitter: '',
-            facebook: '',
-            linkedin: '',
-            youtube: '',
-            instagram: '',
-            email:'',
+  const {
+    handle,
+    firstname,
+    lastname,
+    gender,
+    birthdate,
+    phone,
+    region,
+    State,
+    Country,
+    ZipCode,
+    bio,
+    twitter,
+    facebook,
+    linkedin,
+    youtube,
+    instagram,
+    email,
+    displaySocialInputs,
+    errors,
+  } = formData;
 
-            errors: {}
-        };
+  const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onChangeFile = e => {
+    setFile(e.target.files[0]);
+  };
+  const onSubmit = e => {
+    e.preventDefault();
 
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-    }
-    componentDidMount() {
-        this.props.getCurrentProfile();
-    }
+    const profileData = {
+      handle,
+      firstname,
+      lastname,
+      birthdate,
+      gender,
+      phone,
+      region,
+      Country,
+      State,
+      ZipCode,
+      bio,
+      twitter,
+      facebook,
+      linkedin,
+      youtube,
+      instagram,
+      email,
+    };
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.errors) {
-            this.setState({ errors: nextProps.errors });
-        }
-        if (nextProps.profile.profile) {
-            const profile = nextProps.profile.profile;
-            
-            //if profile fiels doesn't exit, make emty string
+    createProfile(profileData, history);
+    const formData = new FormData();
+    formData.append('file', file);
+    uploadPhoto(formData);
+  };
 
-            profile.firstname = !isEmpty(profile.firstname) ? profile.firstname : '';
-            profile.lastname = !isEmpty(profile.lastname) ? profile.lastname : '';
-            profile.gender = !isEmpty(profile.gender) ? profile.gender : '';
-            profile.birthdate = !isEmpty(profile.birthdate) ? profile.birthdate : '';
-            profile.phone = !isEmpty(profile.phone) ? profile.phone : '';
+  let socialInputs;
+  if (displaySocialInputs) {
+    socialInputs = (
+      <div>
+        <InputGroup
+          placeholder='Twitter Profile URL'
+          name='twitter'
+          icon='fab fa-twitter'
+          value={twitter}
+          onChange={onChange}
+          error={errors.twitter}
+        />
 
-            profile.address = !isEmpty(profile.address) ? profile.address : {};
-            profile.region = !isEmpty(profile.address.region)
-                ? profile.address.region
-                : '';
-            profile.State = !isEmpty(profile.address.State)
-                ? profile.address.State
-                : '';
+        <InputGroup
+          placeholder='Facebook Page URL'
+          name='facebook'
+          icon='fab fa-facebook'
+          value={facebook}
+          onChange={onChange}
+          error={errors.facebook}
+        />
 
-            profile.Country = !isEmpty(profile.address.Country)
-                ? profile.address.Country
-                : '';
-            profile.ZipCode = !isEmpty(profile.address.ZipCode)
-                ? profile.address.ZipCode
-                : '';
+        <InputGroup
+          placeholder='Linkedin Profile URL'
+          name='linkedin'
+          icon='fab fa-linkedin'
+          value={linkedin}
+          onChange={onChange}
+          error={errors.linkedin}
+        />
 
-            profile.bio = !isEmpty(profile.bio) ? profile.bio : '';
-            profile.social = !isEmpty(profile.social) ? profile.social : {};
-            profile.twitter = !isEmpty(profile.social.twitter)
-                ? profile.social.twitter
-                : '';
-            profile.facebook = !isEmpty(profile.social.facebook)
-                ? profile.social.facebook
-                : '';
-            profile.linkedin = !isEmpty(profile.social.linkedin)
-                ? profile.social.linkedin
-                : '';
-            profile.youtube = !isEmpty(profile.social.youtube)
-                ? profile.social.youtube
-                : '';
-            profile.instagram = !isEmpty(profile.social.instagram)
-                ? profile.social.instagram
-                : '';
+        <InputGroup
+          placeholder='YouTube Channel URL'
+          name='youtube'
+          icon='fab fa-youtube'
+          value={youtube}
+          onChange={onChange}
+          error={errors.youtube}
+        />
 
-            //Set component fields state
-            this.setState({
-                handle: profile.handle,
-                firstname: profile.firstname,
-                lastname: profile.lastname,
-                gender: profile.gender,
-                birthdate:profile.birthdate,
-                phone: profile.phone,
-                region: profile.region,
-                Country: profile.Country,
-                State: profile.State,
-                ZipCode: profile.ZipCode,
-                bio: profile.bio,
-                twitter: profile.twitter,
-                facebook: profile.facebook,
-                linkedin: profile.linkedin,
-                youtube: profile.youtube,
-            });
-        }
-    }
+        <InputGroup
+          placeholder='Instagram Page URL'
+          name='instagram'
+          icon='fab fa-instagram'
+          value={instagram}
+          onChange={onChange}
+          error={errors.instagram}
+        />
+      </div>
+    );
+  }
 
-    onSubmit(e) {
-        e.preventDefault();
+  // Select options for gender
+  const options = [
+    { label: '* Your gender', value: 0 },
+    { label: 'Female', value: 'Female' },
+    { label: 'Male', value: 'Male' },
+  ];
 
-        const profileData = {
-            handle: this.state.handle,
-            firstname: this.state.firstname,
-            lastname: this.state.lastname,
-            birthdate:this.state.birthdate,
-            gender: this.state.gender,
-            birth:this.state.birthd,
-            phone: this.state.phone,
-            region: this.state.region,
-            Country: this.state.Country,
-            State: this.state.State,
-            ZipCode: this.state.ZipCode,
-            bio: this.state.bio,
-            twitter: this.state.twitter,
-            facebook: this.state.facebook,
-            linkedin: this.state.linkedin,
-            youtube: this.state.youtube,
-            instagram: this.state.instagram
-        };
-
-        this.props.createProfile(profileData, this.props.history);
-    }
-
-    onChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
-    }
-
-
-
-
-    render() {
-        const { errors, displaySocialInputs } = this.state;
-        const {user}=this.props.auth;
-        let socialInputs;
-
-        if (displaySocialInputs) {
-            socialInputs = (
-                <div>
-                    <InputGroup
-                        placeholder="Twitter Profile URL"
-                        name="twitter"
-                        icon="fab fa-twitter"
-                        value={this.state.twitter}
-                        onChange={this.onChange}
-                        error={errors.twitter}
-                    />
-
-                    <InputGroup
-                        placeholder="Facebook Page URL"
-                        name="facebook"
-                        icon="fab fa-facebook"
-                        value={this.state.facebook}
-                        onChange={this.onChange}
-                        error={errors.facebook}
-                    />
-
-                    <InputGroup
-                        placeholder="Linkedin Profile URL"
-                        name="linkedin"
-                        icon="fab fa-linkedin"
-                        value={this.state.linkedin}
-                        onChange={this.onChange}
-                        error={errors.linkedin}
-                    />
-
-                    <InputGroup
-                        placeholder="YouTube Channel URL"
-                        name="youtube"
-                        icon="fab fa-youtube"
-                        value={this.state.youtube}
-                        onChange={this.onChange}
-                        error={errors.youtube}
-                    />
-
-                    <InputGroup
-                        placeholder="Instagram Page URL"
-                        name="instagram"
-                        icon="fab fa-instagram"
-                        value={this.state.instagram}
-                        onChange={this.onChange}
-                        error={errors.instagram}
-                    />
+  return (
+    <div className='page-wrapper'>
+      <div className='content'>
+        <div className='row'>
+          <div className='col-sm-12'>
+            <h4 className='page-title'>Edit Profile</h4>
+          </div>
+        </div>
+        <form onSubmit={onSubmit}>
+          <div className='card-box'>
+            <h3 className='card-title'>Basic Informations</h3>
+            <div className='row'>
+              <div className='col-md-12'>
+                <div className='profile-img-wrap'>
+                  <img
+                    className='inline-block'
+                    src={myprofile ? `/${myprofile.profilephoto}` : '/default.jpg'}
+                    alt={user.name}
+                  />
+                  <div className='fileupload btn'>
+                    <span className='btn-text'>edit</span>
+                    <input className='upload' type='file' onChange={onChangeFile} />
+                  </div>
                 </div>
-            );
-        }
-
-        // Select options for gender
-        const options = [
-            { label: '* Your gender', value: 0 },
-            { label: 'Female', value: 'Female' },
-            { label: 'Male', value: 'Male' }
-        ];
-        
-        return (
-
-            <div className="page-wrapper">
-                <div className="content">
-                    <div className="row">
-                        <div className="col-sm-12">
-                            <h4 className="page-title">Edit Profile</h4>
-                        </div>
+                <div className='profile-basic'>
+                  <div className='row'>
+                    <div className='col-md-6'>
+                      <div className='form-group form-focus'>
+                        <label className='focus-label'>Firstname</label>
+                        <InputGroup
+                          placeholder='Your firstname'
+                          name='firstname'
+                          value={firstname}
+                          onChange={onChange}
+                          error={errors.firstname}
+                        />
+                      </div>
                     </div>
-                    <form onSubmit={this.onSubmit}>
+                    <div className='col-md-6'>
+                      <div className='form-group form-focus'>
+                        <label className='focus-label'>Lastname</label>
+                        <InputGroup
+                          placeholder='Your lastname'
+                          name='lastname'
+                          value={lastname}
+                          onChange={onChange}
+                          error={errors.lastname}
+                        />
+                      </div>
+                    </div>
 
-                        <div className="card-box">
-                            <h3 className="card-title">Basic Informations</h3>
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="profile-img-wrap">
-                                        <img className="inline-block" src={user.avatar} alt={user.name} />
-                                        <div className="fileupload btn">
-                                            <span className="btn-text">edit</span>
-                                            <input className="upload" type="file" />
-                                        </div>
-                                    </div>
-                                    <div className="profile-basic">
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <div className="form-group form-focus">
-                                                    <label className="focus-label">Firstname</label>
-                                                    <InputGroup
-                                                        placeholder="Your firstname"
-                                                        name="firstname"
-                                                        value={this.state.firstname}
-                                                        onChange={this.onChange}
-                                                        error={errors.firstname} />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="form-group form-focus">
-                                                    <label className="focus-label">Lastname</label>
-                                                    <InputGroup
-                                                        placeholder="Your lastname"
-                                                        name="lastname"
-                                                        value={this.state.lastname}
-                                                        onChange={this.onChange}
-                                                        error={errors.lastname} />
-
-
-                                                </div>
-                                            </div>
-
-                                            <div className="col-md-6">
-                                                <div className="form-group form-focus">
-                                                <label className="focus-label">Birth Date</label>
-                                                    <div className="cal-icon">
-                                                   
-                                                    <InputGroup
-                                                        placeholder="Your birth Date"
-                                                        name="birthdate"
-                                                        value= {this.state.birthdate}
-                                                        onChange={this.onChange}
-                                                        error={errors.birthdate} />
-                                                        
-                                                      
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div className="col-md-6">
-                                                <div className="form-group form-focus select-focus">
-                                                    <label className="focus-label">Gendar</label>
-                                                    <SelectListGroup
-                                                        placeholder="Gender"
-                                                        name="gender"
-                                                        value={this.state.gender}
-                                                        onChange={this.onChange}
-                                                        options={options}
-                                                        error={errors.gender}
-
-                                                    />
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div className='col-md-6'>
+                      <div className='form-group form-focus'>
+                        <label className='focus-label'>Birth Date</label>
+                        <div className='cal-icon'>
+                          <InputGroup
+                            placeholder='Your birth Date'
+                            name='birthdate'
+                            value={birthdate}
+                            onChange={onChange}
+                            error={errors.birthdate}
+                          />
                         </div>
-                        <div className="card-box">
-                            <h3 className="card-title">Account Informations</h3>
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="form-group form-focus">
-                                        <label className="focus-label">Username</label>
-                                        <InputGroup
-                                            placeholder="Your username"
-                                            name="handle"
-                                            value={this.state.handle}
-                                            onChange={this.onChange}
-                                            error={errors.handle} />
-                                    </div>
-                                    {console.log(this.state.password)}
-                                </div>
+                      </div>
+                    </div>
 
-                                <div className="col-md-6">
-                                    <div className="form-group form-focus">
-                                        <label className="focus-label">Email</label>
-                                        <InputGroup
-                                            placeholder="Your username"
-                                            name="email"
-                                            value={user.email}
-                                            onChange={this.onChange}
-                                            error={errors.email} 
-                                            disabled="disabled"/>
-                                    </div>
-                                   
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="card-box">
-                            <h3 className="card-title">Contact Informations</h3>
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="form-group form-focus">
-                                    <label className="focus-label">Address</label>
-                                        {/* <input type="text" className="form-control floating" value="New York"/> */}
-                                        <InputGroup
-                                            placeholder="Your state"
-                                            name="region"
-                                            value={this.state.region}
-                                            onChange={this.onChange}
-                                             />
-                                     
-                                    </div>
-                                </div>
-
-                                <div className="col-md-6">
-                                    <div className="form-group form-focus">
-                                        <label className="focus-label">State</label>
-                                        {/* <input type="text" className="form-control floating" value="New York"/> */}
-                                        <InputGroup
-                                            placeholder="Your state"
-                                            name="State"
-                                            value={this.state.State}
-                                            onChange={this.onChange}
-                                            error={errors.State} />
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="form-group form-focus">
-                                        <label className="focus-label">Country</label>
-                                        {/* <input type="text" className="form-control floating" value="United States"/> */}
-                                        <InputGroup
-                                            placeholder="Your Country"
-                                            name="Country"
-                                            value={this.state.Country}
-                                            onChange={this.onChange}
-                                            error={errors.Country} />
-
-
-                                    </div>
-                                </div>
-
-                                <div className="col-md-6">
-                                    <div className="form-group form-focus">
-                                        <label className="focus-label">Pin Code</label>
-                                        {/* <input type="text" className="form-control floating" value="10523"/> */}
-                                        <InputGroup
-                                            placeholder="Your Zip code"
-                                            name="ZipCode"
-                                            value={this.state.ZipCode}
-                                            onChange={this.onChange}
-                                            error={errors.ZipCode} />
-                                    </div>
-                                </div>
-
-                                <div className="col-md-6">
-                                    <div className="form-group form-focus">
-                                        <label className="focus-label">Phone Number</label>
-                                        {/* <input type="text" className="form-control floating" value="631-889-3206"/> */}
-                                        <InputGroup
-                                            placeholder="Your Number Phone"
-                                            name="phone"
-                                            value={this.state.phone}
-                                            onChange={this.onChange}
-                                            error={errors.phone} />
-
-
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div className="card-box">
-                            <h3 className="card-title">Social Network</h3>
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="mb-3">
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                this.setState(prevState => ({
-                                                    displaySocialInputs: !prevState.displaySocialInputs
-                                                }));
-                                            }}
-                                            className="btn btn-light">
-                                            Add Social Network Links
-                                        </button>
-                                        <span className="text-muted">Optional</span>
-                                    </div>
-                                    {socialInputs}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="card-box">
-                            <h3 className="card-title">Description</h3>
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <TextAreaFieldGroup
-                                        placeholder="Short Bio"
-                                        name="bio"
-                                        value={this.state.bio}
-                                        onChange={this.onChange}
-                                        error={errors.bio}
-                                        info="Tell us a little about yourself"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="text-center m-t-20">
-                            <button className="btn btn-primary submit-btn" type="submit">Save</button>
-                        </div>
-
-
-
-
-                    </form>
-
-
+                    <div className='col-md-6'>
+                      <div className='form-group form-focus select-focus'>
+                        <label className='focus-label'>Gendar</label>
+                        <SelectListGroup
+                          placeholder='Gender'
+                          name='gender'
+                          value={gender}
+                          onChange={onChange}
+                          options={options}
+                          error={errors.gender}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
-        );
-    }
-}
+          </div>
+          <div className='card-box'>
+            <h3 className='card-title'>Account Informations</h3>
+            <div className='row'>
+              <div className='col-md-6'>
+                <div className='form-group form-focus'>
+                  <label className='focus-label'>Username</label>
+                  <InputGroup
+                    placeholder='Your username'
+                    name='handle'
+                    value={handle}
+                    onChange={onChange}
+                    error={errors.handle}
+                  />
+                </div>
+              </div>
+
+              <div className='col-md-6'>
+                <div className='form-group form-focus'>
+                  <label className='focus-label'>Email</label>
+                  <InputGroup
+                    placeholder='Your username'
+                    name='email'
+                    value={user.email}
+                    onChange={onChange}
+                    error={errors.email}
+                    disabled='disabled'
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className='card-box'>
+            <h3 className='card-title'>Contact Informations</h3>
+            <div className='row'>
+              <div className='col-md-12'>
+                <div className='form-group form-focus'>
+                  <label className='focus-label'>Address</label>
+                  {/* <input type="text" className="form-control floating" value="New York"/> */}
+                  <InputGroup
+                    placeholder='Your state'
+                    name='region'
+                    value={region}
+                    onChange={onChange}
+                  />
+                </div>
+              </div>
+
+              <div className='col-md-6'>
+                <div className='form-group form-focus'>
+                  <label className='focus-label'>State</label>
+                  {/* <input type="text" className="form-control floating" value="New York"/> */}
+                  <InputGroup
+                    placeholder='Your state'
+                    name='State'
+                    value={State}
+                    onChange={onChange}
+                    error={errors.State}
+                  />
+                </div>
+              </div>
+              <div className='col-md-6'>
+                <div className='form-group form-focus'>
+                  <label className='focus-label'>Country</label>
+                  {/* <input type="text" className="form-control floating" value="United States"/> */}
+                  <InputGroup
+                    placeholder='Your Country'
+                    name='Country'
+                    value={Country}
+                    onChange={onChange}
+                    error={errors.Country}
+                  />
+                </div>
+              </div>
+
+              <div className='col-md-6'>
+                <div className='form-group form-focus'>
+                  <label className='focus-label'>Pin Code</label>
+                  {/* <input type="text" className="form-control floating" value="10523"/> */}
+                  <InputGroup
+                    placeholder='Your Zip code'
+                    name='ZipCode'
+                    value={ZipCode}
+                    onChange={onChange}
+                    error={errors.ZipCode}
+                  />
+                </div>
+              </div>
+
+
+              <div className='col-md-6'>
+                <div className='form-group form-focus'>
+                  <label className='focus-label'>Phone Number</label>
+                  {/* <input type="text" className="form-control floating" value="631-889-3206"/> */}
+                  <InputGroup
+                    placeholder='Your Number Phone'
+                    name='phone'
+                    value={phone}
+                    onChange={onChange}
+                    error={errors.phone}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className='card-box'>
+            <h3 className='card-title'>Social Network</h3>
+            <div className='row'>
+              <div className='col-md-12'>
+                <div className='mb-3'>
+                  <button
+                    type='button'
+                    onClick={() => {
+                      this.setState(prevState => ({
+                        displaySocialInputs: !prevState.displaySocialInputs,
+                      }));
+                    }}
+                    className='btn btn-light'>
+                    Add Social Network Links
+                  </button>
+                  <span className='text-muted'>Optional</span>
+                </div>
+                {socialInputs}
+              </div>
+            </div>
+          </div>
+
+          <div className='card-box'>
+            <h3 className='card-title'>Description</h3>
+            <div className='row'>
+              <div className='col-md-12'>
+                <TextAreaFieldGroup
+                  placeholder='Short Bio'
+                  name='bio'
+                  value={bio}
+                  onChange={onChange}
+                  error={errors.bio}
+                  info='Tell us a little about yourself'
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className='text-center m-t-20'>
+            <button className='btn btn-primary submit-btn' type='submit'>
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
 
 EditProfile.propTypes = {
-    profile: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired,
-    createProfile: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
-
+  profile: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
+  createProfile: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
-    profile: state.profile,
-    errors: state.errors,
-    auth: state.auth
+  profile: state.profile,
+  errors: state.errors,
+  auth: state.auth,
 });
 
-export default connect(mapStateToProps, { createProfile, getCurrentProfile })(
-    withRouter(EditProfile)
-);
+export default connect(mapStateToProps, {
+  createProfile,
+  getCurrentProfile,
+  uploadPhoto,
+})(withRouter(EditProfile));

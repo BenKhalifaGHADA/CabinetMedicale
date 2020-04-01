@@ -1,11 +1,21 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Link } from 'react-router-dom';
-import { getCurrentProfile, clearCurrentProfile } from '../../actions/profileActions';
+import React, { Component } from 'react';
+import MyProfile from './MyProfile';
+import EditProfile from '../edit-profile/EditProfile';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import Showpatient from '../patients/Showpatient';
+import Addpatient from '../patients/Addpatient';
+import Editpatient from '../patients/Editpatient';
+import Rendezvous from '../rendezvous/Rendezvous';
+import Addrendezvous from '../rendezvous/Addrendezvous';
+import Editrendezvous from '../rendezvous/Editrendezvous';
+import NavBar from './NavBar';
+import Welcome from './Welcome';
+
+import { getCurrentProfile } from '../../actions/profileActions';
 import Spinner from '../common/Spinner';
-import { logoutUser } from '../../actions/authActions';
-import './Dashboard.css'
+import './Dashboard.css';
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -20,157 +30,33 @@ class Dashboard extends Component {
     const { user } = this.props.auth;
 
     const { profile, loading } = this.props.profile;
-    let dashboardContent;
 
-    if (profile === null || loading) {
-      dashboardContent = 
-      <div className="main-wrapper">
-        <Spinner />
-      </div>;
-    } 
-    else {
-      // Check if logged in user has profile data
-      {console.log("msg",Object.keys(profile).length)}
-      if (Object.keys(profile).length > 0)
-       {
-        dashboardContent = 
-          <div className="main-wrapper">
-            <div className="header">
-              <div className="header-left">
-                <Link to="/dashboard" className="logo">
-                  <img src="assets/img/logo.png" width="35" height="35" alt="" />{" "}
-                  <span>Preclinic</span>
-                </Link>
-              </div>
-              <Link id="toggle_btn" to="javascript:void(0);">
-                <i className="fa fa-bars"></i>
-              </Link>
-              <a id="mobile_btn" className="mobile_btn float-left" href="#sidebar">
-                <i className="fa fa-bars"></i>
-              </a>
-              <ul className="nav user-menu float-right">
-                <li className="nav-item dropdown has-arrow">
-                  <a href="#"
-                    className="dropdown-toggle nav-link user-link"
-                    data-toggle="dropdown">
-                    <span className="user-img">
-                      <img
-                        className="rounded-circle"
-                        src={user.avatar}
-                        width="24"
-                        alt="Admin"
-                      />
-                      <span className="status online"></span>
-                    </span>
-                    <span> {user.name} </span>
-                 
-                  </a>
-                  <div className="dropdown-menu">
-                    <Link className="dropdown-item" to="/dashboard/profile">
-                      My Profile
-                  </Link>
-                    <Link className="dropdown-item" to="/dashboard/editprofile">
-                      Edit Profile
-                  </Link>
-
-                    <Link
-                      to="/"
-                      onClick={this.onLogoutClick.bind(this)}
-                      className="dropdown-item">Logout
-                  </Link>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div className="sidebar" id="sidebar">
-              <div className="sidebar-inner slimscroll">
-                <div id="sidebar-menu" className="sidebar-menu">
-                  <ul>
-                    <li className="menu-title">Main</li>
-                    <li className="active">
-                      <Link to="/dashboard" >
-                        <i className="fa fa-dashboard"></i> <span>Dashboard</span>
-                      </Link>
-                    </li>
-                    
-                    <li className="submenu">
-                      <Link to="/dashboard/patients">
-                        <i className="fa fa-wheelchair"></i> <span> Patients </span>
-                        {/* <span className="menu-arrow"></span> */}
-                      </Link>
-                      <ul style={{ display: "none" }}>
-                        <li>
-                          <Link to="/dashboard/patients">Patient List</Link>
-                        </li>
-                        <li>
-                          <Link to="/dashboard/Addpatient">Add Patient</Link>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <Link to="/dashboard/Rendezvous">
-                        <i className="fa fa-calendar"></i> <span>Appointments</span>
-                      </Link>
-                    </li>
-                    <li className="submenu">
-                      <Link to="#">
-                        <i className="fa fa-envelope"></i> <span> Email</span>{" "}
-                        <span className="menu-arrow"></span>
-                      </Link>
-                      <ul style={{ display: "none" }}>
-                        <li>
-                          <Link to="compose.html">Compose Mail</Link>
-                        </li>
-                        <li>
-                          <Link to="inbox.html">Inbox</Link>
-                        </li>
-                        <li>
-                          <Link to="mail-view.html">Mail View</Link>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <Link to="calendar.html">
-                        <i className="fa fa-calendar"></i> <span>Calendar</span>
-                      </Link>
-                    </li>
-                    
-                  </ul>
-
-
-                </div>
-              </div>
-
-              {console.log(profile.patient)}
-            </div>
-
-          </div>
-
-          ;
-      } 
-      else {
-        // User is logged in but has no profile
-        dashboardContent = (
-         <div className="main-wrapper dashboardbg">
-          <div className="account-page">
-            <div className="account-center">
-              <div className="account-box dashboardbox">
-              <h4 className="page-title">Welcome {user.name}</h4>
-              <p>You have not yet setup a profile, please add some info</p>
-              <Link to="/dashboard/editprofile" className="btn text-white btn-primary dashboardbtn">
-                Create Profile
-              </Link>
-              </div>
-            </div>
-          </div>
+    if (profile === null || loading)
+      return (
+        <div className='main-wrapper'>
+          <Spinner />
         </div>
-        );
-      }
-    }
-
+      );
     return (
       <div>
-        {dashboardContent}
+        <div className="mynavbar"><NavBar user={user} /></div>
+        
+        {Object.keys(profile).length === 0 ? (
+          <Redirect to='/dashboard/welcome' />
+        ) : (
+          <Redirect to='/dashboard/profile' />
+        )}
+        <Switch>
+          <Route exact path='/dashboard/welcome' render={() => <Welcome user={user} />} />
+          <Route exact path='/dashboard/profile' component={MyProfile} />
+          <Route exact path='/dashboard/patients' component={Showpatient} />
+          <Route exact path='/dashboard/editprofile' component={EditProfile} />
+          <Route exact path='/dashboard/Addpatient' component={Addpatient} />
+          <Route exact path='/dashboard/Rendezvous' component={Rendezvous} />
+          <Route exact path='/dashboard/AddRendezvous' component={Addrendezvous} />
+          <Route exact path='/dashboard/EditRendezvous' component={Editrendezvous} />
+          <Route exact path='/dashboard/editpatient/:id' component={Editpatient} />
+        </Switch>
       </div>
     );
   }
@@ -183,10 +69,9 @@ Dashboard.propTypes = {
 };
 const mapStateToProps = state => ({
   profile: state.profile,
-  auth: state.auth
+  auth: state.auth,
 });
 
-
-export default connect(mapStateToProps, { logoutUser, getCurrentProfile, clearCurrentProfile })(Dashboard);
-
-
+export default connect(mapStateToProps, {
+  getCurrentProfile,
+})(Dashboard);

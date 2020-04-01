@@ -2,117 +2,115 @@ import axios from 'axios';
 
 import {
   GET_PROFILE,
-  PROFILE_LOADING,
+  // PROFILE_LOADING,
   CLEAR_CURRENT_PROFILE,
   GET_ERRORS,
   SET_CURRENT_USER,
   GET_PATIENT,
-
-  
 } from './types';
 
 // Get current profile
 export const getCurrentProfile = () => async dispatch => {
-   dispatch(setProfileLoading());
-   await axios
+  //----------------------------------------------------------------------------------------------
+  //  dispatch(setProfileLoading());
+  //----------------------------------------------------------------------------------------------
+  await axios
     .get('/api/profile')
     .then(res =>
       dispatch({
         type: GET_PROFILE,
-        payload: res.data
+        payload: res.data,
       })
     )
     .catch(err =>
       dispatch({
         type: GET_PROFILE,
-        payload: {}
+        payload: {},
       })
     );
 };
 
 // Create Profile
-export const createProfile = (profileData, history) =>async dispatch => {
+export const createProfile = (profileData, history) => async dispatch => {
   await axios
     .post('/api/profile', profileData)
     .then(res => history.push('/dashboard/profile'))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: err.response.data,
       })
     );
 };
 
 // Delete account & profile
-export const deleteAccount = () =>async dispatch => {
+export const deleteAccount = () => async dispatch => {
   if (window.confirm('Are you sure? This can NOT be undone!')) {
     await axios
       .delete('/api/profile')
       .then(res =>
         dispatch({
           type: SET_CURRENT_USER,
-          payload: {}
+          payload: {},
         })
       )
       .catch(err =>
         dispatch({
           type: GET_ERRORS,
-          payload: err.response.data
+          payload: err.response.data,
         })
       );
   }
 };
-// Profile loading
-export const setProfileLoading = () => {
-  return {
-    type: PROFILE_LOADING
-  };
-};
-
+// // Profile loading
+// export const setProfileLoading = () => {
+//   return {
+//     type: PROFILE_LOADING,
+//   };
+// };
 
 // Clear profile
 export const clearCurrentProfile = () => {
   return {
-    type: CLEAR_CURRENT_PROFILE
+    type: CLEAR_CURRENT_PROFILE,
   };
 };
 
 // ------------------------------Begin CRUD For patient--------------//
 // Add patient
-export const addPatient = (expData, history) =>async dispatch => {
-  
+export const addPatient = (expData, history) => async dispatch => {
   await axios
     .post('/api/profile/patient', expData)
     .then(res => history.push('/dashboard/patients'))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: err.response.data,
       })
     );
+  dispatch(getCurrentProfile());
 };
 // Delete patient
-export const deletePatient = id =>async dispatch => {
-  
+export const deletePatient = id => async dispatch => {
   await axios
-     .delete(`/api/profile/patient/${id}`)
-     .then(res =>
-       dispatch({
-         type: GET_PROFILE,
-         payload: res.data
-       })
-     )
-     .catch(err =>
-       dispatch({
-         type: GET_ERRORS,
-         payload: err.response.data
-       })
-     );
- };
+    .delete(`/api/profile/patient/${id}`)
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data,
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data,
+      })
+    );
+  dispatch(getCurrentProfile());
+};
 
- // get patient by id
+// get patient by id
 export const getPatientById = patient_id => async dispatch => {
-  
   try {
     const res = await axios.get(`/api/profile/patient/${patient_id}`);
     dispatch({
@@ -121,41 +119,44 @@ export const getPatientById = patient_id => async dispatch => {
     });
   } catch (err) {
     dispatch({
-      type:GET_ERRORS,
+      type: GET_ERRORS,
       payload: err.response.data,
     });
   }
 };
- 
+
 //update patient bu id
-export const updatePatient=(id,patient,history)=>async dispatch=>{
-  
-  await axios
-  // .put(`/patient/update/${id}`,patient).
-  .post(`/api/profile/patient/update/${id}`,patient)
-  .then(res => history.push('/dashboard/patients'))
-  // then(res=>
-    // dispatch(getCurrentProfile()))
-}
+export const updatePatient = (id, patient, history) => async dispatch => {
+  //...........................................
+  try {
+    const config = { headers: { 'Content-Type': 'application/json' } };
+    const res = await axios.put(`/api/profile/patient/update/${id}`, patient, config);
+    dispatch(getCurrentProfile());
+    history.push('/dashboard/patients');
+  } catch (err) {
+    console.log(err);
+  }
+  //..............................................
+};
 
 // get all patients
 export const getallPatients = () => async dispatch => {
   await axios
-   .get('/api/profile/patient/all')
-   .then(res =>
-     dispatch({
-       type: GET_PROFILE,
-       payload: res.data
-     })
-   )
-   .catch(err =>
-     dispatch({
-       type: GET_PROFILE,
-       payload: {}
-     })
-   );
+    .get('/api/profile/patient/all')
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data,
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: {},
+      })
+    );
 };
- 
+
 // ------------------------------End CRUD For patient--------------//
 
 // ------------------------------Begin CRUD For Appointment--------------//
@@ -167,7 +168,7 @@ export const addAppointment = (expData, history) => async dispatch => {
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: err.response.data,
       })
     );
 };
@@ -179,25 +180,42 @@ export const deleteAppointment = id => async dispatch => {
     .then(res =>
       dispatch({
         type: GET_PROFILE,
-        payload: res.data
+        payload: res.data,
       })
     )
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: err.response.data,
       })
     );
 };
 
+//update Appointment by id
 
-//update Appointment by id 
-
-export const updateAppointment=(id,appointment)=>async dispatch=>{
+export const updateAppointment = (id, appointment) => async dispatch => {
   await axios
-  .put(`/appointment/update/${id}`,appointment).
-  then(res=>
-    dispatch(getCurrentProfile()))
-}
+    .put(`/appointment/update/${id}`, appointment)
+    .then(res => dispatch(getCurrentProfile()));
+};
 
 // ------------------------------END CRUD For Appointment--------------//
+
+//. upload photo
+export const uploadPhoto = formData => async dispatch => {
+  try {
+    const res = await axios.post('/api/profile/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    dispatch(getCurrentProfile());
+  } catch (err) {
+    if (err.response.status === 500) {
+      console.log('There was a problem with the server');
+    } else {
+      console.log(err.response.data.msg);
+    }
+  }
+};
