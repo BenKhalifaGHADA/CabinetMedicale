@@ -9,7 +9,7 @@ import {
   updatePatient,
   getCurrentProfile,
 } from '../../actions/profileActions';
-import isEmpty from '../../validation/is-empty';
+// import isEmpty from '../../validation/is-empty';
 
 const Editpatient = ({
   errors,

@@ -5,6 +5,7 @@ import {
   PROFILE_LOADING,
   CLEAR_CURRENT_PROFILE,
   GET_ERRORS,
+  CLEAR_ERRORS,
   SET_CURRENT_USER,
   GET_PATIENT,
 } from './types';
@@ -172,15 +173,18 @@ export const getallPatients = () => async dispatch => {
 // ------------------------------Begin CRUD For Appointment--------------//
 // Add appointment
 export const addAppointment = (expData, history) => async dispatch => {
-  await axios
-    .post('/api/profile/appointment', expData)
-    .then(res => history.push('/dashboard/Rendezvous'))
-    .catch(err =>
+  try{
+    await axios
+    .post('/api/profile/appointment', expData);
+    dispatch(getCurrentProfile());
+    history.push('/dashboard/Rendezvous');
+  }
+   catch(err){
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data,
       })
-    );
+   };
 };
 
 // Delete Appointment

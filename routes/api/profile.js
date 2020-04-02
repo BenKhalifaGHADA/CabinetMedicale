@@ -151,11 +151,11 @@ router.post('/patient', passport.authenticate('jwt', { session: false }), (req, 
   }
 
   Profile.findOne({ user: req.user.id }).then(profile => {
-    const avatar = gravatar.url(req.body.email, {
-      s: '200',
-      r: 'pg',
-      d: 'mm',
-    });
+    // const avatar = gravatar.url(req.body.email, {
+    //   s: '200',
+    //   r: 'pg',
+    //   d: 'mm',
+    // });
     const newPat = {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
@@ -167,7 +167,7 @@ router.post('/patient', passport.authenticate('jwt', { session: false }), (req, 
       state: req.body.state,
       country: req.body.country,
       Datebirth: req.body.Datebirth,
-      avatar,
+      avatar: req.body.photo,
     };
 
     // Add to exp array
@@ -230,6 +230,13 @@ router.put(
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     // .........................................
+    const { errors, isValid } = validatePatientInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
     const {
       firstname,
       lastname,
@@ -390,6 +397,34 @@ router.post(
     foundProfile.profilephoto = `${req.user.id}/` + file.name;
     await foundProfile.save();
     res.json(foundProfile);
+    //ends here
+  }
+);
+// .. add patient photo
+router.post(
+  '/patientphoto',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    if (req.files === null) {
+      return res.json('default.jpg');
+    }
+
+    const file = req.files.file;
+    //my work
+    file.name = Date.now() + path.extname(file.name);
+
+    const dir = `./client/public/uploads/${req.user.id}`;
+
+    if (fs.existsSync(dir)) {
+      console.log('Directory exists.');
+    } else {
+      console.log('Directory does not exist.');
+      fs.mkdirSync(dir);
+    }
+    file.mv(`${dir}/` + file.name);
+    const previewPath = `${req.user.id}/` + file.name;
+
+    res.json(previewPath);
     //ends here
   }
 );
