@@ -12,6 +12,7 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import PrivateRoute from './components/private-route/PrivateRoute';
 import Dashboard from './components/dashboard/Dashboard';
+
 // import MyProfile from './components/dashboard/MyProfile';
 // // import EditMyProfile from "./components/dashboard/EditProfile";
 // import Showpatient from './components/patients/Showpatient';
@@ -58,7 +59,7 @@ class App extends Component {
             <Route exact path='/login' component={Login} />
             <Switch>
               <PrivateRoute path='/dashboard' component={Dashboard} />
-
+            
               {/* <PrivateRoute exact path='/dashboard/profile' component={MyProfile} /> */}
               {/* <PrivateRoute exact path="/dashboard/edit-profile"  component={EditMyProfile}/> */}
               {/* <PrivateRoute exact path='/dashboard/patients' component={Showpatient} /> */}

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import {
   GET_PROFILE,
-  // PROFILE_LOADING,
+  PROFILE_LOADING,
   CLEAR_CURRENT_PROFILE,
   GET_ERRORS,
   SET_CURRENT_USER,
@@ -11,36 +11,36 @@ import {
 
 // Get current profile
 export const getCurrentProfile = () => async dispatch => {
-  //----------------------------------------------------------------------------------------------
-  //  dispatch(setProfileLoading());
-  //----------------------------------------------------------------------------------------------
-  await axios
-    .get('/api/profile')
-    .then(res =>
-      dispatch({
-        type: GET_PROFILE,
-        payload: res.data,
-      })
-    )
-    .catch(err =>
-      dispatch({
-        type: GET_PROFILE,
-        payload: {},
-      })
-    );
+  try {
+    const res = await axios.get('/api/profile');
+    dispatch({
+      type: GET_PROFILE,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: GET_PROFILE,
+      payload: {},
+    });
+  }
 };
 
 // Create Profile
 export const createProfile = (profileData, history) => async dispatch => {
-  await axios
-    .post('/api/profile', profileData)
-    .then(res => history.push('/dashboard/profile'))
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data,
-      })
-    );
+  try {
+    const res = axios.post('/api/profile', profileData);
+    dispatch({
+      type: GET_PROFILE,
+      payload: res.data,
+    });
+
+    history.push('/dashboard/profile');
+  } catch (err) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data,
+    });
+  }
 };
 
 // Delete account & profile
@@ -62,12 +62,12 @@ export const deleteAccount = () => async dispatch => {
       );
   }
 };
-// // Profile loading
-// export const setProfileLoading = () => {
-//   return {
-//     type: PROFILE_LOADING,
-//   };
-// };
+// Profile loading
+export const setProfileLoading = () => {
+  return {
+    type: PROFILE_LOADING,
+  };
+};
 
 // Clear profile
 export const clearCurrentProfile = () => {
@@ -78,17 +78,23 @@ export const clearCurrentProfile = () => {
 
 // ------------------------------Begin CRUD For patient--------------//
 // Add patient
-export const addPatient = (expData, history) => async dispatch => {
-  await axios
-    .post('/api/profile/patient', expData)
-    .then(res => history.push('/dashboard/patients'))
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data,
-      })
-    );
-  dispatch(getCurrentProfile());
+export const addPatient = (expData, photo, history) => async dispatch => {
+  try {
+    const response = await axios.post('/api/profile/patientphoto', photo, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    expData.photo = response.data;
+    await axios.post('/api/profile/patient', expData);
+    dispatch(getCurrentProfile());
+    history.push('/dashboard/patients');
+  } catch (err) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data,
+    });
+  }
 };
 // Delete patient
 export const deletePatient = id => async dispatch => {
@@ -134,7 +140,11 @@ export const updatePatient = (id, patient, history) => async dispatch => {
     dispatch(getCurrentProfile());
     history.push('/dashboard/patients');
   } catch (err) {
-    console.log(err);
+    dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data,
+    });
+    console.log(err.response.data);
   }
   //..............................................
 };

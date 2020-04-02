@@ -6,9 +6,9 @@ import { withRouter, Link } from 'react-router-dom';
 import { deleteAppointment ,getCurrentProfile} from '../../actions/profileActions';
 
 class Showrendezvous extends Component {
-  componentDidMount() {
-    this.props.getCurrentProfile();
-  }
+//   componentDidMount() {
+//     this.props.getCurrentProfile();
+//   }
   onDeleteClick(id) {
     this.props.deleteAppointment(id);
     

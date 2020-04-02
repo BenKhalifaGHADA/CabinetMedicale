@@ -2,158 +2,76 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import TextAreaFieldGroup from '../common/TextAreaFieldGroup';
 import InputGroup from '../common/InputGroup';
 import SelectListGroup from '../common/SelectListGroup';
 import {
-  createProfile,
+  getPatientById,
+  updatePatient,
   getCurrentProfile,
-  uploadPhoto,
 } from '../../actions/profileActions';
 import isEmpty from '../../validation/is-empty';
-// import Moment from 'react-moment';
 
-const EditProfile = ({
-  auth: { user },
-  location: { myprofile },
-  profile,
+const Editpatient = ({
+  errors,
+  patient,
+  match,
+  getPatientById,
+  updatePatient,
   history,
-  getCurrentProfile,
-  createProfile,
-  uploadPhoto,
 }) => {
   const [formData, setFormData] = useState({
-    displaySocialInputs: false,
-    handle: myprofile ? myprofile.handle : '',
-    firstname: myprofile ? myprofile.firstname : '',
-    lastname: myprofile ? myprofile.lastname : '',
-    gender: myprofile ? myprofile.gender : '',
-    birthdate: myprofile ? myprofile.birthdate : '',
-    phone: myprofile ? myprofile.phone : '',
-    region: myprofile ? myprofile.region : '',
-    State: myprofile ? myprofile.State : '',
-    Country: myprofile ? myprofile.Country : '',
-    ZipCode: myprofile ? myprofile.ZipCode : '',
-    bio: myprofile ? myprofile.bio : '',
-    twitter: myprofile ? myprofile.twitter : '',
-    facebook: myprofile ? myprofile.facebook : '',
-    linkedin: myprofile ? myprofile.linkedin : '',
-    youtube: myprofile ? myprofile.youtube : '',
-    instagram: myprofile ? myprofile.instagram : '',
-    email: '',
-    errors: {},
+    firstname: patient ? patient.firstname : '',
+    lastname: patient ? patient.lastname : '',
+    email: patient ? patient.email : '',
+    adresse: patient ? patient.adresse : '',
+    zipcode: patient ? patient.zipcode : '',
+    state: patient ? patient.state : '',
+    country: patient ? patient.country : '',
+    gender: patient ? patient.gender : '',
+    phone: patient ? patient.phone : '',
+    Datebirth: patient ? patient.Datebirth : '',
+    avatar: patient ? patient.avatar : '',
   });
-  const [file, setFile] = useState('');
   useEffect(() => {
-    getCurrentProfile();
+    getPatientById(match.params.id);
   }, []);
 
   const {
-    handle,
     firstname,
     lastname,
-    gender,
-    birthdate,
-    phone,
-    region,
-    State,
-    Country,
-    ZipCode,
-    bio,
-    twitter,
-    facebook,
-    linkedin,
-    youtube,
-    instagram,
     email,
-    displaySocialInputs,
-    errors,
+    adresse,
+    zipcode,
+    state,
+    country,
+    gender,
+    phone,
+    Datebirth,
+    avatar,
   } = formData;
 
-  const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
-  const onChangeFile = e => {
-    setFile(e.target.files[0]);
-  };
   const onSubmit = e => {
     e.preventDefault();
-
-    const profileData = {
-      handle,
+    const id_patient = match.params.id;
+    const patientData = {
       firstname,
       lastname,
-      birthdate,
+      email,
+      adresse,
+      zipcode,
+      state,
+      country,
       gender,
       phone,
-      region,
-      Country,
-      State,
-      ZipCode,
-      bio,
-      twitter,
-      facebook,
-      linkedin,
-      youtube,
-      instagram,
-      email,
+      Datebirth,
     };
 
-    createProfile(profileData, history);
-    const formData = new FormData();
-    formData.append('file', file);
-    uploadPhoto(formData);
+    updatePatient(id_patient, patientData, history);
   };
 
-  let socialInputs;
-  if (displaySocialInputs) {
-    socialInputs = (
-      <div>
-        <InputGroup
-          placeholder='Twitter Profile URL'
-          name='twitter'
-          icon='fab fa-twitter'
-          value={twitter}
-          onChange={onChange}
-          error={errors.twitter}
-        />
-
-        <InputGroup
-          placeholder='Facebook Page URL'
-          name='facebook'
-          icon='fab fa-facebook'
-          value={facebook}
-          onChange={onChange}
-          error={errors.facebook}
-        />
-
-        <InputGroup
-          placeholder='Linkedin Profile URL'
-          name='linkedin'
-          icon='fab fa-linkedin'
-          value={linkedin}
-          onChange={onChange}
-          error={errors.linkedin}
-        />
-
-        <InputGroup
-          placeholder='YouTube Channel URL'
-          name='youtube'
-          icon='fab fa-youtube'
-          value={youtube}
-          onChange={onChange}
-          error={errors.youtube}
-        />
-
-        <InputGroup
-          placeholder='Instagram Page URL'
-          name='instagram'
-          icon='fab fa-instagram'
-          value={instagram}
-          onChange={onChange}
-          error={errors.instagram}
-        />
-      </div>
-    );
-  }
+  const onChange = e => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   // Select options for gender
   const options = [
@@ -167,7 +85,7 @@ const EditProfile = ({
       <div className='content'>
         <div className='row'>
           <div className='col-sm-12'>
-            <h4 className='page-title'>Edit Profile</h4>
+            <h4 className='page-title'>Edit Patient</h4>
           </div>
         </div>
         <form onSubmit={onSubmit}>
@@ -176,21 +94,17 @@ const EditProfile = ({
             <div className='row'>
               <div className='col-md-12'>
                 <div className='profile-img-wrap'>
-                  <img
-                    className='inline-block'
-                    src={myprofile ? `/${myprofile.profilephoto}` : '/default.jpg'}
-                    alt={user.name}
-                  />
+                  <img className='inline-block' src={`/${avatar}`} alt={avatar} />
                   <div className='fileupload btn'>
                     <span className='btn-text'>edit</span>
-                    <input className='upload' type='file' onChange={onChangeFile} />
+                    <input className='upload' type='file' />
                   </div>
                 </div>
                 <div className='profile-basic'>
                   <div className='row'>
                     <div className='col-md-6'>
                       <div className='form-group form-focus'>
-                        <label className='focus-label'>Firstname</label>
+                        <label className='focus-label'>First Name</label>
                         <InputGroup
                           placeholder='Your firstname'
                           name='firstname'
@@ -202,7 +116,7 @@ const EditProfile = ({
                     </div>
                     <div className='col-md-6'>
                       <div className='form-group form-focus'>
-                        <label className='focus-label'>Lastname</label>
+                        <label className='focus-label'>Last Name</label>
                         <InputGroup
                           placeholder='Your lastname'
                           name='lastname'
@@ -219,11 +133,16 @@ const EditProfile = ({
                         <div className='cal-icon'>
                           <InputGroup
                             placeholder='Your birth Date'
-                            name='birthdate'
-                            value={birthdate}
+                            name='Datebirth'
+                            value={Datebirth}
                             onChange={onChange}
                             error={errors.birthdate}
                           />
+                          {/* <InputGroup
+                                                            name="birth"
+                                                            type="date"
+                                                            
+                                                        /> */}
                         </div>
                       </div>
                     </div>
@@ -237,8 +156,10 @@ const EditProfile = ({
                           value={gender}
                           onChange={onChange}
                           options={options}
-                          error={errors.gender}
                         />
+                        {errors && (
+                          <div className='invalid-feedback'>{errors.gender}</div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -246,100 +167,69 @@ const EditProfile = ({
               </div>
             </div>
           </div>
-          <div className='card-box'>
-            <h3 className='card-title'>Account Informations</h3>
-            <div className='row'>
-              <div className='col-md-6'>
-                <div className='form-group form-focus'>
-                  <label className='focus-label'>Username</label>
-                  <InputGroup
-                    placeholder='Your username'
-                    name='handle'
-                    value={handle}
-                    onChange={onChange}
-                    error={errors.handle}
-                  />
-                </div>
-              </div>
 
-              <div className='col-md-6'>
-                <div className='form-group form-focus'>
-                  <label className='focus-label'>Email</label>
+          <div class='card-box'>
+            <h3 class='card-title'>Contact Informations</h3>
+            <div class='row'>
+              <div class='col-md-12'>
+                <div class='form-group form-focus'>
+                  <label class='focus-label'>Address</label>
+                  {/* <input type="text" class="form-control floating" value="New York"/> */}
                   <InputGroup
-                    placeholder='Your username'
-                    name='email'
-                    value={user.email}
-                    onChange={onChange}
-                    error={errors.email}
-                    disabled='disabled'
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className='card-box'>
-            <h3 className='card-title'>Contact Informations</h3>
-            <div className='row'>
-              <div className='col-md-12'>
-                <div className='form-group form-focus'>
-                  <label className='focus-label'>Address</label>
-                  {/* <input type="text" className="form-control floating" value="New York"/> */}
-                  <InputGroup
-                    placeholder='Your state'
-                    name='region'
-                    value={region}
-                    onChange={onChange}
-                  />
-                </div>
-              </div>
-
-              <div className='col-md-6'>
-                <div className='form-group form-focus'>
-                  <label className='focus-label'>State</label>
-                  {/* <input type="text" className="form-control floating" value="New York"/> */}
-                  <InputGroup
-                    placeholder='Your state'
-                    name='State'
-                    value={State}
+                    placeholder='Your address'
+                    name='adresse'
+                    value={adresse}
                     onChange={onChange}
                     error={errors.State}
                   />
                 </div>
               </div>
-              <div className='col-md-6'>
-                <div className='form-group form-focus'>
-                  <label className='focus-label'>Country</label>
-                  {/* <input type="text" className="form-control floating" value="United States"/> */}
+
+              <div class='col-md-6'>
+                <div class='form-group form-focus'>
+                  <label class='focus-label'>State</label>
+                  {/* <input type="text" class="form-control floating" value="New York"/> */}
+                  <InputGroup
+                    placeholder='Your state'
+                    name='state'
+                    value={state}
+                    onChange={onChange}
+                    error={errors.state}
+                  />
+                </div>
+              </div>
+              <div class='col-md-6'>
+                <div class='form-group form-focus'>
+                  <label class='focus-label'>Country</label>
+                  {/* <input type="text" class="form-control floating" value="United States"/> */}
                   <InputGroup
                     placeholder='Your Country'
-                    name='Country'
-                    value={Country}
+                    name='country'
+                    value={country}
                     onChange={onChange}
-                    error={errors.Country}
+                    error={errors.country}
                   />
                 </div>
               </div>
 
-              <div className='col-md-6'>
-                <div className='form-group form-focus'>
-                  <label className='focus-label'>Pin Code</label>
-                  {/* <input type="text" className="form-control floating" value="10523"/> */}
+              <div class='col-md-6'>
+                <div class='form-group form-focus'>
+                  <label class='focus-label'>Pin Code</label>
+                  {/* <input type="text" class="form-control floating" value="10523"/> */}
                   <InputGroup
                     placeholder='Your Zip code'
-                    name='ZipCode'
-                    value={ZipCode}
+                    name='zipcode'
+                    value={zipcode}
                     onChange={onChange}
-                    error={errors.ZipCode}
+                    error={errors.zipcode}
                   />
                 </div>
               </div>
 
-
-              <div className='col-md-6'>
-                <div className='form-group form-focus'>
-                  <label className='focus-label'>Phone Number</label>
-                  {/* <input type="text" className="form-control floating" value="631-889-3206"/> */}
+              <div class='col-md-6'>
+                <div class='form-group form-focus'>
+                  <label class='focus-label'>Phone Number</label>
+                  {/* <input type="text" class="form-control floating" value="631-889-3206"/> */}
                   <InputGroup
                     placeholder='Your Number Phone'
                     name='phone'
@@ -352,46 +242,8 @@ const EditProfile = ({
             </div>
           </div>
 
-          <div className='card-box'>
-            <h3 className='card-title'>Social Network</h3>
-            <div className='row'>
-              <div className='col-md-12'>
-                <div className='mb-3'>
-                  <button
-                    type='button'
-                    onClick={() => {
-                      this.setState(prevState => ({
-                        displaySocialInputs: !prevState.displaySocialInputs,
-                      }));
-                    }}
-                    className='btn btn-light'>
-                    Add Social Network Links
-                  </button>
-                  <span className='text-muted'>Optional</span>
-                </div>
-                {socialInputs}
-              </div>
-            </div>
-          </div>
-
-          <div className='card-box'>
-            <h3 className='card-title'>Description</h3>
-            <div className='row'>
-              <div className='col-md-12'>
-                <TextAreaFieldGroup
-                  placeholder='Short Bio'
-                  name='bio'
-                  value={bio}
-                  onChange={onChange}
-                  error={errors.bio}
-                  info='Tell us a little about yourself'
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className='text-center m-t-20'>
-            <button className='btn btn-primary submit-btn' type='submit'>
+          <div class='text-center m-t-20'>
+            <button class='btn btn-primary submit-btn' type='submit'>
               Save
             </button>
           </div>
@@ -401,21 +253,23 @@ const EditProfile = ({
   );
 };
 
-EditProfile.propTypes = {
+Editpatient.propTypes = {
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
-  createProfile: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired,
+  updatePatient: PropTypes.func.isRequired,
+  getPatientById: PropTypes.func.isRequired,
+  patient: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
-  profile: state.profile,
+  patient: state.profile.patient,
   errors: state.errors,
-  auth: state.auth,
+  profile: state.profile,
 });
 
 export default connect(mapStateToProps, {
-  createProfile,
+  getPatientById,
+  updatePatient,
   getCurrentProfile,
-  uploadPhoto,
-})(withRouter(EditProfile));
+})(withRouter(Editpatient));
