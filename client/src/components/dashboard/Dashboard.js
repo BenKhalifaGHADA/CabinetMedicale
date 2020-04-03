@@ -23,14 +23,14 @@ const Dashboard = ({
   auth: { user },
   profile: { profile, loading },
   getCurrentProfile,
-  clearErrors,
+  // clearErrors,
 }) => {
   useEffect(() => {
     getCurrentProfile();
   }, []);
-  useEffect(() => {
-    clearErrors();
-  });
+  // useEffect(() => {
+  //   clearErrors();
+  // });
 
   if (profile === null || loading)
     return (
@@ -78,5 +78,5 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getCurrentProfile,
-  clearErrors,
+  // clearErrors,
 })(Dashboard);

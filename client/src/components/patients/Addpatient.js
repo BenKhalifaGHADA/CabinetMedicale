@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addPatient } from '../../actions/profileActions';
+import { addPatient } from '../../actions/patientAction';
 import InputGroup from '../common/InputGroup';
 import SelectListGroup from '../common/SelectListGroup';
 // ------------------For datapicker---------------------

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logoutUser } from '../../actions/authActions';
 import { clearCurrentProfile } from '../../actions/profileActions';
-import './NavBar.css'
 
 const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
   const onLogoutClick = () => {
@@ -12,7 +11,7 @@ const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
   };
   return (
     <div className='main-wrapper'>
-      <div className='header myheader'>
+      <div className='header'>
         <div className='header-left'>
           <Link to='/dashboard' className='logo'>
             <img src='assets/img/logo.png' width='35' height='35' alt='' />
@@ -34,7 +33,9 @@ const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
               <span className='user-img'>
                 <img
                   className='rounded-circle'
-                  src={profile ? `/${profile.profilephoto}` : '/default.jpg'}
+                  src={
+                    !profile.profilephoto ? '/default.jpg' : `/${profile.profilephoto}`
+                  }
                   width='24'
                   alt='Admin'
                 />
@@ -46,9 +47,11 @@ const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
               <Link className='dropdown-item' to='/dashboard/profile'>
                 My Profile
               </Link>
-              <Link className='dropdown-item' to='/dashboard/editprofile'>
-                Edit Profile
-              </Link>
+              {Object.keys(profile).length > 0 && (
+                <Link className='dropdown-item' to={'/dashboard/editprofile'}>
+                  Edit Profile
+                </Link>
+              )}
 
               <Link to='/' onClick={() => onLogoutClick()} className='dropdown-item'>
                 Logout
@@ -57,20 +60,20 @@ const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
           </li>
         </ul>
       </div>
-      <div className='sidebar mysidebar' id='sidebar'>
+      <div className='sidebar' id='sidebar'>
         <div className='sidebar-inner slimscroll'>
           <div id='sidebar-menu' className='sidebar-menu'>
             <ul>
               <li className='menu-title'>Main</li>
               <li className='active'>
-                <Link to='/dashboard/profile'>
-                  <i className='fa fa-dashboard'></i> <span className="sidebarmenu">Dashboard</span>
+                <Link to='/dashboard'>
+                  <i className='fa fa-dashboard'></i> <span>Dashboard</span>
                 </Link>
               </li>
 
               <li className='submenu'>
                 <Link to='/dashboard/patients'>
-                  <i className='fa fa-wheelchair'></i> <span className="sidebarmenu"> Patients </span>
+                  <i className='fa fa-wheelchair'></i> <span> Patients </span>
                   {/* <span className="menu-arrow"></span> */}
                 </Link>
                 <ul style={{ display: 'none' }}>
@@ -84,12 +87,12 @@ const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
               </li>
               <li>
                 <Link to='/dashboard/Rendezvous'>
-                  <i className='fa fa-calendar'></i> <span className="sidebarmenu">Appointments</span>
+                  <i className='fa fa-calendar'></i> <span>Appointments</span>
                 </Link>
               </li>
               <li className='submenu'>
                 <Link to='#'>
-                  <i className='fa fa-envelope'></i> <span className="sidebarmenu"> Email</span>{' '}
+                  <i className='fa fa-envelope'></i> <span> Email</span>{' '}
                   <span className='menu-arrow'></span>
                 </Link>
                 <ul style={{ display: 'none' }}>
@@ -106,7 +109,7 @@ const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
               </li>
               <li>
                 <Link to='calendar.html'>
-                  <i className='fa fa-calendar'></i> <span className="sidebarmenu">Calendar</span>
+                  <i className='fa fa-calendar'></i> <span>Calendar</span>
                 </Link>
               </li>
             </ul>

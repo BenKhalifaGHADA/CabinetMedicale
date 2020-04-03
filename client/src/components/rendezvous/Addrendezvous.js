@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import { addAppointment } from '../../actions/profileActions';
 import InputGroup from '../common/InputGroup';
 import SelectListGroup from '../common/SelectListGroup';
-import { getallPatients, getCurrentProfile } from '../../actions/profileActions';
+import {getallPatients} from '../../actions/patientAction';
+import {getCurrentProfile } from '../../actions/profileActions';
 
 const Addrendezvous = ({ profile: { profile }, addAppointment, history }) => {
   const [formData, setFormData] = useState({

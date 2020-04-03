@@ -1,6 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-const Welcome = ({ user }) => {
+import { Link, Redirect } from 'react-router-dom';
+const Welcome = ({ user, profile }) => {
+  if (profile !== null && Object.keys(profile).length > 0) {
+    return <Redirect to='/dashboard/profile' />;
+  }
   return (
     <div className='page-wrapper'>
       <div className='content'>

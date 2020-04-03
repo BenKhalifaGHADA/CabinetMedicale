@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import {
     deletePatient,
   
-} from '../../actions/profileActions';
+} from '../../actions/patientAction';
 import { Fragment } from 'react';
 const Patient = ({patient}
 ) => {

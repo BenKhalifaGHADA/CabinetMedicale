@@ -4,14 +4,16 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import InputGroup from '../common/InputGroup';
 import SelectListGroup from '../common/SelectListGroup';
+import {getPatientById,
+  updatePatient} from '../../actions/patientAction'
 import {
-  getPatientById,
-  updatePatient,
-  getCurrentProfile,
+  
+  getCurrentProfile
 } from '../../actions/profileActions';
-// import isEmpty from '../../validation/is-empty';
+import Spinner from '../common/Spinner';
 
 const Editpatient = ({
+  profile: { loadingPatient },
   errors,
   patient,
   match,
@@ -20,21 +22,38 @@ const Editpatient = ({
   history,
 }) => {
   const [formData, setFormData] = useState({
-    firstname: patient ? patient.firstname : '',
-    lastname: patient ? patient.lastname : '',
-    email: patient ? patient.email : '',
-    adresse: patient ? patient.adresse : '',
-    zipcode: patient ? patient.zipcode : '',
-    state: patient ? patient.state : '',
-    country: patient ? patient.country : '',
-    gender: patient ? patient.gender : '',
-    phone: patient ? patient.phone : '',
-    Datebirth: patient ? patient.Datebirth : '',
-    avatar: patient ? patient.avatar : '',
+    firstname: '',
+    lastname: '',
+    email: '',
+    adresse: '',
+    zipcode: '',
+    state: '',
+    country: '',
+    gender: '',
+    phone: '',
+    Datebirth: '',
+    avatar: '',
   });
   useEffect(() => {
     getPatientById(match.params.id);
   }, []);
+  useEffect(() => {
+    if (patient)
+      setFormData({
+        ...formData,
+        firstname: patient.firstname,
+        lastname: patient.lastname,
+        email: patient.email,
+        adresse: patient.adresse,
+        zipcode: patient.zipcode,
+        state: patient.state,
+        country: patient.country,
+        gender: patient.gender,
+        phone: patient.phone,
+        Datebirth: patient.Datebirth,
+        avatar: patient.avatar,
+      });
+  }, [loadingPatient]);
 
   const {
     firstname,
@@ -79,6 +98,13 @@ const Editpatient = ({
     { label: 'Female', value: 'Female' },
     { label: 'Male', value: 'Male' },
   ];
+
+  if (loadingPatient)
+    return (
+      <div className='main-wrapper'>
+        <Spinner />
+      </div>
+    );
 
   return (
     <div className='page-wrapper'>
@@ -139,10 +165,10 @@ const Editpatient = ({
                             error={errors.birthdate}
                           />
                           {/* <InputGroup
-                                                            name="birth"
-                                                            type="date"
-                                                            
-                                                        /> */}
+                                                              name="birth"
+                                                              type="date"
+                                                              
+                                                          /> */}
                         </div>
                       </div>
                     </div>

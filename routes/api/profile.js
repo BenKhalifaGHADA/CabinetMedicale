@@ -204,6 +204,7 @@ router.delete(
 // @route   GET api/profile/patient/:patient_id
 // @desc    Get patient from doctor by id
 // @access  Private
+
 router.get(
   '/patient/:patient_id',
   passport.authenticate('jwt', { session: false }),

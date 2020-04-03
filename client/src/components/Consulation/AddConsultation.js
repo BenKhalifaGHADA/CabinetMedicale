@@ -4,7 +4,8 @@ import './Consultation.css';
 import ListMedicament from "./ListMedicament";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getallPatients, getCurrentProfile } from '../../actions/profileActions';
+import {getallPatients} from '../../actions/patientAction';
+import {  getCurrentProfile } from '../../actions/profileActions';
 
 const AddConsultation = ({ profile: { profile }, addAppointment, history }) => {
   return (
