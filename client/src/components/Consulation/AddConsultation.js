@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
+import React from 'react';
+import { withRouter,Link } from 'react-router-dom';
 import './Consultation.css';
 import ListMedicament from "./ListMedicament";
 import { connect } from 'react-redux';
@@ -105,9 +105,9 @@ const AddConsultation = ({ profile: { profile }, addAppointment, history }) => {
                       <button className="btn btn-success">Sauvegarder</button>
                     </div>
                     <div className="col-md-5">
-                      <a href="#" className="btn btn-primary" >
+                      <Link to="#" className="btn btn-primary" >
                         <i className="fa fa-print"></i> Print ordonnance
-                           </a>
+                           </Link>
                     </div>
                   </div>
                 </div>

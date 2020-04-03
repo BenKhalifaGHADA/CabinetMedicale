@@ -162,6 +162,9 @@ router.post('/patient', passport.authenticate('jwt', { session: false }), (req, 
       email: req.body.email,
       adresse: req.body.adresse,
       gender: req.body.gender,
+      assurance:req.body.assurance,
+      cnam: req.body.cnam,
+      profession: req.body.profession,
       phone: req.body.phone,
       zipcode: req.body.zipcode,
       state: req.body.state,
@@ -297,7 +300,9 @@ router.post(
 
     Profile.findOne({ user: req.user.id }).then(profile => {
       const newRendezvous = {
-        libelle: req.body.libelle,
+        date: req.body.date,
+        time:req.body.time,
+        namepatient: req.body.namepatient,
         Message: req.body.Message,
         statusAppointment: req.body.statusAppointment,
         typeVisite: req.body.typeVisite,

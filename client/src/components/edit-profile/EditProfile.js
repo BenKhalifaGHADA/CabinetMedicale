@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -10,7 +10,7 @@ import {
   getCurrentProfile,
   uploadPhoto,
 } from '../../actions/profileActions';
-import isEmpty from '../../validation/is-empty';
+
 // import Moment from 'react-moment';
 
 const EditProfile = ({

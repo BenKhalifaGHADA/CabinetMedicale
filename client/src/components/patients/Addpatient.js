@@ -22,6 +22,9 @@ const Addpatient = ({ errors, history, addPatient }) => {
     gender: '',
     phone: '',
     Datebirth: new Date(),
+    cnam:'',
+    profession:'',
+    assurance:''
   });
   const [file, setFile] = useState('');
   const {
@@ -34,6 +37,9 @@ const Addpatient = ({ errors, history, addPatient }) => {
     country,
     gender,
     phone,
+    assurance,
+    cnam,
+    profession
   } = formData;
 
   //   //-------------------For date of birth------------------//
@@ -61,6 +67,9 @@ const Addpatient = ({ errors, history, addPatient }) => {
       gender,
       Datebirth,
       phone,
+      assurance,
+      cnam,
+      profession
     };
 
     addPatient(patData, photo, history);
@@ -79,61 +88,78 @@ const Addpatient = ({ errors, history, addPatient }) => {
     <div className='page-wrapper'>
       <div className='content'>
         <div className='row'>
-          <div className='col-lg-8 offset-lg-2'>
-            <h4 className='page-title'>Add Patient</h4>
+        <div className='col-sm-12'>
+            <h4 className='page-title'>Add patient</h4>
           </div>
         </div>
-        <div className='row'>
-          <div className='col-lg-8 offset-lg-2'>
-            <form onSubmit={onSubmit}>
-              <div className='row'>
-                <div className='col-sm-12'>
-                  <div className='form-group'>
+        
+        <div className='card-box'>
+        <h3 className='card-title'>Personal Informations</h3>
+        <div className="row">
+        <div className='col-md-6'>
+        <div className='form-group'>
                     <label>
                       Firstname <span className='text-danger'>*</span>
                     </label>
                     {/* <input className="form-control" type="text" /> */}
                     <InputGroup
-                      placeholder='Your firstname'
+                      placeholder='Firstname'
                       name='firstname'
                       value={firstname}
                       onChange={onChange}
                       error={errors.firstname}
                     />
                   </div>
-                </div>
-                <div className='col-sm-12'>
-                  <div className='form-group'>
+        </div>
+        <div className='col-md-6'>
+        <div className='form-group'>
                     <label>
                       Lastname <span className='text-danger'>*</span>
                     </label>
                     {/* <input className="form-control" type="text" /> */}
                     <InputGroup
-                      placeholder='Your lastname'
+                      placeholder='Lastname'
                       name='lastname'
                       value={lastname}
                       onChange={onChange}
                       error={errors.lastname}
                     />
                   </div>
-                </div>
-                <div className='col-sm-12'>
-                  <div className='form-group'>
+        </div>
+
+        <div className='col-md-6'>
+        <div className='form-group'>
                     <label>
                       Email <span className='text-danger'>*</span>
                     </label>
                     <InputGroup
-                      placeholder='Your email'
+                      placeholder='Email'
                       name='email'
                       value={email}
                       onChange={onChange}
                       error={errors.email}
                     />
                   </div>
-                </div>
+        </div>
 
-                <div className='col-sm-6'>
-                  <div className='form-group'>
+        <div className='col-md-6'>
+        <div className='form-group'>
+                    <label>
+                      Profession 
+                    </label>
+                    {/* <input className="form-control" type="text" /> */}
+                    <InputGroup
+                      placeholder='Profession'
+                      name='profession'
+                      value={profession}
+                      onChange={onChange}
+                      error={errors.profession}
+                    />
+                  </div>
+        </div>
+
+        <div className='col-md-6'>
+        <div className='form-group'>
                     <label>Date of Birth</label>
                     <div className='cal-icon'>
                       <DatePicker
@@ -148,9 +174,10 @@ const Addpatient = ({ errors, history, addPatient }) => {
                       )}
                     </div>
                   </div>
-                </div>
-                <div className='col-md-6'>
-                  <div className='form-group form-focus select-focus'>
+        </div>
+
+        <div className='col-md-6'>
+        <div className='form-group form-focus select-focus'>
                     <label className='focus-label'>Gendar</label>
                     <SelectListGroup
                       placeholder='Gender'
@@ -162,25 +189,30 @@ const Addpatient = ({ errors, history, addPatient }) => {
                     />
                     {errors && <div className='invalid-feedback'>{errors.gender}</div>}
                   </div>
-                </div>
+        </div>
 
-                <div className='col-sm-12'>
-                  <div className='row'>
-                    <div className='col-sm-12'>
-                      <div className='form-group'>
+
+        </div>
+        </div>
+
+        <div className='card-box'>
+            <h3 className='card-title'>Contact Informations</h3>
+            <div className='row'>
+              <div className='col-md-6'>
+              <div className='form-group'>
                         <label>Address</label>
-                        {/* <input type="text" className="form-control " /> */}
                         <InputGroup
-                          placeholder='Your adresse'
+                          placeholder="adresse"
                           name='adresse'
                           value={adresse}
                           onChange={onChange}
                           error={errors.adresse}
                         />
                       </div>
-                    </div>
-                    <div className='col-sm-6 col-md-6 col-lg-4'>
-                      <div className='form-group'>
+              </div>
+
+              <div className='col-md-6'>
+              <div className='form-group'>
                         <label>Country</label>
                         <InputGroup
                           placeholder='Your Country'
@@ -190,9 +222,10 @@ const Addpatient = ({ errors, history, addPatient }) => {
                           error={errors.country}
                         />
                       </div>
-                    </div>
-                    <div className='col-sm-6 col-md-6 col-lg-4'>
-                      <div className='form-group'>
+              </div>
+
+              <div className="col--md-6">
+              <div className='form-group'>
                         <label>State</label>
                         <InputGroup
                           placeholder='Your City'
@@ -202,10 +235,10 @@ const Addpatient = ({ errors, history, addPatient }) => {
                           error={errors.city}
                         />
                       </div>
-                    </div>
+              </div>
 
-                    <div className='col-sm-6 col-md-6 col-lg-4'>
-                      <div className='form-group'>
+              <div className="col-md-6">
+              <div className='form-group'>
                         <label>postal code</label>
                         <InputGroup
                           placeholder='Your postal code'
@@ -215,14 +248,10 @@ const Addpatient = ({ errors, history, addPatient }) => {
                           error={errors.zipcode}
                         />
                       </div>
-                    </div>
-                  </div>
-                </div>
+              </div>
 
-                <div className='col-sm-12'>
-                  <div className='row'>
-                    <div className='col-sm-12'>
-                      <div className='form-group'>
+              <div className="col-md-6">
+              <div className='form-group'>
                         <label>Phone </label>
                         <InputGroup
                           placeholder='Your phone'
@@ -233,12 +262,57 @@ const Addpatient = ({ errors, history, addPatient }) => {
                         />
                         {errors && <div className='invalid-feedback'>{errors.phone}</div>}
                       </div>
-                    </div>
-                  </div>
-                </div>
+              </div>
 
-                <div className='col-sm-12'>
-                  <div className='form-group'>
+              <div className="col-md-6">
+                
+              </div>
+            </div>
+        </div>      
+        
+        <div className='card-box'>
+        <h3 className='card-title'>Social number Informations</h3>
+        <div className='row'>
+              <div className='col-md-6'>
+              <div className='form-group'>
+                    <label>
+                     Assurance 
+                    </label>
+                    {/* <input className="form-control" type="text" /> */}
+                    <InputGroup
+                      placeholder='Assurance'
+                      name='assurance'
+                      value={assurance}
+                      onChange={onChange}
+                      error={errors.assurance}
+                    />
+                  </div>
+
+              </div>
+
+              <div className="col-md-6">
+              <div className='form-group'>
+                    <label>
+                      CNAM 
+                    </label>
+                    {/* <input className="form-control" type="text" /> */}
+                    <InputGroup
+                      placeholder='cnam'
+                      name='cnam'
+                      value={cnam}
+                      onChange={onChange}
+                      error={errors.cnam}
+                    />
+                  </div>
+              </div>
+        </div>      
+        </div>
+        
+        <div className='card-box'>
+            <h3 className='card-title'>Avatar</h3>
+            <div className='row'>
+              <div className='col-md-12'>
+              <div className='form-group'>
                     <label>Avatar</label>
                     <div className='profile-upload'>
                       <div className='upload-img'>
@@ -254,10 +328,15 @@ const Addpatient = ({ errors, history, addPatient }) => {
                       </div>
                     </div>
                   </div>
-                </div>
               </div>
+            </div>
+        </div>
 
-              <div className='m-t-20 text-center'>
+
+        <div className='row'>
+          <div className='col-lg-8 offset-lg-2'>
+            <form onSubmit={onSubmit}>
+               <div className='m-t-20 text-center'>
                 <button className='btn btn-primary submit-btn'>Create Patient</button>
               </div>
             </form>

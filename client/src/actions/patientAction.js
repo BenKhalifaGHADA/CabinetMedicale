@@ -68,7 +68,7 @@ export const addPatient = (expData, photo, history) => async dispatch => {
     //...........................................
     try {
       const config = { headers: { 'Content-Type': 'application/json' } };
-      const res = await axios.put(`/api/profile/patient/update/${id}`, patient, config);
+     await axios.put(`/api/profile/patient/update/${id}`, patient, config);
       dispatch(getCurrentProfile());
       history.push('/dashboard/patients');
     } catch (err) {

@@ -5,9 +5,9 @@ import {
   PROFILE_LOADING,
   CLEAR_CURRENT_PROFILE,
   GET_ERRORS,
-  CLEAR_ERRORS,
+
   SET_CURRENT_USER,
-  GET_PATIENT,
+ 
 } from './types';
 
 // Get current profile
@@ -219,7 +219,7 @@ export const updateAppointment = (id, appointment) => async dispatch => {
 //. upload photo
 export const uploadPhoto = formData => async dispatch => {
   try {
-    const res = await axios.post('/api/profile/upload', formData, {
+      await axios.post('/api/profile/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

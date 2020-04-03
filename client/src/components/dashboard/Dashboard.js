@@ -15,7 +15,6 @@ import NavBar from './NavBar';
 import Welcome from './Welcome';
 
 import { getCurrentProfile } from '../../actions/profileActions';
-import { clearErrors } from '../../actions/errors';
 import Spinner from '../common/Spinner';
 import './Dashboard.css';
 

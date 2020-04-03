@@ -28,34 +28,15 @@ class Showrendezvous extends Component {
                                     <td><span className="custom-badge status-red">Inactive</span></td>
                                     <td className="text-right">
                                         <div className="dropdown dropdown-action">
-                                            <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="fa fa-ellipsis-v"></i></a>
+                                            <Link to="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="fa fa-ellipsis-v"></i></Link>
                                             <div className="dropdown-menu dropdown-menu-right">
                                                 <Link className="dropdown-item" to="/dashboard/EditRendezvous"><i className="fa fa-pencil m-r-5"></i> Edit</Link>
-                                                <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_appointment"><i className="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                <Link className="dropdown-item" to="#" data-toggle="modal" data-target="#delete_appointment"><i className="fa fa-trash-o m-r-5"></i> Delete</Link>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
-    //   <tr key={exp._id}>
-    //     <td><img width="28" height="28" src="../assets/img/user.jpg" className="rounded-circle m-r-5" alt="" /> {exp.firstname} {exp.lastname}</td>
-    //     <td>{exp.birthdate}</td>
-    //     <td>{exp.address}</td>
-    //     <td>{exp.phone}</td>
-    //     <td>{exp.email}</td>
-    //     {console.log('id=',exp._id)}
-    //     <td className="text-right">
-    //       <div className="dropdown dropdown-action">
-    //         <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="fa fa-ellipsis-v"></i></a>
-    //         <div className="dropdown-menu dropdown-menu-right">
-    //           <Link to={'/dashboard/editpatient/'+exp._id}  className="dropdown-item" ><i className="fa fa-pencil m-r-5"></i> Edit</Link>
-    //           <button className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_patient" onClick={this.onDeleteClick.bind(this, exp._id)}
-    //             ><i className="fa fa-trash-o m-r-5"></i> Delete</button>
-    //         </div>
-    //       </div>
-    //     </td>
-    //   </tr>
-
-     ))
+    ))
     return (
         <div className="page-wrapper">
         <div className="content">
@@ -100,7 +81,7 @@ class Showrendezvous extends Component {
                     <div className="modal-body text-center">
                         <img src="assets/img/sent.png" alt="" width="50" height="46"/>
                         <h3>Are you sure want to delete this Appointment?</h3>
-                        <div className="m-t-20"> <a href="#" className="btn btn-white" data-dismiss="modal">Close</a>
+                        <div className="m-t-20"> <Link to="#" className="btn btn-white" data-dismiss="modal">Close</Link>
                             <button type="submit" className="btn btn-danger">Delete</button>
                         </div>
                     </div>
