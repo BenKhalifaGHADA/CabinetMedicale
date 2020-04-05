@@ -1,44 +1,60 @@
 import React, { useState } from 'react';
-import { withRouter,Link } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addAppointment } from '../../actions/profileActions';
-import InputGroup from '../common/InputGroup';
-import SelectListGroup from '../common/SelectListGroup';
-import {getallPatients} from '../../actions/patientAction';
-import {getCurrentProfile } from '../../actions/profileActions';
 
-const Addrendezvous = ({ profile: { profile }, addAppointment, history }) => {
+import SelectListGroup from '../common/SelectListGroup';
+import { getallAppointment,addAppointment } from '../../actions/appointmentActions';
+import { getCurrentProfile } from '../../actions/profileActions';
+// ------------------For datapicker---------------------
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+//-------------------End datapicker--------------------
+
+
+const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history }) => {
   const [formData, setFormData] = useState({
-    date: '',
+    date: new Date(),
     time: '',
     Message: '',
-    statusAppointment: '',
     typeVisite: '',
     patient: {},
-    errors: {},
+
+
   });
   const {
-   
-    date,
-    time,
+    // date,
+    // time,
     Message,
-    statusAppointment,
     typeVisite,
     patient,
-    errors,
+    
   } = formData;
+
+  //   //-------------------For date of appointment------------------//
+  const [date, setDate] = useState(new Date());
+
+  const handleChangeDate = d => {
+    setDate(d);
+  };
+  //   //-------------------End date of appointment------------------//
+
+  //---------------------Begin time of appointment-------------------//
+  const [time,setStartDate]=useState(new Date());
+  const handleChangeTime= T=>{
+    setStartDate(T);
+  }
+  
+  //---------------------End time of appointment-------------------//
 
   const onSubmit = e => {
     e.preventDefault();
 
     const patData = {
-      // libelle,
-      // date: this.state.date,
-      // time: this.state.time,
+      date,
+      time,
       Message,
-      // statusAppointment: this.state.statusAppointment,
       typeVisite,
       patient,
     };
@@ -78,121 +94,104 @@ const Addrendezvous = ({ profile: { profile }, addAppointment, history }) => {
             <h4 className='page-title'>Add Appointment</h4>
           </div>
         </div>
-        
+
         <div className='card-box'>
-            {/* <h3 className='card-title'>Basic Informations</h3> */}
-            <div className='row'>
-              <div className='col-md-6 '>
+          {/* <h3 className='card-title'>Basic Informations</h3> */}
+          <div className='row'>
+            <div className='col-md-6 '>
               <div className='form-group'>
-                    <label>Patient Name</label>
-                    <SelectListGroup
-                      
-                      name='patient'
-                      value={patient}
-                      onChange={onChange}
-                      options={optionsPatient}
-                    />
-                    {errors && <div className='invalid-feedback'>{errors.patient}</div>}
+                <label>Patient Name</label>
+                <SelectListGroup
 
-                  </div>
-                 
+                  name='patient'
+                  value={patient}
+                  onChange={onChange}
+                  options={optionsPatient}
+                />
+                {errors && <div className='invalid-feedback'>{errors.patient}</div>}
+
               </div>
-              <div className="col-md-6">
+
+            </div>
+            <div className="col-md-6">
               <div className='form-group'>
-              Or <Link to="/dashboard/Addpatient">Create a new patient</Link>
-              </div>
+                Or <Link to="/dashboard/Addpatient">Create a new patient</Link>
+              
               </div>
             </div>
-            <div className="row">
-              <div className="col-12">
+          </div>
+          <div className="row">
+            <div className="col-md-6">
               <div className='form-group'>
-                    <label>Appointment date</label>
-                    <InputGroup
-                      placeholder='date'
-                      name='date'
-                      value={date}
-                      onChange={onChange}
-                      error={errors.date}
-                    /> 
-                  </div>
-              </div>
+                <label> Appointment date </label>
+                <DatePicker
+                  className='form-control'
+                  selected={date}
+                  onChange={handleChangeDate}
+                  placeholderText='Click to select a date'
+                  isClearable
+                />
+                 {errors && (
+                        <div className='invalid-feedback'>{errors.date}</div>
+                      )}
+                 </div>
+            </div>
 
-              <div className="col-12">
+            <div className="col-md-6">
               <div className='form-group'>
-                    <label>Appointment time</label>
-                    <InputGroup
-                      placeholder='time'
-                      name='time'
-                      value={time}
-                      onChange={onChange}
-                      error={errors.time}
-                    /> 
-                  </div>
-              </div>
-
-              <div className="col-12">
-              <div className='form-group'>
-                    <label>Motif</label>
-                    <SelectListGroup
-                      
-                      name='motif'
-                      value={typeVisite}
-                      onChange={onChange}
-                      options={options}
-                    />
-                  </div>
-              </div>
-
-              <div className="col-12">
-            
-              <div className='form-group'>
-                <label className='display-block'>Appointment Status</label>
-                <div className='form-check form-check-inline'>
-                  <input
-                    className='form-check-input'
-                    type='radio'
-                    name='status'
-                    id='product_active'
-                    value='option1'
-                    checked
-                  />
-                  <label className='form-check-label' htmlFor='product_active'>
-                    Active
-                  </label>
-                </div>
-                <div className='form-check form-check-inline'>
-                  <input
-                    className='form-check-input'
-                    type='radio'
-                    name='status'
-                    id='product_inactive'
-                    value='option2'
-                  />
-                  <label className='form-check-label' htmlFor='product_inactive'>
-                    Inactive
-                  </label>
-                </div>
-              </div>
+                <label> Appointment time </label>
+               
+                <DatePicker
+                  className='form-control' 
+                  selected={time}
+                  onChange={handleChangeTime}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  timeIntervals={15}
+                  timeCaption="Time"
+                  dateFormat="h:mm aa"
+                />
+                 {errors && (
+                        <div className='invalid-feedback'>{errors.time}</div>
+                      )}
               </div>
             </div>
-        </div>    
+
+            <div className="col-12">
+              <div className='form-group'>
+                <label>Type de visite</label>
+                <SelectListGroup
+                  name='typeVisite'
+                  value={typeVisite}
+                  onChange={onChange}
+                  options={options}
+                />
+                 {errors && (
+                        <div className='invalid-feedback'>{errors.typeVisite}</div>
+                      )}
+              </div>
+            </div>
+
+           
+          </div>
+        </div>
         <div className='row'>
           <div className='col-lg-8 offset-lg-2'>
             <form onSubmit={onSubmit}>
-               <div className='m-t-20 text-center'>
-               <button className='btn btn-primary submit-btn'>Create Appointment</button>
+              <div className='m-t-20 text-center'>
+                <button className='btn btn-primary submit-btn'>Create Appointment</button>
               </div>
             </form>
           </div>
-        </div>  
-
-               
-            
-            
-          </div>
         </div>
-   
-  
+
+
+
+
+      </div>
+    </div>
+
+
   );
 };
 
@@ -202,7 +201,7 @@ Addrendezvous.propTypes = {
   errors: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
-  getallPatients: PropTypes.func.isRequired,
+  getallAppointment: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
   profile: state.profile,
@@ -211,7 +210,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  getallPatients,
+  getallAppointment,
   getCurrentProfile,
   addAppointment,
 })(withRouter(Addrendezvous));

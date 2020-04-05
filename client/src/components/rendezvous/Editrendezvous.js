@@ -1,140 +1,207 @@
-import React from 'react';
-// import spinner from "../common/spinner.gif";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { withRouter} from 'react-router-dom';
+import PropTypes from 'prop-types';
+import SelectListGroup from '../common/SelectListGroup';
+import {getAppointmentById,
+	updateAppointment} from '../../actions/appointmentActions'
+import {
+  
+  getCurrentProfile
+} from '../../actions/profileActions';
+import Spinner from '../common/Spinner';
+// ------------------For datapicker---------------------
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+//-------------------End datapicker--------------------
+
 
 const Editrendezvous = ({
 	
-   
-	loading,
+	profile: { loadingAppointment },
+	errors,
+	match,
+	updateAppointment,
+	rendezvous,
+	getAppointmentById,
+	history,
   }) => {
-	  
-	if (loading )
+	const [formData, setFormData] = useState({
+		Message: '',
+        typeVisite: '',
+       
+	});
+	useEffect(() => {
+		getAppointmentById(match.params.id);
+	}, []);
+	useEffect(() => {
+	  if (rendezvous)
+		setFormData({
+		  ...formData,
+		  time: rendezvous.time,
+		  Message: rendezvous.Message,
+		  date: rendezvous.date,
+		  typeVisite: rendezvous. typeVisite,
+		  
+		});
+	}, [loadingAppointment]);
+  
+	const {
+		// date,
+		// time,
+		Message,
+        typeVisite,
+	} = formData;
+  
+	const onSubmit = e => {
+	  e.preventDefault();
+	  const id_appointment = match.params.id;
+	  const appointmentData = {
+		date,
+		time,
+		Message,
+        typeVisite,
+	  };
+  
+	  updateAppointment(id_appointment, appointmentData, history);
+	};
+  
+	const onChange = e => {
+	  setFormData({ ...formData, [e.target.name]: e.target.value });
+	};
+  
+	 //   //-------------------For date of appointment------------------//
+	 const [date, setDate] = useState(new Date());
+
+	 const handleChangeDate = d => {
+	   setDate(d);
+	 };
+	 //   //-------------------End date of appointment------------------//
+   
+	 //---------------------Begin time of appointment-------------------//
+	 const [time,setStartDate]=useState(new Date());
+	 const handleChangeTime= T=>{
+	   setStartDate(T);
+	 }
+	 
+	 //---------------------End time of appointment-------------------//
+	 // Select options for type appointment
+	 const options = [
+		{ label: '* Type', value: 0 },
+		{ label: 'Controle', value: 'Controle' },
+		{ label: 'Consultation', value: 'Consultation' },
+	  ];
+  
+	if (loadingAppointment)
 	  return (
-		<div className='container'>
-		  <div className='d-flex justify-content-center text-primary'>
-			<div className='spinner-border' role='status'>
-			  <span className='sr-only'>Loading...</span>
-			</div>
-		  </div>
+		<div className='main-wrapper'>
+		  <Spinner />
 		</div>
 	  );
 
   return (
-	<div class="page-wrapper">
-	<div class="content">
-		<div class="row">
-			<div class="col-lg-8 offset-lg-2">
-				<h4 class="page-title">Edit Appointment</h4>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-8 offset-lg-2">
-				<form>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Appointment ID</label>
-								<input class="form-control" type="text" value="APT-0001" readonly=""/>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Patient Name</label>
-								<select class="select">
-									<option>Select</option>
-									<option>Jennifer Robinson</option>
-									<option class="selected">Terry Baker</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Department</label>
-								<select class="select">
-									<option>Select</option>
-									<option>Dentists</option>
-									<option>Neurology</option>
-									<option>Opthalmology</option>
-									<option>Orthopedics</option>
-									<option>Cancer Department</option>
-									<option>ENT Department</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Doctor</label>
-								<select class="select">
-									<option>Select</option>
-									<option>Cristina Groves</option>
-									<option>Marie Wells</option>
-									<option selected>Henry Daniels</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Date</label>
-								<div class="cal-icon">
-									<input type="text" class="form-control datetimepicker"/>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Time</label>
-								<div class="time-icon">
-									<input type="text" class="form-control" id="datetimepicker3"/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Patient Email</label>
-								<input class="form-control" type="email"/>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Patient Phone Number</label>
-								<input class="form-control" type="text"/>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label>Message</label>
-						<textarea cols="30" rows="4" class="form-control"></textarea>
-					</div>
-					<div class="form-group">
-						<label class="display-block">Appointment Status</label>
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="status" id="product_active" value="option1" checked/>
-							<label class="form-check-label" for="product_active">
-							Active
-							</label>
-						</div>
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="status" id="product_inactive" value="option2"/>
-							<label class="form-check-label" for="product_inactive">
-							Inactive
-							</label>
-						</div>
-					</div>
-					<div class="m-t-20 text-center">
-						<button class="btn btn-primary submit-btn">Save</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	
-</div>
+	<div className='page-wrapper'>
+      <div className='content'>
+        <div className='row'>
+          <div className='col-sm-12'>
+            <h4 className='page-title'>Edit Appointment</h4>
+          </div>
+        </div>
+
+        <div className='card-box'>
+          {/* <h3 className='card-title'>Basic Informations</h3> */}
+        
+          <div className="row">
+            <div className="col-md-6">
+              <div className='form-group'>
+                <label> Appointment date </label>
+                <DatePicker
+                  className='form-control'
+                  selected={date}
+                  onChange={handleChangeDate}
+                  placeholderText='Click to select a date'
+                  isClearable
+                />
+                 {errors && (
+                        <div className='invalid-feedback'>{errors.date}</div>
+                      )}
+                 </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className='form-group'>
+                <label> Appointment time </label>
+               
+                <DatePicker
+                  className='form-control' 
+                  selected={time}
+                  onChange={handleChangeTime}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  timeIntervals={15}
+                  timeCaption="Time"
+                  dateFormat="h:mm aa"
+                />
+                 {errors && (
+                        <div className='invalid-feedback'>{errors.time}</div>
+                      )}
+              </div>
+            </div>
+
+            <div className="col-12">
+              <div className='form-group'>
+                <label>Type de visite</label>
+                <SelectListGroup
+                  name='typeVisite'
+                  value={typeVisite}
+                  onChange={onChange}
+                  options={options}
+                />
+                 {errors && (
+                        <div className='invalid-feedback'>{errors.typeVisite}</div>
+                      )}
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div className='row'>
+          <div className='col-lg-8 offset-lg-2'>
+            <form onSubmit={onSubmit}>
+              <div className='m-t-20 text-center'>
+                <button className='btn btn-primary submit-btn'>Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+
+
+      </div>
+    </div>
   )
       };
 
-      export default Editrendezvous;
+	 
+	  Editrendezvous.propTypes = {
+		profile: PropTypes.object.isRequired,
+		errors: PropTypes.object.isRequired,
+		getCurrentProfile: PropTypes.func.isRequired,
+		updateAppointment: PropTypes.func.isRequired,
+		getAppointmentById: PropTypes.func.isRequired,
+		rendezvous: PropTypes.object.isRequired,
+	  };
+	  
+	  const mapStateToProps = state => ({
+		rendezvous: state.profile.patient,
+		errors: state.errors,
+		profile: state.profile,
+	  });
+	  
+	  export default connect(mapStateToProps, {
+		getAppointmentById,
+	    updateAppointment,
+		getCurrentProfile,
+	  })(withRouter(Editrendezvous));
+	  

@@ -1,20 +1,20 @@
 import {
-    GET_PATIENT
+    GET_APPOINTMENT
   } from '../actions/types';
   
   const initialState = {
-    patient: null,
-    loadingPatient:true,
+    rendezvous: null,
+    loadingAppointment:true,
   };
   
   export default function(state = initialState, action) {
     switch (action.type) {
        
-      case GET_PATIENT:{
+      case GET_APPOINTMENT:{
         return {
           ...state,
-          patient:action.payload,
-          loadingPatient:true,
+          rendezvous:action.payload,
+          loadingAppointment:false,
           
           
         };

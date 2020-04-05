@@ -4,12 +4,8 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import InputGroup from '../common/InputGroup';
 import SelectListGroup from '../common/SelectListGroup';
-import {getPatientById,
-  updatePatient} from '../../actions/patientAction'
-import {
-  
-  getCurrentProfile
-} from '../../actions/profileActions';
+import {getPatientById,updatePatient} from '../../actions/patientAction'
+import {getCurrentProfile} from '../../actions/profileActions';
 import Spinner from '../common/Spinner';
 
 const Editpatient = ({
@@ -132,7 +128,7 @@ const Editpatient = ({
                       <div className='form-group form-focus'>
                         <label className='focus-label'>First Name</label>
                         <InputGroup
-                          placeholder='Your firstname'
+                          placeholder='Firstname'
                           name='firstname'
                           value={firstname}
                           onChange={onChange}
@@ -144,7 +140,7 @@ const Editpatient = ({
                       <div className='form-group form-focus'>
                         <label className='focus-label'>Last Name</label>
                         <InputGroup
-                          placeholder='Your lastname'
+                          placeholder='Lastname'
                           name='lastname'
                           value={lastname}
                           onChange={onChange}
@@ -158,17 +154,13 @@ const Editpatient = ({
                         <label className='focus-label'>Birth Date</label>
                         <div className='cal-icon'>
                           <InputGroup
-                            placeholder='Your birth Date'
+                            placeholder='birth Date'
                             name='Datebirth'
                             value={Datebirth}
                             onChange={onChange}
                             error={errors.birthdate}
                           />
-                          {/* <InputGroup
-                                                              name="birth"
-                                                              type="date"
-                                                              
-                                                          /> */}
+                        
                         </div>
                       </div>
                     </div>
@@ -202,7 +194,7 @@ const Editpatient = ({
                   <label class='focus-label'>Address</label>
                   {/* <input type="text" class="form-control floating" value="New York"/> */}
                   <InputGroup
-                    placeholder='Your address'
+                    placeholder='Address'
                     name='adresse'
                     value={adresse}
                     onChange={onChange}
@@ -216,7 +208,7 @@ const Editpatient = ({
                   <label class='focus-label'>State</label>
                   {/* <input type="text" class="form-control floating" value="New York"/> */}
                   <InputGroup
-                    placeholder='Your state'
+                    placeholder='State'
                     name='state'
                     value={state}
                     onChange={onChange}
@@ -229,7 +221,7 @@ const Editpatient = ({
                   <label class='focus-label'>Country</label>
                   {/* <input type="text" class="form-control floating" value="United States"/> */}
                   <InputGroup
-                    placeholder='Your Country'
+                    placeholder='Country'
                     name='country'
                     value={country}
                     onChange={onChange}
@@ -243,7 +235,7 @@ const Editpatient = ({
                   <label class='focus-label'>Pin Code</label>
                   {/* <input type="text" class="form-control floating" value="10523"/> */}
                   <InputGroup
-                    placeholder='Your Zip code'
+                    placeholder='Zip code'
                     name='zipcode'
                     value={zipcode}
                     onChange={onChange}
@@ -257,7 +249,7 @@ const Editpatient = ({
                   <label class='focus-label'>Phone Number</label>
                   {/* <input type="text" class="form-control floating" value="631-889-3206"/> */}
                   <InputGroup
-                    placeholder='Your Number Phone'
+                    placeholder='Number Phone'
                     name='phone'
                     value={phone}
                     onChange={onChange}

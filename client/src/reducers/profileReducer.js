@@ -2,7 +2,7 @@ import {
   GET_PROFILE,
   PROFILE_LOADING,
   CLEAR_CURRENT_PROFILE,
-  GET_PATIENT
+  
 } from '../actions/types';
 
 const initialState = {
@@ -11,6 +11,10 @@ const initialState = {
   loading: true,
   patient: null,
   loadingPatient:true,
+
+  ///////////////////^
+  rendezvous:null,
+ 
 };
 
 export default function(state = initialState, action) {
@@ -19,6 +23,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loadingPatient:true,
+        
       };
     case GET_PROFILE:
       return {
@@ -32,15 +37,15 @@ export default function(state = initialState, action) {
         profile: null
       };
     
-    case GET_PATIENT:{
-      return {
-        ...state,
-        patient:action.payload,
-        loadingPatient:false,
+    // case GET_PATIENT:{
+    //   return {
+    //     ...state,
+    //     patient:action.payload,
+    //     loadingPatient:false,
         
         
-      };
-    }   
+    //   };
+    // }   
     default:
       return state;
   }

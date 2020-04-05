@@ -80,6 +80,7 @@ export const addPatient = (expData, photo, history) => async dispatch => {
     }
     //..............................................
   };
+
   
   // get all patients
   export const getallPatients = () => async dispatch => {

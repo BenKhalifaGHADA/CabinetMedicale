@@ -153,7 +153,7 @@ const Addpatient = ({ errors, history, addPatient }) => {
                       name='profession'
                       value={profession}
                       onChange={onChange}
-                      error={errors.profession}
+                      
                     />
                   </div>
         </div>

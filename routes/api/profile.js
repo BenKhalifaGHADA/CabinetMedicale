@@ -6,9 +6,11 @@ const gravatar = require('gravatar');
 const path = require('path');
 const fs = require('fs');
 
+
 const validateProfileInput = require('../../validation/profile');
 const validatePatientInput = require('../../validation/patient');
 const validateAppointmentInput = require('../../validation/appointment');
+const validateOrdonnanceInput=require('../../validation/ordonnance');
 //Load Profile model
 const Profile = require('../../models/Profile');
 //Load User model
@@ -151,11 +153,6 @@ router.post('/patient', passport.authenticate('jwt', { session: false }), (req, 
   }
 
   Profile.findOne({ user: req.user.id }).then(profile => {
-    // const avatar = gravatar.url(req.body.email, {
-    //   s: '200',
-    //   r: 'pg',
-    //   d: 'mm',
-    // });
     const newPat = {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
@@ -283,6 +280,23 @@ router.put(
 // -----------------------------END CRUD Patient----------------------//
 
 //-----------------------------BEGIN CRUD Appointment----------------//
+// @access  Public
+// @route   GET api/profile/patient/all
+// @desc    Get all patient for one profile
+
+router.get(
+  '/appointment/all',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const foundRendezvous = await Profile.findOne({ user: req.user.id });
+      res.json(foundRendezvous.rendezvous);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
 // @route   POST api/profile/appointment
 // @desc    Add appointment to profile
 // @access  Private
@@ -303,8 +317,6 @@ router.post(
         date: req.body.date,
         time:req.body.time,
         namepatient: req.body.namepatient,
-        Message: req.body.Message,
-        statusAppointment: req.body.statusAppointment,
         typeVisite: req.body.typeVisite,
         NbreVisiteEffectuer: req.body.NbreVisiteEffectuer,
       };
@@ -345,35 +357,71 @@ router.delete(
 // @desc    Update apointment from profile
 // @access  Private
 
-router.post(
+router.put(
   '/appointment/update/:exp_id',
   passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    const profileFields = {};
-    profileFields.user = req.user.id;
+  async (req, res) => {
+    //............................................//
+    const { errors, isValid } = validateAppointmentInput(req.body);
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+    try{
+      const profileFields = {};
+      profileFields.user = req.user.id;
+  
+      // Appointment
+      profileFields.rendezvous = {};
+     
+      if (req.body.date) profileFields.rendezvous.date = req.body.date;
+      if (req.body.time) profileFields.rendezvous.time = req.body.time;
+     
+     
+      if (req.body.typeVisite) profileFields.rendezvous.typeVisite = req.body.typeVisite;
+  
+        const rendezvous= await Profile.findOneAndUpdate(
+          { user: req.user.id },
+          { $set: profileFields },
+          { new: true }
+        );
+        res.json(rendezvous);
+         
+      } 
+      
+    catch(err){
+       console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+  }
+    
+);
+// -----------------------------Begin CRUD consultation----------------------//
+// @access  Public
+// @route   GET api/profile/consultation/all
+// @desc    Get all ordonnance for one profile
 
-    // Patient
-    profileFields.patient = {};
-    if (req.body.libelle) profileFields.patient.libelle = req.body.libelle;
-    if (req.body.date) profileFields.patient.date = req.body.date;
-    if (req.body.time) profileFields.patient.time = req.body.time;
-    if (req.body.Message) profileFields.patient.Message = req.body.Message;
-    if (req.body.statusAppointment)
-      profileFields.patient.statusAppointment = req.body.statusAppointment;
-    if (req.body.typeVisite) profileFields.patient.typeVisite = req.body.typeVisite;
-    if (req.body.NbreVisiteEffectuer)
-      profileFields.patient.NbreVisiteEffectuer = req.body.NbreVisiteEffectuer;
+router.get(
+  '/consultation/all',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const foundConsultaion = await Profile.findOne({ user: req.user.id });
 
-    Profile.findOneAndUpdate(
-      { user: req.user.id },
-      { $set: profileFields },
-      { new: true }
-    )
-      .then(profile => res.json(profile))
-      .catch(err => res.status(404).json(err));
+      // const myPatient = foundPatient.patient.filter(
+      //   patient => patient._id.toString() === req.params.patient_id
+      // )[0];
+      res.json(foundConsultaion.consultation);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
   }
 );
-//-----------------------------END CRUD Appointment----------------//
+
+
+
 // .upload profile photo
 
 router.post(
@@ -434,5 +482,12 @@ router.post(
     //ends here
   }
 );
-
+// Pdf route that will serve pdf
+// @route   get api/profile/pdf
+// @desc    get file pdf
+// @access  Private
+router.get("/pdf", (req, res) => {
+  var file = fs.createReadStream("C:/Users/safouane/Desktop/AUTH/mern-auth/client/public/sample.pdf");
+  file.pipe(res);
+});
 module.exports = router;

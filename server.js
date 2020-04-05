@@ -6,10 +6,17 @@ const passport = require("passport");
 const users = require("./routes/api/users");
 
 const profile = require('./routes/api/profile');
+
+
 const app = express();
 
 //package for upload image 
 const fileUpload = require('express-fileupload');
+
+//package for html to pdf
+const cors = require("cors");
+app.use(cors());
+
 
 // Bodyparser middleware
 app.use(
@@ -25,6 +32,7 @@ const db = require("./config/keys").mongoURI;
 //upload image 
 app.use(fileUpload());
 app.use(express.static(__dirname + '/client/public/uploads'));
+
 
 // Connect to MongoDB
 mongoose.set('useFindAndModify', false);
@@ -45,6 +53,7 @@ require("./config/passport")(passport);
 // Routes
 app.use("/api/users", users);
 app.use('/api/profile', profile);
+
 
 
 

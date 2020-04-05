@@ -133,22 +133,16 @@ rendezvous:[{
     date: {
         type: Date,
         default: Date.now(),
-        
+        required:true,
     },
     time: {
         type:Date,
-        default: Date.time,
-    },
-    Message:{
-        type: String
-    },
-
-    statusAppointment:{
-        type:Boolean,
-        default:false,
+        required:true,
+        
     },
     typeVisite: {
         type: String,
+        required:true,
         
     },
    
@@ -156,7 +150,7 @@ rendezvous:[{
         type: Number,
        
     },
-    namepatient:{
+    patient:{
       type:String,
     }
 }] ,
@@ -167,8 +161,29 @@ consultation:[{
   date:{
     type:Date,
     default:Date.now(),
-  }
+  },
+  ordonnance:[{
+    drug:{
+      type:String,
+    },
+    dose:{
+      type:String,
+    },
+    duration:{
+      type:String,
+    }
+  }]
+
+
+
+
+
+
 }] 
+
+
+
+
 });
 
 module.exports = Profile = mongoose.model('profile', ProfileSchema);

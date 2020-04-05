@@ -3,6 +3,7 @@ import authReducer from "./authReducer";
 import errorReducer from "./errorReducer";
 import profileReducer from "./profileReducer";
 import patientReducer from "./patientReducer";
+import appointmentReducer from './appointmentReducer';
 
 
 export default combineReducers({
@@ -10,5 +11,6 @@ export default combineReducers({
   errors: errorReducer,
   profile: profileReducer,
   patient: patientReducer,
+  appointment: appointmentReducer,
  
 });

@@ -2,16 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter,Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
-import {
-    deletePatient,
-  
-} from '../../actions/patientAction';
+import {deletePatient} from '../../actions/patientAction';
 import { Fragment } from 'react';
 const Patient = ({patient}
 ) => {
-  
-
   console.log(patient)
   return (
     <Fragment>
@@ -50,7 +44,7 @@ const Patient = ({patient}
 
               <Link
                 className='dropdown-item'
-                to="">
+                to={`/dashboard/FichePatient/${exp._id}`}>
                 <i className='fa fa-address-card m-r-5'></i>Fiche patient
               </Link>
 
