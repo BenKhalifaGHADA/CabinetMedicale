@@ -10,7 +10,7 @@ const initialState = {
   profiles: null,
   loading: true,
   patient: null,
-  loadingPatient:true,
+  // loadingPatient:true,
 
   ///////////////////^
   rendezvous:null,
@@ -22,8 +22,7 @@ export default function(state = initialState, action) {
     case PROFILE_LOADING:
       return {
         ...state,
-        loadingPatient:true,
-        
+        loading: true,
       };
     case GET_PROFILE:
       return {

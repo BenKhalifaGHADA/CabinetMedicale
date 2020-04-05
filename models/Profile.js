@@ -155,6 +155,9 @@ rendezvous:[{
     }
 }] ,
 consultation:[{
+  patientId:{
+    type:String,
+  },
   observation:{
     type: String,
   }, 
@@ -162,7 +165,7 @@ consultation:[{
     type:Date,
     default:Date.now(),
   },
-  ordonnance:[{
+  ordonnance:{
     drug:{
       type:String,
     },
@@ -172,7 +175,7 @@ consultation:[{
     duration:{
       type:String,
     }
-  }]
+  }
 
 
 
