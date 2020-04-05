@@ -1,7 +1,7 @@
 const Validator = require('validator');
 const isEmpty = require('./is-empty');
 
-module.exports = function validateOrdonnanceInput(data) {
+module.exports = function validateConsultationInput(data) {
   let errors = {};
 
   data.drug = !isEmpty(data.drug) ? data.drug : '';

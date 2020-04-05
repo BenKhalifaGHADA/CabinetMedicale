@@ -10,7 +10,7 @@ const fs = require('fs');
 const validateProfileInput = require('../../validation/profile');
 const validatePatientInput = require('../../validation/patient');
 const validateAppointmentInput = require('../../validation/appointment');
-const validateOrdonnanceInput=require('../../validation/ordonnance');
+const validateConsultationInput=require('../../validation/consultation');
 //Load Profile model
 const Profile = require('../../models/Profile');
 //Load User model
@@ -420,8 +420,39 @@ router.get(
   }
 );
 
+// @route   POST api/profile/consultation/add
+// @desc    Add patient to profile
+// @access  Private
+router.post('/consultation/add', passport.authenticate('jwt', { session: false }), (req, res) => {
+  const { errors, isValid } = validateConsultationInput(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    // Return any errors with 400 status
+    return res.status(400).json(errors);
+  }
+
+  Profile.findOne({ user: req.user.id }).then(profile => {
+    const newOrdon={
+         drug: req.body.drug,
+         dose:req.body.dose,
+         duration:req.body.duration,
+    }
+    const newCons = {
+      observation: req.body.observation,
+      newOrdon,
+      
+    };
+
+    // Add to exp array
+    profile.consultation.unshift(newCons);
+
+    profile.save().then(profile => res.json(profile));
+  });
+});
 
 
+// -----------------------------END CRUD consultation----------------------//
 // .upload profile photo
 
 router.post(
