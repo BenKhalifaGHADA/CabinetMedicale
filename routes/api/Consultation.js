@@ -66,23 +66,26 @@ router.get('/', passport.authenticate('jwt', { session: false }), async (req, re
     '/add',
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
+        const medicament=req.body.ordonnance;
+        const ordonnance=medicament.map(item => {
           const newOrdonnance = {
-        duration:req.body.duration,
-        dose:req.body.dose,
-        drug:req.body.drug,
-        user: req.user.id,
-      };
+            duration:item.ordonnance.duration,
+            dose:item.ordonnance.dose,
+            drug:item.ordonnance.drug,
+           
+          };
+            // Add to ordonnance array
+            item.ordonnance.unshift(newOrdonnance);
+            // Save
+           item.save().then(item => res.json(item));
+        })
+     
       const newConsultation = new Consultation({
         observation: req.body.observation,
-        // name: req.body.name,
-        // avatar: req.body.avatar,
-        
-        // ordonnance,
+        ordonnance,
         user: req.user.id
       });
-       // Add to ordonnance array
-      // Add to ordonnance array
-      newConsultation.ordonnance.unshift(newOrdonnance);
+  
       newConsultation.save().then(consultation => res.json(consultation));
     }
   );
@@ -112,11 +115,9 @@ router.get('/', passport.authenticate('jwt', { session: false }), async (req, re
             drug:req.body.drug,
             user: req.user.id,
           };
-  
-          // Add to ordonnance array
+            // Add to ordonnance array
           consultation.ordonnance.unshift(newOrdonnance);
-  
-          // Save
+            // Save
           consultation.save().then(consultation => res.json(consultation));
         })
         .catch(err => res.status(404).json({ consultationnotfound: 'No consultation found' }));

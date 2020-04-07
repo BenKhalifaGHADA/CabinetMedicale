@@ -7,10 +7,10 @@ const ProfileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'users'
   },
-  // consultations:[{
-  //   type: Schema.Types.ObjectId,
-  //   ref:'consultations',
-  // }],
+  consultations:[{
+    type: Schema.Types.ObjectId,
+    ref:'consultations',
+  }],
   profilephoto: {
     type: String,
     default: 'default.jpg',
