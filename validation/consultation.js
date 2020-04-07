@@ -22,9 +22,9 @@ module.exports = function validateConsultationInput(data) {
   } 
 
     // duration checks
-    if (Validator.isEmpty(data.duration)) {
-        errors.duration = "duration field is required";
-      }
+    // if (Validator.isEmpty(data.duration)) {
+    //     errors.duration = "duration field is required";
+    //   }
   
    
 

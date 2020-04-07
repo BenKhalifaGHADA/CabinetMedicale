@@ -9,11 +9,11 @@ const initialState = {
   profile: null,
   profiles: null,
   loading: true,
-  patient: null,
+  // patient: null,(origin)
   // loadingPatient:true,
 
   ///////////////////^
-  rendezvous:null,
+  // rendezvous:null,
  
 };
 

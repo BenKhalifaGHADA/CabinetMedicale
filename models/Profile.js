@@ -7,6 +7,10 @@ const ProfileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'users'
   },
+  // consultations:[{
+  //   type: Schema.Types.ObjectId,
+  //   ref:'consultations',
+  // }],
   profilephoto: {
     type: String,
     default: 'default.jpg',
@@ -154,38 +158,6 @@ rendezvous:[{
       type:String,
     }
 }] ,
-consultation:[{
-  patientId:{
-    type:String,
-  },
-  observation:{
-    type: String,
-  }, 
-  date:{
-    type:Date,
-    default:Date.now(),
-  },
-  ordonnance:{
-    drug:{
-      type:String,
-    },
-    dose:{
-      type:String,
-    },
-    duration:{
-      type:String,
-    }
-  }
-
-
-
-
-
-
-}] 
-
-
-
 
 });
 
