@@ -41,15 +41,24 @@ router.get('/', passport.authenticate('jwt', { session: false }), async (req, re
   //@route get api/consultation/all
   //@desc Get all consultation
   //@access Private
-  
-  router.get('/all', (req, res) => {
-    Consultation.find()
-      .then(consts => res.json(consts))
-      .catch(err => res.status(404).json({ nopostsfound: 'No consultation found' }));
-  });
-  
+ 
+  router.get(
+    '/all',
+    passport.authenticate('jwt', { session: false }),
+    async (req, res) => {
+      try {
+        const foundConsultation = await Consultation.find({ user: req.user.id });
+        res.json(foundConsultation);
+       } 
+      catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+      }
+    }
+  );
+   
   // @route   GET api/consultation/:id
-  // @desc    Get Consultation by id
+  // @desc    Get Consultation by i+d
   // @access  Public
   router.get('/:id', (req, res) => {
     Consultation.findById(req.params.id)
@@ -66,65 +75,20 @@ router.get('/', passport.authenticate('jwt', { session: false }), async (req, re
     '/add',
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
-        const medicament=req.body.ordonnance;
-        const ordonnance=medicament.map(item => {
-          const newOrdonnance = {
-            duration:item.ordonnance.duration,
-            dose:item.ordonnance.dose,
-            drug:item.ordonnance.drug,
-           
-          };
-            // Add to ordonnance array
-            item.ordonnance.unshift(newOrdonnance);
-            // Save
-           item.save().then(item => res.json(item));
-        })
-     
+         
       const newConsultation = new Consultation({
         observation: req.body.observation,
-        ordonnance,
+        ordonnance:[...req.body.ordonnance],
         user: req.user.id
       });
-  
+      
       newConsultation.save().then(consultation => res.json(consultation));
     }
   );
 
 
 
-  // @route   POST api/consultation/add/id_consultation
-  // @desc    Add one ordonnace to consultation
-  // @access  Private
-  router.post(
-    '/add/:id_consultation',
-    passport.authenticate('jwt', { session: false }),
-    (req, res) => {
-      const { errors, isValid } = validateConsultationInput(req.body);
-  
-      // Check Validation
-      if (!isValid) {
-        // If any errors, send 400 with errors object
-        return res.status(400).json(errors);
-      }
-  
-    Consultation.findById(req.params.id_consultation)
-        .then(consultation => {
-          const newOrdonnance = {
-            duration:req.body.duration,
-            dose:req.body.dose,
-            drug:req.body.drug,
-            user: req.user.id,
-          };
-            // Add to ordonnance array
-          consultation.ordonnance.unshift(newOrdonnance);
-            // Save
-          consultation.save().then(consultation => res.json(consultation));
-        })
-        .catch(err => res.status(404).json({ consultationnotfound: 'No consultation found' }));
-    }
-  );
-
-  
+   
 // @route   DELETE api/consultation/delete/:id_consultation
 // @desc    Delete consultation
 // @access  Private
@@ -151,4 +115,30 @@ router.delete(
 );
   
   // -----------------------------END CRUD consultation----------------------//
+
+  //------------------------------Begin CRUD PRESCRIPTION------------------//
+// @route   DELETE api/consultation/deleteOrdonnance/:ord_id
+// @desc    Delete patient from profile
+// @access  Private
+router.delete(
+  '/deleteOrdonnance/:ord_id',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Consultation.findOne({ user: req.user.id })
+      .then(consultation => {
+        // Get remove index
+        const removeIndex = consultation.ordonnance
+          .map(item => item.id)
+          .indexOf(req.params.ord_id);
+
+        // Splice out of array
+        consultation.ordonnance.splice(removeIndex, 1);
+
+        // Save
+        consultation.save().then(consultation => res.json(consultation));
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
+  //-----------------------------End CRUD PRESCRIPTION--------------------//
   module.exports = router;

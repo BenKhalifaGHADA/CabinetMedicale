@@ -3,21 +3,14 @@ import { connect } from 'react-redux';
 import { withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import SelectListGroup from '../common/SelectListGroup';
-import {getAppointmentById,
-	updateAppointment} from '../../actions/appointmentActions'
-import {
-  
-  getCurrentProfile
-} from '../../actions/profileActions';
+import {getAppointmentById,updateAppointment} from '../../actions/appointmentActions'
+import { getCurrentProfile} from '../../actions/profileActions';
 import Spinner from '../common/Spinner';
 // ------------------For datapicker---------------------
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 //-------------------End datapicker--------------------
-
-
 const Editrendezvous = ({
-	
 	profile: { loadingAppointment },
 	errors,
 	match,
@@ -27,30 +20,25 @@ const Editrendezvous = ({
 	history,
   }) => {
 	const [formData, setFormData] = useState({
-		Message: '',
+		//Message: '',
         typeVisite: '',
        
 	});
+	
 	useEffect(() => {
 		getAppointmentById(match.params.id);
-	}, []);
-	useEffect(() => {
 	  if (rendezvous)
 		setFormData({
 		  ...formData,
 		  time: rendezvous.time,
-		  Message: rendezvous.Message,
 		  date: rendezvous.date,
-		  typeVisite: rendezvous. typeVisite,
+		  typeVisite: rendezvous.typeVisite,
 		  
 		});
 	}, [loadingAppointment]);
   
 	const {
-		// date,
-		// time,
-		Message,
-        typeVisite,
+		typeVisite,
 	} = formData;
   
 	const onSubmit = e => {
@@ -59,8 +47,7 @@ const Editrendezvous = ({
 	  const appointmentData = {
 		date,
 		time,
-		Message,
-        typeVisite,
+		typeVisite,
 	  };
   
 	  updateAppointment(id_appointment, appointmentData, history);
@@ -79,9 +66,9 @@ const Editrendezvous = ({
 	 //   //-------------------End date of appointment------------------//
    
 	 //---------------------Begin time of appointment-------------------//
-	 const [time,setStartDate]=useState(new Date());
+	 const [time,setTime]=useState(new Date());
 	 const handleChangeTime= T=>{
-	   setStartDate(T);
+	   setTime(T);
 	 }
 	 
 	 //---------------------End time of appointment-------------------//
@@ -92,11 +79,13 @@ const Editrendezvous = ({
 		{ label: 'Consultation', value: 'Consultation' },
 	  ];
   
-	if (loadingAppointment)
+	if (rendezvous)
 	  return (
-		<div className='main-wrapper'>
-		  <Spinner />
-		</div>
+		<div className="main-wrapper">
+        <div className="content">
+        <Spinner />
+        </div>
+      </div>
 	  );
 
   return (

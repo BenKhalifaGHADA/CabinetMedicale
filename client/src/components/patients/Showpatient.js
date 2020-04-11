@@ -8,9 +8,7 @@ import { withRouter } from 'react-router-dom';
 
 const Showpatient = ({profile}
 ) => {
-  
-
-  
+   
   return (
     <div className='page-wrapper'>
       
@@ -57,9 +55,9 @@ const Showpatient = ({profile}
               <img src='assets/img/sent.png' alt='' width='50' height='46' />
               <h3>Are you sure want to delete this Patient?</h3>
               <div className='m-t-20'>
-                <a href=' ' className='btn btn-white' data-dismiss='modal'>
+                <Link to="#"  className='btn btn-white' data-dismiss='modal'>
                   Close
-                </a>
+                </Link>
                 <button className='btn btn-danger' data-dismiss='modal'>
                   Delete
                 </button>

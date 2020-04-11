@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const ConsultationSchema = new Schema({
-       user: {
+        user: {
         type: Schema.Types.ObjectId,
         ref: 'users'
       },
@@ -25,7 +25,8 @@ const ConsultationSchema = new Schema({
           },
           duration:{
             type:String,
-          }
+          },
+         
         } ] 
       
 });

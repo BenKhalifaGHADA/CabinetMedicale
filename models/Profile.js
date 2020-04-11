@@ -7,10 +7,6 @@ const ProfileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'users'
   },
-  consultations:[{
-    type: Schema.Types.ObjectId,
-    ref:'consultations',
-  }],
   profilephoto: {
     type: String,
     default: 'default.jpg',
@@ -121,7 +117,7 @@ const ProfileSchema = new Schema({
     cnam:{
       type: String,
     },
-    Assurance:{
+    assurance:{
       type: String,
     },  
     profession:{
@@ -149,13 +145,18 @@ rendezvous:[{
         required:true,
         
     },
-   
-    NbreVisiteEffectuer: {
-        type: Number,
-       
-    },
     patient:{
-      type:String,
+        patientId:
+        {
+        type:String
+      },
+       firstname:{
+         type:String,
+       },
+       lastname:{
+         type:String,
+       }
+
     }
 }] ,
 

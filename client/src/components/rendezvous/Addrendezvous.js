@@ -19,16 +19,19 @@ const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history })
     time: '',
     Message: '',
     typeVisite: '',
-    patient: {},
+    
 
 
   });
+  const [patient,setpatientData]=useState({
+    patientId:'',firstname:'',lastname:''
+  })
   const {
     // date,
     // time,
     Message,
     typeVisite,
-    patient,
+    
     
   } = formData;
 
@@ -63,7 +66,12 @@ const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history })
   };
 
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
-
+  const onChangePatient = e=>{
+  console.log(e.target.value)
+  let data=e.target.value.split(',');
+  console.log(data)
+  setpatientData({patientId:data[0],firstname:data[1],lastname:data[2]})}
+  console.log(patient)
   // Select options for type appointment
   const options = [
     { label: '* Type', value: 0 },
@@ -74,7 +82,7 @@ const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history })
   // Select options for name of patient
   const tabPatients = profile.patient.map(patient => ({
     label: `${patient.firstname} ${patient.lastname}`,
-    value: patient._id,
+    value: [patient._id,patient.firstname,patient.lastname],
   }));
   let optionsPatient;
   if (tabPatients.length > 0) {
@@ -105,7 +113,7 @@ const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history })
 
                   name='patient'
                   value={patient}
-                  onChange={onChange}
+                  onChange={onChangePatient}
                   options={optionsPatient}
                 />
                 {errors && <div className='invalid-feedback'>{errors.patient}</div>}

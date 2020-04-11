@@ -7,13 +7,14 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Showpatient from '../patients/Showpatient';
 import Addpatient from '../patients/Addpatient';
 import Editpatient from '../patients/Editpatient';
-import Rendezvous from '../rendezvous/Rendezvous';
+import Rendezvous from '../rendezvous/Showrendezvous';
 import Addrendezvous from '../rendezvous/Addrendezvous';
 import Editrendezvous from '../rendezvous/Editrendezvous';
 import Createconsultation from '../Consulation/AddConsultation';
 import Fichepatient from '../patients/Fichepatient';
 import NavBar from './NavBar';
 import Welcome from './Welcome';
+import ShowAllOrdonnance from '../Ordonnance/Ordonnance';
 
 import { getCurrentProfile } from '../../actions/profileActions';
 import Spinner from '../common/Spinner';
@@ -35,9 +36,11 @@ const Dashboard = ({
 
   if (profile === null || loading)
     return (
-      <div className='main-wrapper'>
-        <Spinner />
+      <div className="main-wrapper">
+      <div className="content">
+      <Spinner />
       </div>
+    </div>
     );
   return (
     <div>
@@ -62,6 +65,7 @@ const Dashboard = ({
         <Route exact path='/dashboard/editpatient/:id' component={Editpatient} />
 		    <Route exact path='/dashboard/Createconsultation' component={Createconsultation} />
         <Route exact path='/dashboard/FichePatient/:id' component={Fichepatient} />
+        <Route exact path='/dashboard/ShowAllOrdonnance' component={ShowAllOrdonnance} />
         <Redirect to='/dashboard/welcome' />
       </Switch>
     </div>

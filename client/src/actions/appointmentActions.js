@@ -4,6 +4,7 @@ import {
   GET_PROFILE,
   GET_ERRORS,
   GET_APPOINTMENT,
+  UPDATE_APPOINTMENT,
  
 } from './types';
 import {getCurrentProfile,setProfileLoading} from './profileActions';
@@ -30,7 +31,7 @@ export const addAppointment = (expData, history) => async dispatch => {
       .delete(`/api/profile/appointment/${id}`)
       .then(res =>
         dispatch({
-          type: GET_PROFILE,
+          type: UPDATE_APPOINTMENT,
           payload: res.data,
         })
       )
@@ -40,11 +41,12 @@ export const addAppointment = (expData, history) => async dispatch => {
           payload: err.response.data,
         })
       );
+      dispatch(getCurrentProfile());
   };
   
   // get appointment by id
   export const getAppointmentById = appointment_id => async dispatch => {
-    dispatch(setProfileLoading());
+    dispatch(getCurrentProfile());
     try {
       const res = await axios.get(`/api/profile/appointment/${appointment_id}`);
       dispatch({
@@ -77,7 +79,7 @@ export const addAppointment = (expData, history) => async dispatch => {
     };
   
     
-  // get all patients
+  // get all Appointment
   export const getallAppointment = () => async dispatch => {
     await axios
       .get('/api/profile/appointment/all')

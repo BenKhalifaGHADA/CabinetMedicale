@@ -176,7 +176,7 @@ router.post('/patient', passport.authenticate('jwt', { session: false }), (req, 
     // Add to exp array
     profile.patient.unshift(newPat);
 
-    profile.save().then(profile => res.json(profile));
+    
   });
 });
 
@@ -252,6 +252,8 @@ router.put(
       gender,
       phone,
       Datebirth,
+      cnam,
+      assurance,
     } = req.body;
     try {
       const foundProfile = await Profile.findOne({ user: req.user.id });
@@ -267,6 +269,8 @@ router.put(
           pat.gender = gender;
           pat.phone = phone;
           pat.Datebirth = Datebirth;
+          pat.cnam=cnam,
+          pat.assurance=assurance
         }
         return pat;
       });
@@ -319,7 +323,11 @@ router.post(
       const newRendezvous = {
         date: req.body.date,
         time:req.body.time,
-        namepatient: req.body.namepatient,
+        patient:{
+          patientId:req.body.patient.patientId,
+          firstname:req.body.patient.firstname,
+          lastname:req.body.patient.lastname,
+        },
         typeVisite: req.body.typeVisite,
         NbreVisiteEffectuer: req.body.NbreVisiteEffectuer,
       };

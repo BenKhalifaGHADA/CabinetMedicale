@@ -6,9 +6,10 @@ import Rendezvous from '../rendezvous/Rendezvous';
 import { withRouter } from 'react-router-dom';
 
 const Showrendezvous = ({ profile }) => {
+    console.log('hello',profile)
     return (
         <div className='page-wrapper'>
-
+            {console.log(profile)}
             <div className='content'>
                 <div className='row'>
                     <div className='col-sm-4 col-3'>
@@ -30,9 +31,6 @@ const Showrendezvous = ({ profile }) => {
                                 <thead>
                                     <tr>
                                         <th>Patient Name</th>
-                                        <th>Age</th>
-                                        <th>Doctor Name</th>
-
                                         <th>Appointment Date</th>
                                         <th>Appointment Time</th>
                                         {/* <th>Status</th> */}
@@ -55,7 +53,7 @@ const Showrendezvous = ({ profile }) => {
                                 <img src="assets/img/sent.png" alt="" width="50" height="46" />
                                 <h3>Are you sure want to delete this Appointment?</h3>
                                 <div className="m-t-20"> <Link to="#" className="btn btn-white" data-dismiss="modal">Close</Link>
-                                    <button type="submit" className="btn btn-danger">Delete</button>
+                                    <button type="submit" className="btn btn-danger" data-dismiss='modal'>Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -70,15 +68,8 @@ const Showrendezvous = ({ profile }) => {
 
 Showrendezvous.propTypes = {
     deleteAppointment: PropTypes.func.isRequired,
-};
-
-
-
-Showrendezvous.propTypes = {
     profile: PropTypes.object.isRequired,
-
 };
-
 const mapStateToProps = state => ({
     profile: state.profile.profile,
 });

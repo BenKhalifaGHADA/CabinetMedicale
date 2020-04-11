@@ -4,7 +4,10 @@ import { withRouter,Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {deletePatient} from '../../actions/patientAction';
 import { Fragment } from 'react';
-const Patient = ({patient}
+import Moment from 'react-moment';
+const Patient = (
+  {patient,deletePatient},
+  // 
 ) => {
   console.log(patient)
   return (
@@ -22,7 +25,7 @@ const Patient = ({patient}
           />{' '}
           {exp.firstname} {exp.lastname}
         </td>
-        <td>{exp.Datebirth}</td>
+        <td><Moment format='YYYY/MM/DD'>{exp.Datebirth}</Moment></td>
         <td>{exp.adresse}</td>
         <td>{exp.phone}</td>
         <td>{exp.email}</td>
@@ -56,7 +59,7 @@ const Patient = ({patient}
 
               <button
                     className='dropdown-item'
-                    href='#'
+                    // href='#'
                     data-toggle='modal'
                     data-target='#delete_patient'
                     onClick={()=>deletePatient(exp._id)}>

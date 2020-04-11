@@ -4,9 +4,10 @@ import {
   GET_PROFILE,
   GET_ERRORS,
   GET_PATIENT,
+  UPDATE_PATIENT
 } from './types';
 
-import {getCurrentProfile,setProfileLoading} from './profileActions';
+import {getCurrentProfile} from './profileActions';
 // ------------------------------Begin CRUD For patient--------------//
 // Add patient
 export const addPatient = (expData, photo, history) => async dispatch => {
@@ -33,7 +34,7 @@ export const addPatient = (expData, photo, history) => async dispatch => {
       .delete(`/api/profile/patient/${id}`)
       .then(res =>
         dispatch({
-          type: GET_PROFILE,
+          type: UPDATE_PATIENT,
           payload: res.data,
         })
       )
@@ -48,7 +49,7 @@ export const addPatient = (expData, photo, history) => async dispatch => {
   
   // get patient by id
   export const getPatientById = patient_id => async dispatch => {
-    dispatch(setProfileLoading());
+    dispatch(getCurrentProfile());
     try {
       const res = await axios.get(`/api/profile/patient/${patient_id}`);
       dispatch({

@@ -6,7 +6,7 @@ import InputGroup from '../common/InputGroup';
 import SelectListGroup from '../common/SelectListGroup';
 import {getPatientById,updatePatient} from '../../actions/patientAction'
 import {getCurrentProfile} from '../../actions/profileActions';
-import Spinner from '../common/Spinner';
+
 
 const Editpatient = ({
   profile: { loadingPatient },
@@ -29,11 +29,15 @@ const Editpatient = ({
     phone: '',
     Datebirth: '',
     avatar: '',
+    cnam:'',
+    assurance:'',
   });
+  // useEffect(() => {
+  //   getPatientById(match.params.id);
+   
+  // }, []);
   useEffect(() => {
     getPatientById(match.params.id);
-  }, []);
-  useEffect(() => {
     if (patient)
       setFormData({
         ...formData,
@@ -48,6 +52,8 @@ const Editpatient = ({
         phone: patient.phone,
         Datebirth: patient.Datebirth,
         avatar: patient.avatar,
+        cnam:patient.cnam,
+        assurance:patient.assurance,
       });
   }, [loadingPatient]);
 
@@ -63,6 +69,8 @@ const Editpatient = ({
     phone,
     Datebirth,
     avatar,
+    cnam,
+    assurance,
   } = formData;
 
   const onSubmit = e => {
@@ -79,6 +87,8 @@ const Editpatient = ({
       gender,
       phone,
       Datebirth,
+      cnam,
+      assurance,
     };
 
     updatePatient(id_patient, patientData, history);
@@ -95,12 +105,12 @@ const Editpatient = ({
     { label: 'Male', value: 'Male' },
   ];
 
-  if (loadingPatient)
-    return (
-      <div className='main-wrapper'>
-        <Spinner />
-      </div>
-    );
+  // if (loadingPatient)
+  //   return (
+  //     <div className='main-wrapper'>
+  //       <Spinner />
+  //     </div>
+  //   );
 
   return (
     <div className='page-wrapper'>
@@ -260,6 +270,46 @@ const Editpatient = ({
             </div>
           </div>
 
+          <div className='card-box'>
+        <h3 className='card-title'>Social number Informations</h3>
+        <div className='row'>
+              <div className='col-md-6'>
+              <div className='form-group'>
+                    <label>
+                     Assurance 
+                    </label>
+                    {/* <input className="form-control" type="text" /> */}
+                   
+
+                      <InputGroup
+                          placeholder='Assurance'
+                          name='assurance'
+                          value={assurance}
+                          onChange={onChange}
+                          error={errors.assurance}
+                        />
+                  </div>
+
+              </div>
+
+              <div className="col-md-6">
+              <div className='form-group'>
+                    <label>
+                      CNAM 
+                    </label>
+                    {/* <input className="form-control" type="text" /> */}
+                    <InputGroup
+                      placeholder='cnam'
+                      name='cnam'
+                      value={cnam}
+                      onChange={onChange}
+                      error={errors.cnam}
+                    />
+                  </div>
+              </div>
+        </div>      
+        </div>
+
           <div class='text-center m-t-20'>
             <button class='btn btn-primary submit-btn' type='submit'>
               Save
@@ -284,6 +334,7 @@ const mapStateToProps = state => ({
   patient: state.profile.patient,
   errors: state.errors,
   profile: state.profile,
+  
 });
 
 export default connect(mapStateToProps, {
