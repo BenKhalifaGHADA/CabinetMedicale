@@ -7,7 +7,7 @@ import {
   UPDATE_APPOINTMENT,
  
 } from './types';
-import {getCurrentProfile,setProfileLoading} from './profileActions';
+import {getCurrentProfile} from './profileActions';
 // ------------------------------Begin CRUD For Appointment--------------//
 // Add appointment
 export const addAppointment = (expData, history) => async dispatch => {

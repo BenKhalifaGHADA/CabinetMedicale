@@ -18,13 +18,15 @@ const fileUpload = require('express-fileupload');
 
 //package for html to pdf
 const cors = require("cors");
+
 app.use(cors());
+
 
 
 // Bodyparser middleware
 app.use(
   bodyParser.urlencoded({
-    extended: false
+    extended: true
   })
 );
 app.use(bodyParser.json());

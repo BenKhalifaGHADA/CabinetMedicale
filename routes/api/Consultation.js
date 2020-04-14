@@ -58,7 +58,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), async (req, re
   );
    
   // @route   GET api/consultation/:id
-  // @desc    Get Consultation by i+d
+  // @desc    Get Consultation by id consultation
   // @access  Public
   router.get('/:id', (req, res) => {
     Consultation.findById(req.params.id)
@@ -67,8 +67,30 @@ router.get('/', passport.authenticate('jwt', { session: false }), async (req, re
         res.status(404).json({ nopostfound: 'No consultation found' })
       );
   });
+
+  // @route   GET api/consultation/:idconsultation
+  // @desc    Get Consultation by id consulrartio
+  // @access  Public
+  // router.get('/:id', (req, res) => {
+  //   Consultation.find({ _id: req.params.id })
+  //     .then(consts => res.json(consts))
+  //     .catch(err =>
+  //       res.status(404).json({ nopostfound: 'No consultation found' })
+  //     );
+  // });
+
+   // @route   GET api/consultation/patient/:id
+   // @desc    Get Consultation by id patient
+  // @access  Public
+  router.get('/patient/:id', (req, res) => {
+    Consultation.find({ patientId: req.params.id })
+      .then(consts => res.json(consts))
+      .catch(err =>
+        res.status(404).json({ nopostfound: 'No consultation found' })
+      );
+  });
   
-   // @route   POST api/consultation/add
+  // @route   POST api/consultation/add
   // @desc    Add one consultation to doctor
   // @access  Private
   router.post(
@@ -77,8 +99,9 @@ router.get('/', passport.authenticate('jwt', { session: false }), async (req, re
     (req, res) => {
          
       const newConsultation = new Consultation({
+        patientId: req.body.patientId,
         observation: req.body.observation,
-        ordonnance:[...req.body.ordonnance],
+        // ordonnance:[...req.body.ordonnance],
         user: req.user.id
       });
       
@@ -117,8 +140,42 @@ router.delete(
   // -----------------------------END CRUD consultation----------------------//
 
   //------------------------------Begin CRUD PRESCRIPTION------------------//
+
+// @route   POST api/consultation/add/id_consultation
+// @desc    Create ordonnance
+// @access  Private
+router.post(
+  '/add/:id_consultation',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateConsultationInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      // If any errors, send 400 with errors object
+      return res.status(400).json(errors);
+    }
+  Consultation.findById(req.params.id_consultation)
+      .then(consultation => {
+        const newOrdonnance = {
+          duration:req.body.duration,
+          dose:req.body.dose,
+          drug:req.body.drug,
+          user: req.user.id,
+        };
+
+        // Add to ordonnance array
+        consultation.ordonnance.unshift(newOrdonnance);
+
+        // Save
+        consultation.save().then(consultation => res.json(consultation));
+      })
+      .catch(err => res.status(404).json({ consultationnotfound: 'No consultation found' }));
+  }
+);
+
 // @route   DELETE api/consultation/deleteOrdonnance/:ord_id
-// @desc    Delete patient from profile
+// @desc    Delete ordonnance from profile
 // @access  Private
 router.delete(
   '/deleteOrdonnance/:ord_id',
@@ -140,5 +197,16 @@ router.delete(
       .catch(err => res.status(404).json(err));
   }
 );
+
+ // @route   GET api/consultation/ordonnance/:id
+   // @desc    Get ordonnance by id consultation
+  // @access  Public
+  router.get('/ordonnance/:id', (req, res) => {
+    Consultation.findById(req.params.id )
+      .then(consts => res.json(consts.ordonnance))
+      .catch(err =>
+        res.status(404).json({ nopostfound: 'No consultation found' })
+      );
+  });
   //-----------------------------End CRUD PRESCRIPTION--------------------//
   module.exports = router;

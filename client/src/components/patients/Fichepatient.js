@@ -7,6 +7,7 @@ import { getCurrentProfile } from "../../actions/profileActions";
 import { getallConsultations } from "../../actions/consultationActions";
 import InputGroup from "../common/InputGroup";
 import PropTypes from "prop-types";
+import Moment from 'react-moment';
 
 const Fichepatient = ({
   profile: { loadingPatient },
@@ -244,7 +245,7 @@ const Fichepatient = ({
                             </thead>
                             <tbody>
                               <tr>
-                                <td>{exp.date}</td>
+                                <td> <Moment format='YYYY/MM/DD'>{exp.date}</Moment></td>
                                 <td>{exp.observation}</td>
                                 <td>
                                   <Link

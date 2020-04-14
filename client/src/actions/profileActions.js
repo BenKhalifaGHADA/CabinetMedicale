@@ -19,7 +19,7 @@ export const getCurrentProfile = () => async dispatch => {
     });
   } catch (err) {
     dispatch({
-      type: GET_ERRORS,
+      type: GET_PROFILE,
       // type: GET_PROFILE, (cest l'instruction d'origin)
       payload: {},
     });

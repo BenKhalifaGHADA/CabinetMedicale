@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { deleteOrdonnance } from "../../actions/ordonnanceAction";
+import Spinner from "../common/Spinner";
 
 const Ordonnance = ({
   location: {
@@ -11,6 +12,14 @@ const Ordonnance = ({
   history,
 }) => {
   console.log(ordon);
+  if (ordon === null)
+    return (
+      <div className="main-wrapper">
+        <div className="content">
+        <Spinner />
+        </div>
+      </div>
+    );
   return (
     <div className='page-wrapper'>
       

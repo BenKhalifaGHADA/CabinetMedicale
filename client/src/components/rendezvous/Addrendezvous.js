@@ -17,19 +17,20 @@ const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history })
   const [formData, setFormData] = useState({
     date: new Date(),
     time: '',
-    Message: '',
     typeVisite: '',
     
 
 
   });
   const [patient,setpatientData]=useState({
-    patientId:'',firstname:'',lastname:''
+    patientId:'',
+    firstname:'',
+    lastname:''
   })
   const {
     // date,
     // time,
-    Message,
+    
     typeVisite,
     
     
@@ -57,7 +58,6 @@ const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history })
     const patData = {
       date,
       time,
-      Message,
       typeVisite,
       patient,
     };
@@ -71,7 +71,7 @@ const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history })
   let data=e.target.value.split(',');
   console.log(data)
   setpatientData({patientId:data[0],firstname:data[1],lastname:data[2]})}
-  console.log(patient)
+  console.log('patient',patient)
   // Select options for type appointment
   const options = [
     { label: '* Type', value: 0 },
@@ -84,9 +84,11 @@ const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history })
     label: `${patient.firstname} ${patient.lastname}`,
     value: [patient._id,patient.firstname,patient.lastname],
   }));
+  
   let optionsPatient;
   if (tabPatients.length > 0) {
     optionsPatient = [{ label: 'choose a patient', value: 0 }, ...tabPatients];
+    console.log('tabpatient',optionsPatient);
   } else {
     optionsPatient = [
       { label: '* Patient', value: 0 },
@@ -110,12 +112,12 @@ const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history })
               <div className='form-group'>
                 <label>Patient Name</label>
                 <SelectListGroup
-
                   name='patient'
                   value={patient}
                   onChange={onChangePatient}
                   options={optionsPatient}
                 />
+
                 {errors && <div className='invalid-feedback'>{errors.patient}</div>}
 
               </div>

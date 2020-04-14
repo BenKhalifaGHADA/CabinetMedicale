@@ -9,16 +9,18 @@ import {
   GET_APPOINTMENT,
   UPDATE_APPOINTMENT,
 
-  GET_CONSULTATIONS
+  GET_CONSULTATIONS,
+  GET_CONSULTATION
 
 } from '../actions/types';
 
 const initialState = {
   profile: null,
   profiles: null,
-  loading: false,
+  loading: true,
   patient: null,
   consultations: null,
+  consultation:null,
   rendezvous: null,
   // loadingAppointment:true,
   // loadingPatient:true,
@@ -85,6 +87,13 @@ export default function (state = initialState, action) {
         consultations: action.payload,
         // loadingConsultation:false,
       };
+
+      case GET_CONSULTATION:
+        return {
+          ...state,
+          consultation: action.payload,
+          // loadingConsultation:false,
+        };
 
     //   };
     // }   

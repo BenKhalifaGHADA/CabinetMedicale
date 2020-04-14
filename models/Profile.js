@@ -39,10 +39,10 @@ const ProfileSchema = new Schema({
       type:String
     }
   },
-  isonline: {
-    type: Boolean,
-    default: false,
-  },
+  // isonline: {
+  //   type: Boolean,
+  //   default: false,
+  // },
   birthdate:{
     type: Date
   },
@@ -125,8 +125,9 @@ const ProfileSchema = new Schema({
     },
     date: {
         type: Date,
-        default: Date.now
-    }
+        default: Date.now(),
+    },
+    
 }],
 rendezvous:[{
     

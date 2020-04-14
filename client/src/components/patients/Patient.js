@@ -53,7 +53,7 @@ const Patient = (
 
               <Link
                 className='dropdown-item'
-                to="/dashboard/Createconsultation">
+                to={`/dashboard/Createconsultation/${exp._id}`}>
                 <i className='fa fa-address-card m-r-5'></i>Ajouter une consultation
               </Link>
 

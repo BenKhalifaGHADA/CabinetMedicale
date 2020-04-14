@@ -7,6 +7,7 @@ module.exports = function validateConsultationInput(data) {
   data.drug = !isEmpty(data.drug) ? data.drug : '';
   data.dose = !isEmpty(data.dose) ? data.dose : '';
   data.duration = !isEmpty(data.duration) ? data.duration: '';
+  data.observation = !isEmpty(data.observation) ? data.observation: '';
 
   
 
@@ -21,10 +22,14 @@ module.exports = function validateConsultationInput(data) {
     errors.dose = "dose field is required";
   } 
 
-    // duration checks
-    // if (Validator.isEmpty(data.duration)) {
-    //     errors.duration = "duration field is required";
-    //   }
+    //duration checks
+    if (Validator.isEmpty(data.duration)) {
+        errors.duration = "duration field is required";
+      }
+    //observation checks
+    if (Validator.isEmpty(data.observation)) {
+      errors.observation = "observation field is required";
+    }  
   
    
 

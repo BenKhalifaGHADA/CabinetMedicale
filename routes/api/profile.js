@@ -5,6 +5,8 @@ const passport = require('passport');
 const gravatar = require('gravatar');
 const path = require('path');
 const fs = require('fs');
+const pdf = require('html-pdf');
+const pdfTemplate = require('./documents');
 
 
 const validateProfileInput = require('../../validation/profile');
@@ -408,98 +410,6 @@ router.put(
   }
     
 );
-// -----------------------------Begin CRUD consultation----------------------//
-//@route GET api/profile/consultation
-//@desc GET current users profile
-//@access Private
-router.get('/consultation', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  try {
-    const errors = {};
-
-    const consultation = await Profile.findOne({
-      user: req.user.id,
-    }).populate('consultations','observation');
-
-    if (!consultation) {
-      errors.noprofile = 'There is no consultation for this user';
-      return res.status(400).json(errors);
-    }
-    res.json(consultation);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-//@route get api/profile/Consultation
-//@desc Get all consultation
-//@access Private
-
-router.get('/Consultation', (req, res) => {
-  Consultation.find()
-    .then(consts => res.json(consts))
-    .catch(err => res.status(404).json({ nopostsfound: 'No consultation found' }));
-});
-
-// @route   GET api/profile/Consultation/:id
-// @desc    Get Consultation by id
-// @access  Public
-router.get('/Consultation/:id', (req, res) => {
-  Consultation.findById(req.params.id)
-    .then(consts => res.json(consts))
-    .catch(err =>
-      res.status(404).json({ nopostfound: 'No consultation found' })
-    );
-});
-
-// @route   POST api/Consultation/add/id_consultation
-// @desc    Create post
-// @access  Private
-router.post(
-  '/Consultation/add/:id_consultation',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    const { errors, isValid } = validateConsultationInput(req.body);
-
-    // Check Validation
-    if (!isValid) {
-      // If any errors, send 400 with errors object
-      return res.status(400).json(errors);
-    }
-
-  //   const newPost = new Consultation({
-  //     duration:req.body.duration,
-  //     user: req.user.id,
-  //     dose:req.body.dose,
-  //     drug:req.body.drug
-  //   });
-    
-  //       // Add to ordonnance array
-  //       newPost.ordonnance.unshift(newPost);
-
-  
-  //   newPost.save().then(post => res.json(post));
-  // }
-  Consultation.findById(req.params.id_consultation)
-      .then(consultation => {
-        const newOrdonnance = {
-          duration:req.body.duration,
-          dose:req.body.dose,
-          drug:req.body.drug,
-          user: req.user.id,
-        };
-
-        // Add to ordonnance array
-        consultation.ordonnance.unshift(newOrdonnance);
-
-        // Save
-        consultation.save().then(consultation => res.json(consultation));
-      })
-      .catch(err => res.status(404).json({ consultationnotfound: 'No consultation found' }));
-  }
-);
-
-// -----------------------------END CRUD consultation----------------------//
 // .upload profile photo
 
 router.post(
@@ -560,12 +470,19 @@ router.post(
     //ends here
   }
 );
-// Pdf route that will serve pdf
-// @route   get api/profile/pdf
-// @desc    get file pdf
-// @access  Private
-router.get("/pdf", (req, res) => {
-  var file = fs.createReadStream("C:/Users/safouane/Desktop/AUTH/mern-auth/client/public/sample.pdf");
-  file.pipe(res);
+//Generate PDF
+router.post('/create-pdf', (req, res) => {
+  pdf.create(pdfTemplate(req.body), {}).toFile('result.pdf', (err) => {
+      if(err) {
+          res.send(Promise.reject());
+      }
+
+      res.send(Promise.resolve());
+  });
 });
+
+router.get('/fetch-pdf', (req, res) => {
+  res.sendFile(`${__dirname}/result.pdf`)
+})
+
 module.exports = router;

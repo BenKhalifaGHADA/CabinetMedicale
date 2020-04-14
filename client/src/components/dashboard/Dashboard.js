@@ -15,10 +15,12 @@ import Fichepatient from '../patients/Fichepatient';
 import NavBar from './NavBar';
 import Welcome from './Welcome';
 import ShowAllOrdonnance from '../Ordonnance/Ordonnance';
+import CreateOrdonnance from '../Ordonnance/Addordonnance';
 
 import { getCurrentProfile } from '../../actions/profileActions';
 import Spinner from '../common/Spinner';
 import './Dashboard.css';
+import ShowConsultation from '../Consulation/ShowConsultation';
 
 
 const Dashboard = ({
@@ -63,9 +65,11 @@ const Dashboard = ({
         <Route exact path='/dashboard/AddRendezvous' component={Addrendezvous} />
         <Route exact path='/dashboard/EditRendezvous/:id' component={Editrendezvous} />
         <Route exact path='/dashboard/editpatient/:id' component={Editpatient} />
-		    <Route exact path='/dashboard/Createconsultation' component={Createconsultation} />
+		    <Route exact path='/dashboard/Createconsultation/:id' component={Createconsultation} />
         <Route exact path='/dashboard/FichePatient/:id' component={Fichepatient} />
         <Route exact path='/dashboard/ShowAllOrdonnance' component={ShowAllOrdonnance} />
+        <Route exact path='/dashboard/showconsultation/:id' component={ShowConsultation}/>
+        <Route exact path='/dashboard/CreateOrdonnance/:id' component={CreateOrdonnance}/>
         <Redirect to='/dashboard/welcome' />
       </Switch>
     </div>

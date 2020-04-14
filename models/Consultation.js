@@ -8,6 +8,9 @@ const ConsultationSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'users'
       },
+        patientId:{
+          type:String,
+        },
         observation:{
           type: String,
         }, 

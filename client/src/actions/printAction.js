@@ -1,23 +1,15 @@
 import axios from 'axios';
+import { saveAs } from 'file-saver';
 
 export const createAndDownloadPdf = async () => {
         
-        axios(`/api/profile/pdf`, {
-          method: "GET",
-          responseType: "blob"
-          //Force to receive data in a Blob Format
-        })
-          .then(response => {
-            //Create a Blob from the PDF Stream
-            const file = new Blob([response.data], {
-              type: "application/pdf"
-            });
-            //Build a URL from the file
-            const fileURL = URL.createObjectURL(file);
-            //Open the URL on new Window
-            window.open(fileURL);
-          })
-          .catch(error => {
-            console.log(error);
-          });
+  axios.post('/api/profile/create-pdf', 15,14,13)
+  .then(() => axios.get('/api/profile/fetch-pdf', { responseType: 'blob' }))
+  .then((res) => {
+    const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+
+    saveAs(pdfBlob, 'newPdf.pdf');
+  })
+  
+          
       };    
