@@ -27,7 +27,7 @@ const Rendezvous = ({ rendezvous,deleteAppointment }
 
       {rendezvous.map(exp => (
         <tr key={exp._id}>
-          <td>{`${exp.patient.firstname} ${exp.patient.lastname}`}</td>
+          <td>{exp.patient!=null?(`${exp.patient.firstname} ${exp.patient.lastname}`):(``)}</td>
           <td><Moment format='YYYY/MM/DD'>{exp.date}</Moment></td>
           <td><Moment format='HH:mm'>{exp.time}</Moment></td>
           <td className='text-right'>

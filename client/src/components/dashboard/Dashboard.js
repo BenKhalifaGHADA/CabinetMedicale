@@ -23,6 +23,7 @@ import './Dashboard.css';
 import ShowConsultation from '../Consulation/ShowConsultation';
 
 
+
 const Dashboard = ({
   auth: { user },
   profile: { profile, loading },
@@ -46,6 +47,7 @@ const Dashboard = ({
     );
   return (
     <div>
+      
       <NavBar user={user} />
       <Switch>
         <Route
@@ -70,6 +72,7 @@ const Dashboard = ({
         <Route exact path='/dashboard/ShowAllOrdonnance' component={ShowAllOrdonnance} />
         <Route exact path='/dashboard/showconsultation/:id' component={ShowConsultation}/>
         <Route exact path='/dashboard/CreateOrdonnance/:id' component={CreateOrdonnance}/>
+       
         <Redirect to='/dashboard/welcome' />
       </Switch>
     </div>

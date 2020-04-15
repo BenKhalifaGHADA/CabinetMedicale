@@ -1,11 +1,22 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Rendezvous from '../rendezvous/Rendezvous';
 import { withRouter } from 'react-router-dom';
+import Pagination from '../common/Pagination';
 
 const Showrendezvous = ({ profile }) => {
+    //-----------Begin pagination------------
+  const [currentPage,setCurrentPage]=useState(1);
+  const [postPerpage,setPostPerPage]=useState(5);
+  const indexOfLastPost=currentPage*postPerpage;
+  const indexOfFirstPost=indexOfLastPost-postPerpage;
+  const currentRendezvous=(profile.rendezvous).slice(indexOfFirstPost,indexOfLastPost);
+  const paginate=(pagenumber)=> setCurrentPage(pagenumber); 
+  
+  //-----------End Pagination-----------------
+
     console.log('hello',profile)
     return (
         <div className='page-wrapper'>
@@ -38,7 +49,7 @@ const Showrendezvous = ({ profile }) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <Rendezvous rendezvous={profile.rendezvous} />
+                                    <Rendezvous rendezvous={currentRendezvous} />
 
                                 </tbody>
                             </table>
@@ -59,6 +70,7 @@ const Showrendezvous = ({ profile }) => {
                         </div>
                     </div>
                 </div>
+                <Pagination postPerpage={postPerpage} totalPost={(profile.rendezvous).length} paginate={paginate}/>
             </div>
         </div>
 

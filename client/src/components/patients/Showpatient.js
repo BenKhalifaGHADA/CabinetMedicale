@@ -1,14 +1,25 @@
-import React from 'react';
+import React ,{useState}from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Patient from '../patients/Patient';
+import Pagination from '../common/Pagination';
 import { withRouter } from 'react-router-dom';
 
 
 const Showpatient = ({profile}
 ) => {
-   
+  //-----------Begin pagination------------
+  const [currentPage,setCurrentPage]=useState(1);
+  const [postPerpage,setPostPerPage]=useState(5);
+  const indexOfLastPost=currentPage*postPerpage;
+  const indexOfFirstPost=indexOfLastPost-postPerpage;
+  const currentPatient=(profile.patient).slice(indexOfFirstPost,indexOfLastPost);
+  const paginate=(pagenumber)=> setCurrentPage(pagenumber); 
+  
+  //-----------End Pagination-----------------
+
+   {console.log(profile.patient)}
   return (
     <div className='page-wrapper'>
       
@@ -41,13 +52,16 @@ const Showpatient = ({profile}
                 </tr>
               </thead>
               <tbody>
-                <Patient patient={profile.patient} />
+                <Patient patient={currentPatient} />
+                
               </tbody>
             </table>
+           
           </div>
+         
         </div>
       </div>
-
+      
       <div id='delete_patient' className='modal fade delete-modal' role='dialog'>
         <div className='modal-dialog modal-dialog-centered'>
           <div className='modal-content'>
@@ -66,7 +80,9 @@ const Showpatient = ({profile}
           </div>
         </div>
       </div>
+      <Pagination postPerpage={postPerpage} totalPost={(profile.patient).length} paginate={paginate}/>
     </div>
+    
   </div>
 
    
@@ -75,17 +91,10 @@ const Showpatient = ({profile}
 
 Showpatient.propTypes = {
     deletePatient: PropTypes.func.isRequired,
-};
-
-
-
-Showpatient.propTypes = {
     profile: PropTypes.object.isRequired,
-  
-  };
-  
-  const mapStateToProps = state => ({
+};
+const mapStateToProps = state => ({
     profile: state.profile.profile,
   }); 
   
-  export default connect(mapStateToProps)(withRouter(Showpatient));
+export default connect(mapStateToProps)(withRouter(Showpatient));

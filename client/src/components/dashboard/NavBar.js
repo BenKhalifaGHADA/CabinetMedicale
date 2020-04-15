@@ -90,7 +90,7 @@ const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
                   <i className='fa fa-calendar'></i> <span>Appointments</span>
                 </Link>
               </li>
-              <li className='submenu'>
+              {/* <li className='submenu'>
                 <Link to='#'>
                   <i className='fa fa-envelope'></i> <span> Email</span>{' '}
                   <span className='menu-arrow'></span>
@@ -106,7 +106,7 @@ const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
                     <Link to='mail-view.html'>Mail View</Link>
                   </li>
                 </ul>
-              </li>
+              </li> */}
               <li>
                 <Link to='calendar.html'>
                   <i className='fa fa-calendar'></i> <span>Calendar</span>

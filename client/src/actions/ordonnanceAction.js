@@ -14,10 +14,11 @@ export const addOrdonnance = (id,expData, history) => async dispatch => {
     console.log('id',id);
     const resultat=await axios.post(`/api/consultation/add/${id}`, expData);
     //console.log('id de consultation',resultat.data._id)
-    // dispatch(getCurrentProfile());
+    //dispatch(getCurrentProfile());
     //let id=resultat.data._id
     console.log('drog object',resultat);
-    history.push(`/dashboard/showconsultation/`);
+    
+    history.push(`/dashboard/CreateOrdonnance/${id}`);
  } 
  catch (err) {
     dispatch({
