@@ -18,7 +18,7 @@ const ShowConsultation = ({
 ) => {
     useEffect(() => {
         getallConsultationsById(match.params.id);
-      });
+      },[]);
       console.log('consultation by id',consultation);
     if (consultation === null)
     return (

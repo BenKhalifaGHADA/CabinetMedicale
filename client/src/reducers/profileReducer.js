@@ -10,7 +10,8 @@ import {
   UPDATE_APPOINTMENT,
 
   GET_CONSULTATIONS,
-  GET_CONSULTATION
+  GET_CONSULTATION,
+  UPDATE_CONSULTATION
 
 } from '../actions/types';
 
@@ -97,6 +98,12 @@ export default function (state = initialState, action) {
 
     //   };
     // }   
+    case UPDATE_CONSULTATION:
+      return {
+        ...state,
+        consultation: action.payload,
+        // loadingConsultation:false,
+      };
 
     default:
       return state;

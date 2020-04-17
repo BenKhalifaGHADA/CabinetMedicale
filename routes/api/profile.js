@@ -177,6 +177,7 @@ router.post('/patient', passport.authenticate('jwt', { session: false }), (req, 
 
     // Add to exp array
     profile.patient.unshift(newPat);
+    profile.save().then(profile => res.json(profile));
 
     
   });

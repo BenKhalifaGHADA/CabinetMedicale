@@ -1,8 +1,9 @@
 import axios from 'axios';
-
-import {
+import {getallConsultationsById} from './consultationActions'
+ import {
   GET_PROFILE,
   GET_ERRORS,
+  UPDATE_CONSULTATION
  
 } from './types';
 
@@ -17,7 +18,7 @@ export const addOrdonnance = (id,expData, history) => async dispatch => {
     //dispatch(getCurrentProfile());
     //let id=resultat.data._id
     console.log('drog object',resultat);
-    
+    dispatch(getallConsultationsById(id));
     history.push(`/dashboard/CreateOrdonnance/${id}`);
  } 
  catch (err) {
@@ -28,23 +29,28 @@ export const addOrdonnance = (id,expData, history) => async dispatch => {
   }
 };
  // Delete ordonnance
- export const deleteOrdonnance = (id,history) => async dispatch => {
+ export const deleteOrdonnance = (id,formData) => async dispatch => {
+   
     await axios
-      .delete(`/api/consultation/deleteOrdonnance/${id}`)
+      .delete(`/api/consultation/deleteOrdonnance/${id}`,formData)
       .then(res =>
-          dispatch({
-          type: GET_PROFILE,
+        dispatch({
+          type:UPDATE_CONSULTATION,
           payload: res.data,
         })
-        
       )
-      .catch(err =>
-        dispatch({
-          type: GET_ERRORS,
-          payload: err.response.data,
-        })
+        .catch(err =>
+          dispatch({
+            type: GET_ERRORS,
+            payload: err.response.data,
+          })
+        
       );
-    dispatch(getCurrentProfile());
-    history.push(`/dashboard/FichePatient/${id}`);
+      dispatch(getallConsultationsById(id));
+      //dispatch(getCurrentProfile());
+      // history.push(`/dashboard/FichePatient/${id}`);
+    
+    
+    
   };
   

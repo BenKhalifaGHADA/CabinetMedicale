@@ -9,10 +9,11 @@ const fs = require('fs');
 
 
 const validateConsultationInput=require('../../validation/consultation');
+const validateOrdonnanceInput=require('../../validation/ordonnance');
+
 //Load Profile model
 const Profile = require('../../models/Profile');
-//Load User model
-const User = require('../../models/User');
+
 //Load Consultation model
 const Consultation = require('../../models/Consultation');
 // -----------------------------Begin CRUD consultation----------------------//
@@ -97,7 +98,13 @@ router.get('/', passport.authenticate('jwt', { session: false }), async (req, re
     '/add',
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
-         
+      const { errors, isValid } = validateConsultationInput(req.body);
+
+      // Check Validation
+      if (!isValid) {
+        // If any errors, send 400 with errors object
+        return res.status(400).json(errors);
+      }   
       const newConsultation = new Consultation({
         patientId: req.body.patientId,
         observation: req.body.observation,
@@ -148,7 +155,7 @@ router.post(
   '/add/:id_consultation',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    const { errors, isValid } = validateConsultationInput(req.body);
+    const { errors, isValid } = validateOrdonnanceInput(req.body);
 
     // Check Validation
     if (!isValid) {
@@ -161,7 +168,7 @@ router.post(
           duration:req.body.duration,
           dose:req.body.dose,
           drug:req.body.drug,
-          user: req.user.id,
+          
         };
 
         // Add to ordonnance array
@@ -178,19 +185,15 @@ router.post(
 // @desc    Delete ordonnance from profile
 // @access  Private
 router.delete(
-  '/deleteOrdonnance/:ord_id',
+  '/deleteOrdonnance/:cons_id',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    Consultation.findOne({ user: req.user.id })
+    Consultation.findById(req.params.cons_id)
       .then(consultation => {
         // Get remove index
-        const removeIndex = consultation.ordonnance
-          .map(item => item.id)
-          .indexOf(req.params.ord_id);
-
-        // Splice out of array
-        consultation.ordonnance.splice(removeIndex, 1);
-
+        console.log('route ordonance', consultation);
+        consultation.ordonnance=consultation.ordonnance.filter(item=> item._id!==req.body.id);
+        console.log('route ordonance', consultation.ordonnance);
         // Save
         consultation.save().then(consultation => res.json(consultation));
       })
