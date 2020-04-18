@@ -1,13 +1,11 @@
 import axios from 'axios';
 import {getallConsultationsById} from './consultationActions'
  import {
-  GET_PROFILE,
+
   GET_ERRORS,
   UPDATE_CONSULTATION
  
 } from './types';
-
-import {getCurrentProfile} from './profileActions';
 
 // Add ordonnance to consultation
 export const addOrdonnance = (id,expData, history) => async dispatch => {
@@ -32,7 +30,7 @@ export const addOrdonnance = (id,expData, history) => async dispatch => {
  export const deleteOrdonnance = (id,formData) => async dispatch => {
    
     await axios
-      .delete(`/api/consultation/deleteOrdonnance/${id}`,formData)
+      .put(`/api/consultation/deleteOrdonnance/${id}`,formData)
       .then(res =>
         dispatch({
           type:UPDATE_CONSULTATION,

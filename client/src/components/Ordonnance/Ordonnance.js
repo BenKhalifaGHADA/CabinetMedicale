@@ -7,10 +7,11 @@ import Spinner from "../common/Spinner";
 
 const Ordonnance = ({
   location: {
-    state: { ordon },
+    state: { ordon},
   },
   history,
 }) => {
+ 
   console.log(ordon);
   if (ordon === null)
     return (
@@ -31,7 +32,7 @@ const Ordonnance = ({
         <div className='col-sm-8 col-9 text-right m-b-20'>
           
        
-       <button onClick={()=>deleteOrdonnance(ordon._id,history)} className='btn btn btn-danger btn-rounded float-right'>
+       <button type="submit" onClick={()=>deleteOrdonnance(ordon._id,history)} className='btn btn btn-danger btn-rounded float-right'>
             <i className='fa fa-close'></i> Delete
           </button>
         <Link
@@ -41,11 +42,13 @@ const Ordonnance = ({
             className='btn btn btn-primary btn-rounded float-right'>
             <i className='fa fa-print'></i> Print
           </Link>
-          <Link
-            to=''
-            className='btn btn btn-primary btn-rounded float-right'>
-            <i className='fa fa-plus'></i> Back
-          </Link>
+
+          <Link className='btn btn btn-primary btn-rounded float-right'
+                       to={`/dashboard/FichePatient/${ordon.user}`}>
+                        <i className='fa fa-plus'></i> Back
+                         
+                  </Link>
+         
         </div>
       </div>
 
@@ -121,7 +124,7 @@ const Ordonnance = ({
         </div>
       </div>
 
-      <div id='delete_patient' className='modal fade delete-modal' role='dialog'>
+      {/* <div id='delete_patient' className='modal fade delete-modal' role='dialog'>
         <div className='modal-dialog modal-dialog-centered'>
           <div className='modal-content'>
             <div className='modal-body text-center'>
@@ -138,7 +141,7 @@ const Ordonnance = ({
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   </div>
 

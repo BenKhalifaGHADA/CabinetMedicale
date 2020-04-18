@@ -17,6 +17,7 @@ const AddConsultation = ({
   history,
   match,
   addConsultation,
+  errors
   // createAndDownloadPdf
   }) =>
  {
@@ -103,7 +104,10 @@ const AddConsultation = ({
                   <label>Observation</label>
                   <div className="col-md-12">
                     <textarea cols="113" placeholder="Enter your comment here" value={observation} name="observation"
-                      onChange={onChange}></textarea>
+                      onChange={onChange} >
+                      
+                      </textarea>
+                         
                   </div>
                 </div>
               </div>
@@ -250,7 +254,7 @@ const AddConsultation = ({
 
           <div className="text-center m-t-20">
             <button className="btn btn-primary submit-btn" type="submit">Save</button>
-            <button className="btn btn-secondary submit-btn" onClick={createAndDownloadPdf}>Print fiche patient</button>
+            {/* <button className="btn btn-secondary submit-btn" onClick={createAndDownloadPdf}>Print fiche patient</button> */}
 
           </div>
         </form>

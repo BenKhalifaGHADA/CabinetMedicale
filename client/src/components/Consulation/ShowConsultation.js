@@ -28,6 +28,8 @@ const ShowConsultation = ({
         </div>
       </div>
     );
+
+    
   return (
     <div className='page-wrapper'>
       
@@ -64,6 +66,7 @@ const ShowConsultation = ({
          <td> <Moment format='YYYY/MM/DD'>{consultation.date}</Moment></td>
                                 <td>{consultation.observation}</td>
                                 <td>
+                                  
                              <Link
                                     className='btn btn btn-primary btn-rounded'
                                     to={`/dashboard/CreateOrdonnance/${consultation._id}`}>

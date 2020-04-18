@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logoutUser } from '../../actions/authActions';
 import { clearCurrentProfile } from '../../actions/profileActions';
+import PropTypes from 'prop-types';
 
 const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
   const onLogoutClick = () => {
@@ -31,11 +32,10 @@ const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
               className='dropdown-toggle nav-link user-link'
               data-toggle='dropdown'>
               <span className='user-img'>
+                {console.log('ghada',profile)}
                 <img
                   className='rounded-circle'
-                  src={
-                    !profile.profilephoto ? '/default.jpg' : `/${profile.profilephoto}`
-                  }
+                  src={!profile.profilephoto ? '/default.jpg' : `/${profile.profilephoto}`}
                   width='24'
                   alt='Admin'
                 />
@@ -107,11 +107,11 @@ const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
                   </li>
                 </ul>
               </li> */}
-              <li>
+              {/* <li>
                 <Link to='calendar.html'>
                   <i className='fa fa-calendar'></i> <span>Calendar</span>
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>
@@ -119,6 +119,10 @@ const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
     </div>
   );
 };
+NavBar.propTypes = {
+  profile: PropTypes.object.isRequired,
+  
+  };
 const mapState = state => ({
   profile: state.profile.profile,
 });

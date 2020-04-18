@@ -30,7 +30,7 @@ console.log(item)
           <td className="text-center">
             <button
               className="fa fa-minus"
-              onClick={() => deleteOrdonnance(consultId,item._id)} 
+              onClick={() => deleteOrdonnance(consultId,{id:item._id})} 
             ></button>
           </td>
         </tr>

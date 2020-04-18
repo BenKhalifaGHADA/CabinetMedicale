@@ -8,7 +8,6 @@ import { getallConsultations } from "../../actions/consultationActions";
 import InputGroup from "../common/InputGroup";
 import PropTypes from "prop-types";
 import Moment from 'react-moment';
-import Pagination from '../common/Pagination';
 
 const Fichepatient = ({
   profile: { loadingPatient },
@@ -256,8 +255,8 @@ const Fichepatient = ({
            
           </div>
           
-          {/* <Pagination postPerpage={postPerpage} totalPost={consultations.length} paginate={paginate}/> */}
-            {console.log(consultations)}
+          {/* <Pagination postPerpage={postPerpage} totalPost={consultations.length} paginate={paginate}/>
+            {console.log(consultations)} */}
             {/* {consultations.map((exp) => ( */}
               {/* // <div className="row">
               //   <div className="col-md-12">
@@ -322,9 +321,9 @@ const Fichepatient = ({
             ))} */}
           </div>
           
-          <div className="m-t-20 text-center">
+          {/* <div className="m-t-20 text-center">
             <button className="btn btn-primary submit-btn">Print</button>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>

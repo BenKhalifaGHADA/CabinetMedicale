@@ -1,14 +1,14 @@
-import React, { useRef, useState, useEffect } from "react";
-import { withRouter, Link } from "react-router-dom";
+import React, {useState } from "react";
+import { withRouter,Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getCurrentProfile } from "../../actions/profileActions";
 import InputGroup from "../common/InputGroup";
-import ReactToPrint from "react-to-print";
+
 import OrdonItem from './Ordon-item'
 import { addOrdonnance } from "../../actions/ordonnanceAction";
 import { getallConsultationsById } from "../../actions/consultationActions";
-import Spinner from "../common/Spinner";
+
 
 // //package to generate HTML to PDF
 // // import { saveAs } from 'file-saver';
@@ -54,7 +54,7 @@ const Addordonnance = ({
   };
   // ////////////////////////todolist////
 
-  const [task] = useState("");
+  
   // const [todoList, setTodoList] = useState([]);
 
   // //create drug
@@ -63,6 +63,7 @@ const Addordonnance = ({
   //   setTodoList(todoList.concat(task));
   // };
   //-----------------------End Todolist---------////
+ 
   const onSubmit = (e) => {
     e.preventDefault();
     // setTodoList(todoList.concat(task));
@@ -76,6 +77,7 @@ const Addordonnance = ({
     };
     console.log("ordon", consData);
     addOrdonnance(consultationtId, consData, history);
+    
     // getallConsultationsById(match.params.id);
 
     // clearState();
@@ -94,42 +96,13 @@ const Addordonnance = ({
       return (
         <OrdonItem key={item._id} item={item} index={i} consultId={match.params.id} />
 
-        // <tr key={index}>
-        //   <td className="text-center text-muted">{item++}</td>
-        //   <td>
-        //     <div className="widget-content p-0">
-        //       <div className="widget-content-wrapper">
-        //         <div className="widget-content-left flex2">
-        //           <div className="widget-heading">
-        //             {/* <input type="text" name="drug" value={drug} onChange={updateFieldPrescription}/> */}
-        //           </div>
-        //         </div>
-        //       </div>
-        //     </div>
-        //   </td>
-        //   <td className="text-center">
-        //     <input type="text" value={ dose} name="dose" onChange={updateFieldPrescription}  />
-        //   </td>
-        //   <td className="text-center">
-        //     <input type="text" value={duration} name="duration" onChange={updateFieldPrescription} />
-        //   </td>
-        //   <td className="text-center">
-        //     <button
-        //       className="fa fa-minus"
-        //       // onClick={() => removeTodo(index)}
-        //       >
-
-        //     </button>
-        //   </td>
-        // </tr>
       );
     });
 
-  ////////////////////////End to do list////////
-  const componentRef = useRef(Addordonnance);
+ 
+
   return (
     <div className="page-wrapper">
-      {/* {console.log("hi ordonnance",consultations)} */}
       <div className="content">
         <div className="row">
           <div className="col-sm-12">
@@ -138,9 +111,7 @@ const Addordonnance = ({
         </div>
 
         <form onSubmit={onSubmit}>
-          {/* Box Basic Information */}
           <div className="card-box">
-            {/* <h3 className="card-title">Basic Informations</h3> */}
             <div className="row">
               <div className="col-md-6">
                 <div className="form-group form-focus">
@@ -195,17 +166,14 @@ const Addordonnance = ({
 
           <div className="text-center m-t-20">
             <button className="btn btn-primary submit-btn" type="submit">
-              Save
+              Add to prescription
             </button>
           </div>
         </form>
         <div className="card-box">
           <div className="row">
             <div className="col-md-12">
-              {/* <button
-          className="fa fa-plus add-line"
-          onClick={addTaskHandler}
-        ></button> */}
+           
               <div className="table-responsive">
                 <table className="table table-border table-striped custom-table datatable mb-0">
                   <thead>
@@ -215,19 +183,28 @@ const Addordonnance = ({
                       <th>Dose</th>
                       <th>Duration</th>
                       <th>Actions</th>
-                      {/* <th className="text-right">Action</th> */}
+                   
                     </tr>
                   </thead>
                   <tbody>{taskList}</tbody>
                 </table>
               </div>
-              <button
+              {/* <button
                 className="btn btn-secondary submit-btn"
                 // onClick={createAndDownloadPdf}
                 // onClick={() => window.print()}
               >
                 Print Prescription
-              </button>
+              </button> */}
+
+               
+                 <Link className='btn btn btn-primary btn-rounded'
+                       to={`/dashboard/FichePatient/${consultation.patientId}`}>
+                         Save Prescription
+                         
+                  </Link>
+                
+          
             </div>
           </div>
         </div>
@@ -241,7 +218,6 @@ Addordonnance.propTypes = {
   errors: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
-  //   getallConsultationsBypatient: PropTypes.func.isRequired,
   addOrdonnance: PropTypes.func.isRequired,
   getallConsultationsById: PropTypes.func.isRequired,
   createAndDownloadPdf: PropTypes.func.isRequired,
@@ -250,7 +226,6 @@ const mapStateToProps = (state) => ({
   profile: state.profile,
   errors: state.errors,
   auth: state.auth,
-  // consultations: state.profile.consultations,
   consultation: state.profile.consultation,
 });
 

@@ -1,78 +1,51 @@
 import React, { useState } from 'react';
 import { withRouter, Link } from 'react-router-dom';
-
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import SelectListGroup from '../common/SelectListGroup';
-import { getallAppointment,addAppointment } from '../../actions/appointmentActions';
+import { getallAppointment, addAppointment } from '../../actions/appointmentActions';
 import { getCurrentProfile } from '../../actions/profileActions';
-// ------------------For datapicker---------------------
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-//-------------------End datapicker--------------------
 
-
-const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history }) => {
+const Addrendezvous = ({ profile: { profile }, errors, addAppointment, history }) => {
   const [formData, setFormData] = useState({
     date: new Date(),
     time: '',
     typeVisite: '',
-    
-
-
+    patient: '',
   });
-  const [patient,setpatientData]=useState({
-    patientId:'',
-    firstname:'',
-    lastname:''
-  })
   const {
     // date,
     // time,
-    
+    patient,
     typeVisite,
-    
-    
   } = formData;
 
-  //   //-------------------For date of appointment------------------//
   const [date, setDate] = useState(new Date());
-
-  const handleChangeDate = d => {
+  const handleChangeDate = (d) => {
     setDate(d);
   };
-  //   //-------------------End date of appointment------------------//
 
-  //---------------------Begin time of appointment-------------------//
-  const [time,setStartDate]=useState(new Date());
-  const handleChangeTime= T=>{
+  const [time, setStartDate] = useState(new Date());
+  const handleChangeTime = (T) => {
     setStartDate(T);
-  }
-  
-  //---------------------End time of appointment-------------------//
-
-  const onSubmit = e => {
+  };
+  const onSubmit = (e) => {
     e.preventDefault();
-
+    const { patientId, firstname, lastname } = profile.patient[patient - 1];
     const patData = {
       date,
       time,
       typeVisite,
-      patient,
+      patient: { patientId, firstname, lastname },
     };
 
     addAppointment(patData, history);
   };
 
-  const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
-  const onChangePatient = e=>{
-  console.log(e.target.value)
-  let data=e.target.value.split(',');
-  console.log(data)
-  setpatientData({patientId:data[0],firstname:data[1],lastname:data[2]})}
-  console.log('patient',patient)
-  // Select options for type appointment
+  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
   const options = [
     { label: '* Type', value: 0 },
     { label: 'Controle', value: 'Controle' },
@@ -80,15 +53,15 @@ const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history })
   ];
 
   // Select options for name of patient
-  const tabPatients = profile.patient.map(patient => ({
+  const tabPatients = profile.patient.map((patient, index) => ({
     label: `${patient.firstname} ${patient.lastname}`,
-    value: [patient._id,patient.firstname,patient.lastname],
+
+    value: index + 1,
   }));
-  
+
   let optionsPatient;
   if (tabPatients.length > 0) {
     optionsPatient = [{ label: 'choose a patient', value: 0 }, ...tabPatients];
-    console.log('tabpatient',optionsPatient);
   } else {
     optionsPatient = [
       { label: '* Patient', value: 0 },
@@ -114,24 +87,21 @@ const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history })
                 <SelectListGroup
                   name='patient'
                   value={patient}
-                  onChange={onChangePatient}
+                  onChange={onChange}
                   options={optionsPatient}
                 />
 
                 {errors && <div className='invalid-feedback'>{errors.patient}</div>}
-
               </div>
-
             </div>
-            <div className="col-md-6">
+            <div className='col-md-6'>
               <div className='form-group'>
-                Or <Link to="/dashboard/Addpatient">Create a new patient</Link>
-              
+                Or <Link to='/dashboard/Addpatient'>Create a new patient</Link>
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col-md-6">
+          <div className='row'>
+            <div className='col-md-6'>
               <div className='form-group'>
                 <label> Appointment date </label>
                 <DatePicker
@@ -141,33 +111,29 @@ const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history })
                   placeholderText='Click to select a date'
                   isClearable
                 />
-                 {errors && (
-                        <div className='invalid-feedback'>{errors.date}</div>
-                      )}
-                 </div>
+                {errors && <div className='invalid-feedback'>{errors.date}</div>}
+              </div>
             </div>
 
-            <div className="col-md-6">
+            <div className='col-md-6'>
               <div className='form-group'>
                 <label> Appointment time </label>
-               
+
                 <DatePicker
-                  className='form-control' 
+                  className='form-control'
                   selected={time}
                   onChange={handleChangeTime}
                   showTimeSelect
                   showTimeSelectOnly
                   timeIntervals={15}
-                  timeCaption="Time"
-                  dateFormat="h:mm aa"
+                  timeCaption='Time'
+                  dateFormat='h:mm aa'
                 />
-                 {errors && (
-                        <div className='invalid-feedback'>{errors.time}</div>
-                      )}
+                {errors && <div className='invalid-feedback'>{errors.time}</div>}
               </div>
             </div>
 
-            <div className="col-12">
+            <div className='col-12'>
               <div className='form-group'>
                 <label>Type de visite</label>
                 <SelectListGroup
@@ -176,13 +142,9 @@ const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history })
                   onChange={onChange}
                   options={options}
                 />
-                 {errors && (
-                        <div className='invalid-feedback'>{errors.typeVisite}</div>
-                      )}
+                {errors && <div className='invalid-feedback'>{errors.typeVisite}</div>}
               </div>
             </div>
-
-           
           </div>
         </div>
         <div className='row'>
@@ -194,14 +156,8 @@ const Addrendezvous = ({ profile: { profile }, errors,addAppointment, history })
             </form>
           </div>
         </div>
-
-
-
-
       </div>
     </div>
-
-
   );
 };
 
@@ -213,7 +169,7 @@ Addrendezvous.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
   getallAppointment: PropTypes.func.isRequired,
 };
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   profile: state.profile,
   errors: state.errors,
   auth: state.auth,

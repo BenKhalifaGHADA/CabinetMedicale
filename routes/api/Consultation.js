@@ -184,16 +184,16 @@ router.post(
 // @route   DELETE api/consultation/deleteOrdonnance/:ord_id
 // @desc    Delete ordonnance from profile
 // @access  Private
-router.delete(
+router.put(
   '/deleteOrdonnance/:cons_id',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Consultation.findById(req.params.cons_id)
       .then(consultation => {
         // Get remove index
-        console.log('route ordonance', consultation);
-        consultation.ordonnance=consultation.ordonnance.filter(item=> item._id!==req.body.id);
-        console.log('route ordonance', consultation.ordonnance);
+        
+        const updatedConsult = consultation.ordonnance.filter(item=> item._id!=req.body.id);
+        consultation.ordonnance =[...updatedConsult];
         // Save
         consultation.save().then(consultation => res.json(consultation));
       })
