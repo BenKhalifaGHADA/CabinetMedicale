@@ -193,7 +193,7 @@ const EditProfile = ({
             <h3 className='card-title'>Basic Informations</h3>
             <div className='row'>
               <div className='col-md-12'>
-                <div className='profile-img-wrap'>
+              <div class="profile-img-wrap">
                   <img
                     className='inline-block'
                     src={
@@ -204,7 +204,7 @@ const EditProfile = ({
                     alt={user.name}
                   />
                   <div className='fileupload btn'>
-                    <span className='btn-text'>edit</span>
+                    <span className='btn-text'>+</span>
                     <input className='upload' type='file' onChange={onChangeFile} />
                   </div>
                 </div>
