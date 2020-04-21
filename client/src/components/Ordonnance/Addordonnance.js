@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getCurrentProfile } from "../../actions/profileActions";
 import InputGroup from "../common/InputGroup";
-
 import OrdonItem from './Ordon-item'
 import { addOrdonnance } from "../../actions/ordonnanceAction";
 import { getallConsultationsById } from "../../actions/consultationActions";
@@ -52,24 +51,13 @@ const Addordonnance = ({
       [e.target.name]: e.target.value,
     });
   };
-  // ////////////////////////todolist////
-
   
-  // const [todoList, setTodoList] = useState([]);
-
-  // //create drug
-  // const addTaskHandler = (e) => {
-  //   e.preventDefault(); // to prevent default behaviour on submit
-  //   setTodoList(todoList.concat(task));
-  // };
-  //-----------------------End Todolist---------////
  
   const onSubmit = (e) => {
     e.preventDefault();
-    // setTodoList(todoList.concat(task));
-    // setTodoList([...todoList, task]);
+   
     let consultationtId = match.params.id;
-    // console.log("id", consultationtId);
+  
     const consData = {
       drug,
       dose,
@@ -77,6 +65,7 @@ const Addordonnance = ({
     };
     console.log("ordon", consData);
     addOrdonnance(consultationtId, consData, history);
+    setState({...formOrd, drug:'',dose:'',duration:''})
     
     // getallConsultationsById(match.params.id);
 
@@ -106,70 +95,12 @@ const Addordonnance = ({
       <div className="content">
         <div className="row">
           <div className="col-sm-12">
-            <h4 className="page-title">create prescription</h4>
+            <h4 className="page-title">Create prescription</h4>
           </div>
         </div>
 
+       
         <form onSubmit={onSubmit}>
-          <div className="card-box">
-            <div className="row">
-              <div className="col-md-6">
-                <div className="form-group form-focus">
-                  <label>Drug</label>
-                  <div className="col-md-6">
-                    <InputGroup
-                      placeholder="Drug name"
-                      name="drug"
-                      value={drug}
-                      onChange={updateFieldPrescription}
-                      error={errors.drug}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col-md-6">
-                <div className="form-group form-focus">
-                  <label>Dose</label>
-                  <div className="col-md-6">
-                    <InputGroup
-                      placeholder="Drug name"
-                      name="dose"
-                      value={dose}
-                      onChange={updateFieldPrescription}
-                      error={errors.dose}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col-md-6">
-                <div className="form-group form-focus">
-                  <label>Duration</label>
-                  <div className="col-md-6">
-                    <InputGroup
-                      placeholder="Drug name"
-                      name="duration"
-                      value={duration}
-                      onChange={updateFieldPrescription}
-                      error={errors.duration}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center m-t-20">
-            <button className="btn btn-primary submit-btn" type="submit">
-              Add to prescription
-            </button>
-          </div>
-        </form>
         <div className="card-box">
           <div className="row">
             <div className="col-md-12">
@@ -186,7 +117,43 @@ const Addordonnance = ({
                    
                     </tr>
                   </thead>
-                  <tbody>{taskList}</tbody>
+                  <tbody>
+                    <tr>
+                      <td></td>
+                      <td> 
+                        <InputGroup
+                      placeholder="Drug name"
+                      name="drug"
+                      value={drug}
+                      onChange={updateFieldPrescription}
+                      error={errors.drug}
+                    /></td>
+                      <td>
+                      <InputGroup
+                      placeholder="Dose name"
+                      name="dose"
+                      value={dose}
+                      onChange={updateFieldPrescription}
+                      error={errors.dose}
+                    />
+                      </td>
+                      <td>
+                      <InputGroup
+                      placeholder="Duration"
+                      name="duration"
+                      value={duration}
+                      onChange={updateFieldPrescription}
+                      error={errors.duration}
+                    />
+                      </td>
+                      <td className="text-center">
+                      <button className="fa fa-plus add-line" type="submit">
+            
+            </button>
+                      </td>
+                    </tr>
+                    
+                    {taskList}</tbody>
                 </table>
               </div>
               {/* <button
@@ -208,6 +175,7 @@ const Addordonnance = ({
             </div>
           </div>
         </div>
+        </form>
       </div>
     </div>
   );

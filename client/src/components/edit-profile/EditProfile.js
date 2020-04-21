@@ -10,7 +10,11 @@ import {
   getCurrentProfile,
   uploadPhoto,
 } from '../../actions/profileActions';
-
+// ------------------For datapicker---------------------
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+//-------------------End datapicker--------------------
+import Spinner from '../common/Spinner';
 // import Moment from 'react-moment';
 
 const EditProfile = ({
@@ -27,12 +31,12 @@ const EditProfile = ({
     firstname: profile ? profile.firstname : '',
     lastname: profile ? profile.lastname : '',
     gender: profile ? profile.gender : '',
-    birthdate: profile ? profile.birthdate : '',
+    // birthdate: profile ? profile.birthdate : '',
     phone: profile ? profile.phone : '',
-    region: profile ? profile.region : '',
-    State: profile ? profile.State : '',
-    Country: profile ? profile.Country : '',
-    ZipCode: profile ? profile.ZipCode : '',
+    region: profile ? profile.address.region : '',
+    State: profile ? profile.address.State : '',
+    Country: profile ? profile.address.Country : '',
+    ZipCode: profile ? profile.address.ZipCode : '',
     bio: profile ? profile.bio : '',
     twitter: profile ? profile.twitter : '',
     facebook: profile ? profile.facebook : '',
@@ -43,6 +47,14 @@ const EditProfile = ({
     // errors: {},
   });
 
+   //   //-------------------For date of birth------------------//
+    
+   const [birthdate, setDatebirth] = useState(new Date(profile.birthdate));
+
+   const handleChangeDate = date => {
+     setDatebirth(date);
+   };
+   //   //-------------------End date of birth------------------//
   const [file, setFile] = useState('');
   const [preview, setPreview] = useState('/default.jpg');
 
@@ -51,7 +63,7 @@ const EditProfile = ({
     firstname,
     lastname,
     gender,
-    birthdate,
+    // birthdate,
     phone,
     region,
     State,
@@ -160,7 +172,14 @@ const EditProfile = ({
     { label: 'Female', value: 'Female' },
     { label: 'Male', value: 'Male' },
   ];
-
+  if (profile === null)
+  return (
+    <div className="main-wrapper">
+    <div className="content">
+    <Spinner />
+    </div>
+  </div>
+  );
   return (
     <div className='page-wrapper'>
       <div className='content'>
@@ -195,7 +214,7 @@ const EditProfile = ({
                       <div className='form-group form-focus'>
                         <label className='focus-label'>Firstname</label>
                         <InputGroup
-                          placeholder='Your firstname'
+                          placeholder='Firstname'
                           name='firstname'
                           value={firstname}
                           onChange={onChange}
@@ -207,7 +226,7 @@ const EditProfile = ({
                       <div className='form-group form-focus'>
                         <label className='focus-label'>Lastname</label>
                         <InputGroup
-                          placeholder='Your lastname'
+                          placeholder='Lastname'
                           name='lastname'
                           value={lastname}
                           onChange={onChange}
@@ -219,15 +238,18 @@ const EditProfile = ({
                     <div className='col-md-6'>
                       <div className='form-group form-focus'>
                         <label className='focus-label'>Birth Date</label>
-                        <div className='cal-icon'>
-                          <InputGroup
-                            placeholder='Your birth Date'
-                            name='birthdate'
-                            value={birthdate}
-                            onChange={onChange}
-                            error={errors.birthdate}
-                          />
-                        </div>
+                        <DatePicker
+                        className='form-control'
+                        selected={birthdate}
+                        onChange={handleChangeDate}
+                        placeholderText='Click to select a date'
+                        isClearable
+                      />
+                      {errors && (
+                        <div className='invalid-feedback'>{errors.birthdate}</div>
+                      )}
+                          
+                       
                       </div>
                     </div>
 
@@ -252,24 +274,13 @@ const EditProfile = ({
           <div className='card-box'>
             <h3 className='card-title'>Account Informations</h3>
             <div className='row'>
-              <div className='col-md-6'>
-                <div className='form-group form-focus'>
-                  <label className='focus-label'>Username</label>
-                  <InputGroup
-                    placeholder='Your username'
-                    name='handle'
-                    value={handle}
-                    onChange={onChange}
-                    error={errors.handle}
-                  />
-                </div>
-              </div>
+           
+           
 
               <div className='col-md-6'>
                 <div className='form-group form-focus'>
                   <label className='focus-label'>Email</label>
                   <InputGroup
-                    placeholder='Your username'
                     name='email'
                     value={user.email}
                     onChange={onChange}
@@ -289,7 +300,7 @@ const EditProfile = ({
                   <label className='focus-label'>Address</label>
                   {/* <input type="text" className="form-control floating" value="New York"/> */}
                   <InputGroup
-                    placeholder='Your state'
+                    placeholder='Adress'
                     name='region'
                     value={region}
                     onChange={onChange}
@@ -302,7 +313,7 @@ const EditProfile = ({
                   <label className='focus-label'>State</label>
                   {/* <input type="text" className="form-control floating" value="New York"/> */}
                   <InputGroup
-                    placeholder='Your state'
+                    placeholder='State'
                     name='State'
                     value={State}
                     onChange={onChange}
@@ -315,7 +326,7 @@ const EditProfile = ({
                   <label className='focus-label'>Country</label>
                   {/* <input type="text" className="form-control floating" value="United States"/> */}
                   <InputGroup
-                    placeholder='Your Country'
+                    placeholder='Country'
                     name='Country'
                     value={Country}
                     onChange={onChange}
@@ -329,7 +340,7 @@ const EditProfile = ({
                   <label className='focus-label'>Pin Code</label>
                   {/* <input type="text" className="form-control floating" value="10523"/> */}
                   <InputGroup
-                    placeholder='Your Zip code'
+                    placeholder='Zip code'
                     name='ZipCode'
                     value={ZipCode}
                     onChange={onChange}
@@ -343,7 +354,7 @@ const EditProfile = ({
                   <label className='focus-label'>Phone Number</label>
                   {/* <input type="text" className="form-control floating" value="631-889-3206"/> */}
                   <InputGroup
-                    placeholder='Your Number Phone'
+                    placeholder='Number Phone'
                     name='phone'
                     value={phone}
                     onChange={onChange}
@@ -408,6 +419,8 @@ EditProfile.propTypes = {
   errors: PropTypes.object.isRequired,
   createProfile: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
+
 };
 
 const mapStateToProps = state => ({

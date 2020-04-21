@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import {deleteOrdonnance} from '../../actions/ordonnanceAction';
-const OrdonItem =({item,index,deleteOrdonnance,consultId})=>{
+import {deleteOrdon} from '../../actions/ordonnanceAction';
+const OrdonItem =({item,index,deleteOrdon,consultId})=>{
 console.log(item)
     return(<Fragment>
         <tr >
@@ -30,7 +30,7 @@ console.log(item)
           <td className="text-center">
             <button
               className="fa fa-minus"
-              onClick={() => deleteOrdonnance(consultId,{id:item._id})} 
+              onClick={() => deleteOrdon(consultId,{id:item._id})} 
             ></button>
           </td>
         </tr>
@@ -38,6 +38,6 @@ console.log(item)
 }
 
 OrdonItem.propTypes = {
-   deleteOrdonnance: PropTypes.func.isRequired,
+   deleteOrdon: PropTypes.func.isRequired,
   };
-export default connect(null,{deleteOrdonnance})(OrdonItem);
+export default connect(null,{deleteOrdon})(OrdonItem);

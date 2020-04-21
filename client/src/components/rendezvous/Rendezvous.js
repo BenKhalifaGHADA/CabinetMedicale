@@ -55,6 +55,13 @@ const Rendezvous = ({ rendezvous,deleteAppointment }
                                                          
                   <i className='fa fa-trash-o m-r-5'></i> Delete
                 </button>
+
+                <Link
+                className='dropdown-item'
+                to={`/dashboard/Createconsultation/${exp.patient.patientId}`}>
+                <i className='fa fa-address-card m-r-5'></i>Ajouter une consultation
+              </Link>
+              {console.log('ghada',exp)}
               </div>
             </div>
           </td>

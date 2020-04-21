@@ -50,12 +50,16 @@ const Patient = (
                 to={`/dashboard/FichePatient/${exp._id}`}>
                 <i className='fa fa-address-card m-r-5'></i>Fiche patient
               </Link>
-
               <Link
+                            to='/dashboard/AddRendezvous'
+                            className='dropdown-item'>
+                            <i className='fa fa-address-card m-r-5'></i> Add appointments 
+              </Link>
+              {/* <Link
                 className='dropdown-item'
                 to={`/dashboard/Createconsultation/${exp._id}`}>
                 <i className='fa fa-address-card m-r-5'></i>Ajouter une consultation
-              </Link>
+              </Link> */}
 
               <button
                     className='dropdown-item'

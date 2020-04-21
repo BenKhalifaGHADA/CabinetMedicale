@@ -12,7 +12,7 @@ const pdfTemplate = require('./documents');
 const validateProfileInput = require('../../validation/profile');
 const validatePatientInput = require('../../validation/patient');
 const validateAppointmentInput = require('../../validation/appointment');
-const validateConsultationInput=require('../../validation/consultation');
+// const validateConsultationInput=require('../../validation/consultation');
 //Load Profile model
 const Profile = require('../../models/Profile');
 //Load User model
@@ -307,6 +307,21 @@ router.get(
     }
   }
 );
+// get appointment by id
+router.get(
+  '/appointment/:id',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then((profile) => {
+        const appointment = profile.rendezvous.find(
+          (item) => item._id.toString() === req.params.id
+        );
+        res.json(appointment);
+      })
+      .catch((err) => res.status(404).json({ nopostfound: 'No consultation found' }));
+  }
+);
 // @route   POST api/profile/appointment
 // @desc    Add appointment to profile
 // @access  Private
@@ -316,12 +331,11 @@ router.post(
   (req, res) => {
     const { errors, isValid } = validateAppointmentInput(req.body);
 
-    // Check Validation
-    if (!isValid) {
+       // Check Validation
+     if (!isValid) {
       // Return any errors with 400 status
       return res.status(400).json(errors);
     }
-
     Profile.findOne({ user: req.user.id }).then(profile => {
       const newRendezvous = {
         date: req.body.date,
@@ -332,7 +346,7 @@ router.post(
           lastname:req.body.patient.lastname,
         },
         typeVisite: req.body.typeVisite,
-        NbreVisiteEffectuer: req.body.NbreVisiteEffectuer,
+        
       };
 
       // Add to exp array

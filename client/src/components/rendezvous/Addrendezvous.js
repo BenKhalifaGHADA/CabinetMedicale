@@ -8,6 +8,8 @@ import { getCurrentProfile } from '../../actions/profileActions';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+
+
 const Addrendezvous = ({ profile: { profile }, errors, addAppointment, history }) => {
   const [formData, setFormData] = useState({
     date: new Date(),
@@ -33,13 +35,18 @@ const Addrendezvous = ({ profile: { profile }, errors, addAppointment, history }
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    const { patientId, firstname, lastname } = profile.patient[patient - 1];
+    let firstname=patient>0?profile.patient[patient - 1].firstname:'';
+    let lastname=patient>0?profile.patient[patient - 1].lastname:'';
+    let patientId=patient>0?profile.patient[patient-1]._id:'';
+    
     const patData = {
       date,
       time,
       typeVisite,
       patient: { patientId, firstname, lastname },
     };
+    console.log('addrendezvos.js' , patData)
+    console.log('addrendezvos.js' , patientId)
 
     addAppointment(patData, history);
   };
@@ -84,14 +91,16 @@ const Addrendezvous = ({ profile: { profile }, errors, addAppointment, history }
             <div className='col-md-6 '>
               <div className='form-group'>
                 <label>Patient Name</label>
+                
                 <SelectListGroup
                   name='patient'
                   value={patient}
                   onChange={onChange}
                   options={optionsPatient}
+                 
                 />
 
-                {errors && <div className='invalid-feedback'>{errors.patient}</div>}
+               
               </div>
             </div>
             <div className='col-md-6'>
@@ -111,7 +120,7 @@ const Addrendezvous = ({ profile: { profile }, errors, addAppointment, history }
                   placeholderText='Click to select a date'
                   isClearable
                 />
-                {errors && <div className='invalid-feedback'>{errors.date}</div>}
+                {errors && <div style={{display:'block'}} className='invalid-feedback'>{errors.date}</div>}
               </div>
             </div>
 
@@ -120,7 +129,7 @@ const Addrendezvous = ({ profile: { profile }, errors, addAppointment, history }
                 <label> Appointment time </label>
 
                 <DatePicker
-                  className='form-control'
+                  className='form-control '
                   selected={time}
                   onChange={handleChangeTime}
                   showTimeSelect
@@ -129,7 +138,7 @@ const Addrendezvous = ({ profile: { profile }, errors, addAppointment, history }
                   timeCaption='Time'
                   dateFormat='h:mm aa'
                 />
-                {errors && <div className='invalid-feedback'>{errors.time}</div>}
+                {errors && <div style={{display:'block'}} className='invalid-feedback'>{errors.time}</div>}
               </div>
             </div>
 
@@ -141,8 +150,12 @@ const Addrendezvous = ({ profile: { profile }, errors, addAppointment, history }
                   value={typeVisite}
                   onChange={onChange}
                   options={options}
+                  error={errors.typeVisite}
                 />
                 {errors && <div className='invalid-feedback'>{errors.typeVisite}</div>}
+
+
+                
               </div>
             </div>
           </div>

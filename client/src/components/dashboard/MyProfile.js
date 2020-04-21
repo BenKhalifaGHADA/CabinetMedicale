@@ -3,11 +3,22 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import Moment from 'react-moment';
-
+import Spinner from '../common/Spinner';
 const MyProfile = ({ profile, auth: { user } }) => {
-  if (profile !== null && Object.keys(profile).length === 0) {
+ 
+
+  if (profile !== null && Object.keys(profile) === 0) {
     return <Redirect to='/dashboard/welcome' />;
   }
+
+  if (profile==null)
+  return (
+  <div className="main-wrapper">
+      <div className="content">
+      <Spinner />
+      </div>
+    </div>
+  );
   return (
     <div className='page-wrapper'>
       <div className='content'>
@@ -28,9 +39,7 @@ const MyProfile = ({ profile, auth: { user } }) => {
               <div className='profile-view'>
                 <div className='profile-img-wrap'>
                   <div className='profile-img'>
-                    <a href=' '>
-                      <img className='avatar' src={`/${profile.profilephoto}`} alt='' />
-                    </a>
+                     <img className='avatar' src={`/${profile.profilephoto}`} alt='' />
                   </div>
                 </div>
                 <div className='profile-basic'>
@@ -66,8 +75,8 @@ const MyProfile = ({ profile, auth: { user } }) => {
                         <li>
                           <span className='title'>Address:</span>
                           <span className='text'>
-                            {profile.region} {profile.Country} {profile.State}{' '}
-                            {profile.ZipCode}{' '}
+                            {profile.address.region} {profile.address.Country} {profile.address.State}{' '}
+                            {profile.address.ZipCode}{' '}
                           </span>
                         </li>
                         <li>
@@ -89,10 +98,12 @@ const MyProfile = ({ profile, auth: { user } }) => {
 
 MyProfile.propTypes = {
   auth: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  profile: state.profile.profile,
 });
 
 export default connect(mapStateToProps)(MyProfile);

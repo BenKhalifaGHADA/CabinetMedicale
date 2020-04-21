@@ -10,6 +10,7 @@ const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
     clearCurrentProfile();
     logoutUser();
   };
+  
   return (
     <div className='main-wrapper'>
       <div className='header'>
@@ -35,9 +36,9 @@ const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
                 {console.log('ghada',profile)}
                 <img
                   className='rounded-circle'
-                  src={!profile.profilephoto ? '/default.jpg' : `/${profile.profilephoto}`}
+                  src={!profile ? 'uploads/default.jpg' : `/${profile.profilephoto}`}
                   width='24'
-                  alt='Admin'
+                  // alt='Admin'
                 />
                 <span className='status online'></span>
               </span>
@@ -47,7 +48,8 @@ const NavBar = ({ user, profile, logoutUser, clearCurrentProfile }) => {
               <Link className='dropdown-item' to='/dashboard/profile'>
                 My Profile
               </Link>
-              {Object.keys(profile).length > 0 && (
+             
+              {profile && Object.keys(profile).length > 0 && (
                 <Link className='dropdown-item' to={'/dashboard/editprofile'}>
                   Edit Profile
                 </Link>

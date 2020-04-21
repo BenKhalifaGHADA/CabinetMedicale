@@ -10,7 +10,7 @@ import Spinner from "../common/Spinner";
 
 const Consultation = ({
   consultation,
-   deleteConsultation},
+  },
   // 
 ) => {
   console.log(consultation)

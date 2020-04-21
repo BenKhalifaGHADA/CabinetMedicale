@@ -18,7 +18,7 @@ import {
 const initialState = {
   profile: null,
   profiles: null,
-  loading: true,
+  loading: false,
   patient: null,
   consultations: null,
   consultation:null,

@@ -56,7 +56,7 @@ class Register extends Component {
                     <img src={require('../img/logo-dark.png')} alt="" />
                     </Link>
                 </div>
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label htmlFor="name">Username</label>
                   <input
                     onChange={this.onChange}
@@ -70,7 +70,7 @@ class Register extends Component {
                  {errors.name && (
                     <div className="invalid-feedback">{errors.name}</div>
                   )}
-                </div>
+                </div> */}
                 <div className="form-group">
                   <label htmlFor="email">Email Address</label>
                   <input

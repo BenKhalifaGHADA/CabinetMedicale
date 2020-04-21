@@ -1,76 +1,71 @@
-import React from "react";
-import { connect } from "react-redux";
-import { withRouter, Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import { deleteOrdonnance } from "../../actions/ordonnanceAction";
-import Spinner from "../common/Spinner";
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { deleteOrdonnance } from '../../actions/ordonnanceAction';
+import Spinner from '../common/Spinner';
 
 const Ordonnance = ({
+  deleteOrdonnance,
   location: {
-    state: { ordon},
+    state: { ordon },
   },
   history,
 }) => {
- 
   console.log(ordon);
   if (ordon === null)
     return (
-      <div className="main-wrapper">
-        <div className="content">
-        <Spinner />
+      <div className='main-wrapper'>
+        <div className='content'>
+          <Spinner />
         </div>
       </div>
     );
   return (
     <div className='page-wrapper'>
-      
-    <div className='content'>
-      <div className='row'>
-        <div className='col-sm-4 col-3'>
-          <h4 className='page-title'>Prescription</h4>
+      <div className='content'>
+        <div className='row'>
+          <div className='col-sm-4 col-3'>
+            <h4 className='page-title'>Prescription</h4>
+          </div>
+          <div className='col-sm-8 col-9 text-right m-b-20'>
+            <button
+              type='submit'
+              onClick={() => deleteOrdonnance({ id: ordon._id })}
+              className='btn btn btn-danger btn-rounded float-right'>
+              <i className='fa fa-close'></i> Delete
+            </button>
+            <Link to='' className='btn btn btn-primary btn-rounded float-right'>
+              <i className='fa fa-print'></i> Print
+            </Link>
+
+            <Link
+              className='btn btn btn-primary btn-rounded float-right'
+              to={`/dashboard/FichePatient/${ordon.user}`}>
+              <i className='fa fa-plus'></i> Back
+            </Link>
+          </div>
         </div>
-        <div className='col-sm-8 col-9 text-right m-b-20'>
-          
-       
-       <button type="submit" onClick={()=>deleteOrdonnance(ordon._id,history)} className='btn btn btn-danger btn-rounded float-right'>
-            <i className='fa fa-close'></i> Delete
-          </button>
-        <Link
 
-        
-            to=''
-            className='btn btn btn-primary btn-rounded float-right'>
-            <i className='fa fa-print'></i> Print
-          </Link>
-
-          <Link className='btn btn btn-primary btn-rounded float-right'
-                       to={`/dashboard/FichePatient/${ordon.user}`}>
-                        <i className='fa fa-plus'></i> Back
-                         
-                  </Link>
-         
-        </div>
-      </div>
-
-      <div className='row'>
-        <div className='col-md-12'>
-        <div className="table-responsive">
-        <table className="table table-border table-striped custom-table datatable mb-0">
-          <thead>
-            <tr>
-              <th>Drug</th>
-              <th>Dose</th>
-              <th>Duration</th>
-              {/* <th className="text-right">Action</th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {ordon.ordonnance.map((exp) => (
-              <tr key={exp._id}>
-                 <td>{exp.drug}</td>
-                 <td>{exp.dose}</td>
-                 <td>{exp.duration}</td>
-                 {/* <td className="text-right">
+        <div className='row'>
+          <div className='col-md-12'>
+            <div className='table-responsive'>
+              <table className='table table-border table-striped custom-table datatable mb-0'>
+                <thead>
+                  <tr>
+                    <th>Drug</th>
+                    <th>Dose</th>
+                    <th>Duration</th>
+                    {/* <th className="text-right">Action</th> */}
+                  </tr>
+                </thead>
+                <tbody>
+                  {ordon.ordonnance.map((exp) => (
+                    <tr key={exp._id}>
+                      <td>{exp.drug}</td>
+                      <td>{exp.dose}</td>
+                      <td>{exp.duration}</td>
+                      {/* <td className="text-right">
                   <div className="dropdown dropdown-action">
                     <a
                       href=" "
@@ -116,15 +111,15 @@ const Ordonnance = ({
                     </div>
                   </div>
                 </td> */}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* <div id='delete_patient' className='modal fade delete-modal' role='dialog'>
+        {/* <div id='delete_patient' className='modal fade delete-modal' role='dialog'>
         <div className='modal-dialog modal-dialog-centered'>
           <div className='modal-content'>
             <div className='modal-body text-center'>
@@ -142,11 +137,8 @@ const Ordonnance = ({
           </div>
         </div>
       </div> */}
+      </div>
     </div>
-  </div>
-
-
-
   );
 };
 

@@ -9,6 +9,7 @@ import SelectListGroup from '../common/SelectListGroup';
 // ------------------For datapicker---------------------
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import './Addpatient.css';
 //-------------------End datapicker--------------------
 const Addpatient = ({ errors, history, addPatient }) => {
   const [formData, setFormData] = useState({
@@ -99,7 +100,8 @@ const Addpatient = ({ errors, history, addPatient }) => {
         <div className='col-md-6'>
         <div className='form-group'>
                     <label>
-                      Firstname <span className='text-danger'>*</span>
+                      Firstname 
+                      {/* <span className='text-danger'>*</span> */}
                     </label>
                     {/* <input className="form-control" type="text" /> */}
                     <InputGroup
@@ -114,10 +116,10 @@ const Addpatient = ({ errors, history, addPatient }) => {
         <div className='col-md-6'>
         <div className='form-group'>
                     <label>
-                      Lastname <span className='text-danger'>*</span>
+                      Lastname
+                       {/* <span className='text-danger'>*</span> */}
                     </label>
-                    {/* <input className="form-control" type="text" /> */}
-                    <InputGroup
+                     <InputGroup
                       placeholder='Lastname'
                       name='lastname'
                       value={lastname}
@@ -129,9 +131,7 @@ const Addpatient = ({ errors, history, addPatient }) => {
 
         <div className='col-md-6'>
         <div className='form-group'>
-                    <label>
-                      Email <span className='text-danger'>*</span>
-                    </label>
+                    <label>Email</label>
                     <InputGroup
                       placeholder='Email'
                       name='email'
@@ -147,7 +147,6 @@ const Addpatient = ({ errors, history, addPatient }) => {
                     <label>
                       Profession 
                     </label>
-                    {/* <input className="form-control" type="text" /> */}
                     <InputGroup
                       placeholder='Profession'
                       name='profession'
@@ -161,23 +160,24 @@ const Addpatient = ({ errors, history, addPatient }) => {
         <div className='col-md-6'>
         <div className='form-group'>
                     <label>Date of Birth</label>
-                    <div className='cal-icon'>
+                   
                       <DatePicker
                         className='form-control'
                         selected={Datebirth}
                         onChange={handleChangeDate}
                         placeholderText='Click to select a date'
                         isClearable
+                        
                       />
                       {errors && (
                         <div className='invalid-feedback'>{errors.Datebirth}</div>
                       )}
-                    </div>
                   </div>
+                  
         </div>
 
         <div className='col-md-6'>
-        <div className='form-group form-focus select-focus'>
+        <div className='form-group '>
                     <label className='focus-label'>Gendar</label>
                     <SelectListGroup
                       placeholder='Gender'
@@ -202,7 +202,7 @@ const Addpatient = ({ errors, history, addPatient }) => {
               <div className='form-group'>
                         <label>Address</label>
                         <InputGroup
-                          placeholder="adresse"
+                          placeholder="Adress"
                           name='adresse'
                           value={adresse}
                           onChange={onChange}
@@ -211,37 +211,13 @@ const Addpatient = ({ errors, history, addPatient }) => {
                       </div>
               </div>
 
-              <div className='col-md-6'>
-              <div className='form-group'>
-                        <label>Country</label>
-                        <InputGroup
-                          placeholder='Your Country'
-                          name='country'
-                          value={country}
-                          onChange={onChange}
-                          error={errors.country}
-                        />
-                      </div>
-              </div>
-
-              <div className="col--md-6">
-              <div className='form-group'>
-                        <label>State</label>
-                        <InputGroup
-                          placeholder='Your City'
-                          name='city'
-                          value={city}
-                          onChange={onChange}
-                          error={errors.city}
-                        />
-                      </div>
-              </div>
+              
 
               <div className="col-md-6">
               <div className='form-group'>
-                        <label>postal code</label>
+                        <label>Zip code</label>
                         <InputGroup
-                          placeholder='Your postal code'
+                          placeholder='Zip Code'
                           name='zipcode'
                           value={zipcode}
                           onChange={onChange}
@@ -250,11 +226,49 @@ const Addpatient = ({ errors, history, addPatient }) => {
                       </div>
               </div>
 
-              <div className="col-md-6">
+            
+
+              
+
+             
+            </div>
+            <div className="row">
+            <div className='col-md-6'>
+              <div className='form-group'>
+                        <label>Country</label>
+                        <InputGroup
+                          placeholder='Country'
+                          name='country'
+                          value={country}
+                          onChange={onChange}
+                          error={errors.country}
+                        />
+                      </div>
+              </div>
+
+              {/* ////////////////////// */}
+              <div className='col-md-6'>
+              <div className='form-group'>
+                        <label>City</label>
+                        <InputGroup
+                          placeholder='City'
+                          name='city'
+                          value={city}
+                          onChange={onChange}
+                          error={errors.city}
+                        />
+                      </div>
+              </div>
+
+            
+            </div>
+
+            <div className="row">
+            <div className="col-md-6">
               <div className='form-group'>
                         <label>Phone </label>
                         <InputGroup
-                          placeholder='Your phone'
+                          placeholder='phone'
                           name='phone'
                           value={phone}
                           onChange={onChange}
@@ -262,10 +276,6 @@ const Addpatient = ({ errors, history, addPatient }) => {
                         />
                         {errors && <div className='invalid-feedback'>{errors.phone}</div>}
                       </div>
-              </div>
-
-              <div className="col-md-6">
-                
               </div>
             </div>
         </div>      
@@ -297,7 +307,7 @@ const Addpatient = ({ errors, history, addPatient }) => {
                     </label>
                     {/* <input className="form-control" type="text" /> */}
                     <InputGroup
-                      placeholder='cnam'
+                      placeholder='CNAM'
                       name='cnam'
                       value={cnam}
                       onChange={onChange}
@@ -313,7 +323,7 @@ const Addpatient = ({ errors, history, addPatient }) => {
             <div className='row'>
               <div className='col-md-12'>
               <div className='form-group'>
-                    <label>Avatar</label>
+                  
                     <div className='profile-upload'>
                       <div className='upload-img'>
                         <img alt='' src='assets/img/user.jpg' />

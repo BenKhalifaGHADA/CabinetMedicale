@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {  getCurrentProfile } from '../../actions/profileActions';
 import { getallConsultationsBypatient,addConsultation } from "../../actions/consultationActions";
 import Spinner from "../common/Spinner";
+import InputGroup from "../common/InputGroup";
 
 // //package to generate HTML to PDF
 // // import { saveAs } from 'file-saver';
@@ -102,12 +103,14 @@ const AddConsultation = ({
               <div className="col-md-12">
                 <div className="form-group form-focus">
                   <label>Observation</label>
-                  <div className="col-md-12">
-                    <textarea cols="113" placeholder="Enter your comment here" value={observation} name="observation"
-                      onChange={onChange} >
-                      
-                      </textarea>
-                         
+                  <div className="col-md-11">
+                    <InputGroup
+                      placeholder="Observation"
+                      name="observation"
+                      value={observation}
+                      onChange={onChange}
+                      error={errors.observation}
+                    />  
                   </div>
                 </div>
               </div>

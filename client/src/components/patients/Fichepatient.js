@@ -246,7 +246,7 @@ const Fichepatient = ({
                    {/* {exp.ordonnance.map((item) => {
                      item.date;
                    })} */}
-                   ;
+                   
                  </td>
                </tr>
                 ))}

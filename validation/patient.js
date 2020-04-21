@@ -7,7 +7,6 @@ module.exports = function validatePatientInput(data) {
   data.firstname = !isEmpty(data.firstname) ? data.firstname : '';
   data.lastname = !isEmpty(data.lastname) ? data.lastname : '';
   data.email = !isEmpty(data.email) ? data.email : '';
-
   
 
   if (!Validator.isLength(data.firstname, { min: 2, max: 40 })) {
