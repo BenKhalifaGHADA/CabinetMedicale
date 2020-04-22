@@ -4,18 +4,18 @@ import { withRouter, Link } from "react-router-dom";
 import Spinner from "../common/Spinner";
 import { getPatientById } from "../../actions/patientAction";
 import { getCurrentProfile } from "../../actions/profileActions";
-import { getallConsultations } from "../../actions/consultationActions";
+import { getallConsultationsBypatient } from "../../actions/consultationActions";
 import InputGroup from "../common/InputGroup";
 import PropTypes from "prop-types";
-import Moment from 'react-moment';
+import Moment from "react-moment";
 
 const Fichepatient = ({
-  profile: { loadingPatient },
+  profile: { loadingPatient,loadingConsultation },
   patient,
   match,
   getPatientById,
   errors,
-  getallConsultations,
+  getallConsultationsBypatient,
   consultations,
 }) => {
   const [formData, setFormData] = useState({
@@ -28,10 +28,14 @@ const Fichepatient = ({
     CNAM: "",
     Datebirth: "",
   });
-
   useEffect(() => {
     getPatientById(match.params.id);
-    if (patient)
+    getallConsultationsBypatient(match.params.id);
+  }, []);
+   
+    
+    useEffect(() => {
+      if (!loadingPatient)
       setFormData({
         ...formData,
         firstname: patient.firstname,
@@ -43,7 +47,7 @@ const Fichepatient = ({
         CNAM: patient.CNAM,
         Datebirth: patient.Datebirth,
       });
-  }, [loadingPatient]);
+    }, [loadingPatient]);
 
   const {
     firstname,
@@ -55,27 +59,24 @@ const Fichepatient = ({
     CNAM,
     Datebirth,
   } = formData;
-  useEffect(() => {
-    getallConsultations();
-  }, []);
 
-  if (loadingPatient || consultations === null)
+  if (loadingPatient||loadingConsultation)
     return (
       <div className="main-wrapper">
         <div className="content">
-        <Spinner />
+          <Spinner />
         </div>
       </div>
     );
 
-    //-----------Begin pagination------------
+  //-----------Begin pagination------------
   // const [currentPage,setCurrentPage]=useState(1);
   // const [postPerpage,setPostPerPage]=useState(5);
   // const indexOfLastPost=currentPage*postPerpage;
   // const indexOfFirstPost=indexOfLastPost-postPerpage;
   // const currentConsultation=consultations.slice(indexOfFirstPost,indexOfLastPost);
-  // const paginate=(pagenumber)=> setCurrentPage(pagenumber); 
-  
+  // const paginate=(pagenumber)=> setCurrentPage(pagenumber);
+
   //-----------End Pagination-----------------
 
   return (
@@ -130,7 +131,7 @@ const Fichepatient = ({
                             name="Datebirth"
                             value={Datebirth}
                             // onChange={onChange}
-                           // error={errors.birthdate}
+                            // error={errors.birthdate}
                             disabled
                           />
                         </div>
@@ -219,65 +220,68 @@ const Fichepatient = ({
           </div>
           <div className="card-box">
             <h3 className="card-title">Liste des consulations</h3>
-            <div className='table-responsive'>
-            <table className='table table-border table-striped custom-table datatable mb-0'>
-              <thead>
-                <tr>
-                <th>Date</th>
-                <th>Observation</th>
-                <th>Ordonnance</th>
-                {/* <th className='text-right'>Action</th> */}
-                </tr>
-              </thead>
-              <tbody>
-              {consultations.map((exp) => (
-                 <tr>
-                 <td> <Moment format='YYYY/MM/DD'>{exp.date}</Moment></td>
-                 <td>{exp.observation}</td>
-                 <td>
-                   <Link
-                     to={{
-                       pathname: "/dashboard/ShowAllOrdonnance",
-                       state: { ordon:exp },
-                     }}
-                   >
-                     <button className='btn btn-secondary'>Show prescription </button>
-                   </Link>
-                   {/* {exp.ordonnance.map((item) => {
+            <div className="table-responsive">
+              <table className="table table-border table-striped custom-table datatable mb-0">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Observation</th>
+                    <th>Ordonnance</th>
+                    {/* <th className='text-right'>Action</th> */}
+                  </tr>
+                </thead>
+                <tbody>
+                  {consultations.map((exp) => (
+                    <tr>
+                      <td>
+                        {" "}
+                        <Moment format="YYYY/MM/DD">{exp.date}</Moment>
+                      </td>
+                      <td>{exp.observation}</td>
+                      <td>
+                        <Link
+                          to={{
+                            pathname: "/dashboard/ShowAllOrdonnance",
+                            state: { ordon: exp },
+                          }}
+                        >
+                          <button className="btn btn-secondary">
+                            Show prescription{" "}
+                          </button>
+                        </Link>
+                        {/* {exp.ordonnance.map((item) => {
                      item.date;
                    })} */}
-                   
-                 </td>
-               </tr>
-                ))}
-              </tbody>
-            </table>
-           
-          </div>
-          
-          {/* <Pagination postPerpage={postPerpage} totalPost={consultations.length} paginate={paginate}/>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* <Pagination postPerpage={postPerpage} totalPost={consultations.length} paginate={paginate}/>
             {console.log(consultations)} */}
             {/* {consultations.map((exp) => ( */}
-              {/* // <div className="row">
+            {/* // <div className="row">
               //   <div className="col-md-12">
               //     <div className="accordion" id="accordionExample">
               //       <div className="card">
               //         <div className="card-header" id="headingOne">
               //           <h2 className="mb-0">
               //             <button */}
-              {/* //               className="btn btn-primary"
+            {/* //               className="btn btn-primary"
               //               type="button"
               //               data-toggle="collapse"
               //               data-target="#collapseOne"
               //               aria-expanded="true"
               //               aria-controls="collapseOne"
               //             > */}
-              {/* //               {exp.date}
+            {/* //               {exp.date}
               //             </button>
               //           </h2>
               //         </div>
               //         <div */}
-              {/* //           id="collapseOne"
+            {/* //           id="collapseOne"
               //           className="collapse show"
               //           aria-labelledby="headingOne"
               //           data-parent="#accordionExample"
@@ -297,8 +301,8 @@ const Fichepatient = ({
               //                   <td>{exp.observation}</td>
               //                   <td>
               ///                     <Link */}
-              {/* //                       to={{ */}
-              {/* //                         pathname: "/dashboard/ShowAllOrdonnance",
+            {/* //                       to={{ */}
+            {/* //                         pathname: "/dashboard/ShowAllOrdonnance",
               //                         state: { ordon:exp },
               //                       }}
               //                     >
@@ -307,20 +311,20 @@ const Fichepatient = ({
               //                     {/* {exp.ordonnance.map((item) => {
               //                       item.date;
               //                     })} */}
-              {/* //                     ;
+            {/* //                     ;
               //                   </td>
               //                 </tr>
               //               </tbody>
               //             </table> */}
-              {/* //           </div>
+            {/* //           </div>
               //         </div>
               //       </div>
               //     </div> */}
-              {/* //   </div>
+            {/* //   </div>
               // </div>
             ))} */}
           </div>
-          
+
           {/* <div className="m-t-20 text-center">
             <button className="btn btn-primary submit-btn">Print</button>
           </div> */}
@@ -350,5 +354,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getPatientById,
   getCurrentProfile,
-  getallConsultations,
+  getallConsultationsBypatient,
 })(withRouter(Fichepatient));

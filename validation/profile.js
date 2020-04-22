@@ -8,11 +8,11 @@ module.exports = function validateProfileInput(data) {
   data.email = !isEmpty(data.email) ? data.email : "";
   data.Country = !isEmpty(data.Country) ? data.Country : "";
 
-  data.handle = !isEmpty(data.handle) ? data.handle : '';
+  // data.handle = !isEmpty(data.handle) ? data.handle : '';
                     
-  if (!Validator.isLength(data.handle, { min: 2, max: 40 })) {
-    errors.handle = 'Handle needs to between 2 and 4 characters';
-  }
+  // if (!Validator.isLength(data.handle, { min: 2, max: 40 })) {
+  //   errors.handle = 'Handle needs to between 2 and 4 characters';
+  // }
    
   
   // if (!isEmpty(data.handle)) {

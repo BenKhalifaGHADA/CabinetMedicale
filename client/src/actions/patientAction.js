@@ -4,6 +4,7 @@ import {
   GET_PROFILE,
   GET_ERRORS,
   GET_PATIENT,
+  PATIENT_LOADING,
   UPDATE_PATIENT
 } from './types';
 
@@ -49,7 +50,7 @@ export const addPatient = (expData, photo, history) => async dispatch => {
   
   // get patient by id
   export const getPatientById = patient_id => async dispatch => {
-    dispatch(getCurrentProfile());
+   dispatch({type:PATIENT_LOADING});
     try {
       const res = await axios.get(`/api/profile/patient/${patient_id}`);
       dispatch({

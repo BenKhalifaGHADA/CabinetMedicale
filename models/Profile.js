@@ -11,11 +11,7 @@ const ProfileSchema = new Schema({
     type: String,
     default: 'default.jpg',
   },
-  handle: {
-    type: String,
-    required:true,
-    max: 40
-  },
+  
   firstname: {
     type: String,
     

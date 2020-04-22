@@ -7,7 +7,7 @@ const OrdonItem =({item,index,deleteOrdon,consultId})=>{
 console.log(item)
     return(<Fragment>
         <tr >
-          <td className="text-center text-muted">{index++}</td>
+          <td className="text-center text-muted">{index+1}</td>
           <td>
             <div className="widget-content p-0">
               <div className="widget-content-wrapper">

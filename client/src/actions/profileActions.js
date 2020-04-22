@@ -3,6 +3,7 @@ import axios from 'axios';
 import {
   GET_PROFILE,
   PROFILE_LOADING,
+  PROFILE_NOT_FOUND,
   CLEAR_CURRENT_PROFILE,
   GET_ERRORS,
   SET_CURRENT_USER,
@@ -21,17 +22,17 @@ export const getCurrentProfile = () => async dispatch => {
     });
   } catch (err) {
     dispatch({
-      type: GET_ERRORS,
-      // type: GET_PROFILE, (cest l'instruction d'origin)
-      payload: err.response.data,
+      type: PROFILE_NOT_FOUND,
+      
     });
   }
 };
 
 // Create Profile
 export const createProfile = (profileData, history) => async dispatch => {
+  dispatch(setProfileLoading())
   try {
-    const res = axios.post('/api/profile', profileData);
+    const res = await axios.post('/api/profile', profileData);
     dispatch({
       type: GET_PROFILE,
       payload: res.data,

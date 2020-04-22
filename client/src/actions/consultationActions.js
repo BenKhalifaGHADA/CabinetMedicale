@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import {
   GET_CONSULTATIONS,
+  CONSULTATION_LOADING,
   GET_ERRORS,
   GET_CONSULTATION
 } from './types';
@@ -10,6 +11,7 @@ import {getCurrentProfile} from './profileActions';
 //Get all consultation
   export const getallConsultations = () => dispatch => {
     // dispatch(setProfileLoading());
+    dispatch({type:CONSULTATION_LOADING});
     axios
       .get('/api/consultation/all')
       .then(res =>
@@ -28,6 +30,7 @@ import {getCurrentProfile} from './profileActions';
  //Get all consultation by id patient
  export const getallConsultationsBypatient = (id) => dispatch => {
   // dispatch(getCurrentProfile());
+  dispatch({type:CONSULTATION_LOADING});
   axios
     .get(`/api/consultation/patient/${id}`)
     .then(res =>

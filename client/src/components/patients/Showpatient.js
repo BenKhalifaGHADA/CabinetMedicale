@@ -62,24 +62,7 @@ const Showpatient = ({profile}
         </div>
       </div>
       
-      <div id='delete_patient' className='modal fade delete-modal' role='dialog'>
-        <div className='modal-dialog modal-dialog-centered'>
-          <div className='modal-content'>
-            <div className='modal-body text-center'>
-              <img src='assets/img/sent.png' alt='' width='50' height='46' />
-              <h3>Are you sure want to delete this Patient?</h3>
-              <div className='m-t-20'>
-                <Link to="#"  className='btn btn-white' data-dismiss='modal'>
-                  Close
-                </Link>
-                <button className='btn btn-danger' data-dismiss='modal'>
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+     
       <Pagination postPerpage={postPerpage} totalPost={(profile.patient).length} paginate={paginate}/>
     </div>
     

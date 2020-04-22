@@ -6,6 +6,7 @@ import InputGroup from '../common/InputGroup';
 import SelectListGroup from '../common/SelectListGroup';
 import {getPatientById,updatePatient} from '../../actions/patientAction'
 import {getCurrentProfile} from '../../actions/profileActions';
+import Spinner from '../common/Spinner';
 
 
 const Editpatient = ({
@@ -32,13 +33,12 @@ const Editpatient = ({
     cnam:'',
     assurance:'',
   });
-  // useEffect(() => {
-  //   getPatientById(match.params.id);
-   
-  // }, []);
   useEffect(() => {
     getPatientById(match.params.id);
-    if (patient)
+   
+  }, []);
+  useEffect(() => {
+    if (!loadingPatient)
       setFormData({
         ...formData,
         firstname: patient.firstname,
@@ -105,12 +105,12 @@ const Editpatient = ({
     { label: 'Male', value: 'Male' },
   ];
 
-  // if (loadingPatient)
-  //   return (
-  //     <div className='main-wrapper'>
-  //       <Spinner />
-  //     </div>
-  //   );
+  if (loadingPatient)
+    return (
+      <div className='main-wrapper'>
+        <Spinner />
+      </div>
+    );
 
   return (
     <div className='page-wrapper'>
