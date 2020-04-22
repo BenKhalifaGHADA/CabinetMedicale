@@ -37,7 +37,7 @@ const Dashboard = ({
   //   clearErrors();
   // });
 
-  if (profile === null || loading)
+  if (loading)
     return (
       <div className="main-wrapper">
       <div className="content">

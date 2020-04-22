@@ -19,7 +19,7 @@ import Spinner from '../common/Spinner';
 
 const EditProfile = ({
   auth: { user },
-  profile: { profile },
+  profile: { profile,loading },
   errors,
   history,
   createProfile,
@@ -49,11 +49,11 @@ const EditProfile = ({
 
    //   //-------------------For date of birth------------------//
     
-   const [birthdate, setDatebirth] = useState(new Date(profile.birthdate));
+   const [birth, setDatebirth] = useState({birthdate:profile?new Date(profile.birthdate):''});
 
-   const handleChangeDate = date => {
-     setDatebirth(date);
-   };
+   const handleChangeDate = (date) => {
+    setDatebirth({ birthdate: date });
+  };
    //   //-------------------End date of birth------------------//
   const [file, setFile] = useState('');
   const [preview, setPreview] = useState('/default.jpg');
@@ -79,6 +79,7 @@ const EditProfile = ({
     displaySocialInputs,
     // errors,
   } = formData;
+  const {birthdate}= birth;
 
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
   const onChangeFile = e => {
@@ -172,7 +173,7 @@ const EditProfile = ({
     { label: 'Female', value: 'Female' },
     { label: 'Male', value: 'Male' },
   ];
-  if (profile === null)
+  if (loading)
   return (
     <div className="main-wrapper">
     <div className="content">

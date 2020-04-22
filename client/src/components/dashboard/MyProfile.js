@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import Moment from 'react-moment';
 import Spinner from '../common/Spinner';
-const MyProfile = ({ profile, auth: { user } }) => {
+const MyProfile = ({ profile:{ profile, loading }, auth: { user } }) => {
  
 
   if (profile !== null && Object.keys(profile) === 0) {
     return <Redirect to='/dashboard/welcome' />;
   }
 
-  if (profile==null)
+  if (profile==null || loading)
   return (
   <div className="main-wrapper">
       <div className="content">
@@ -103,7 +103,7 @@ MyProfile.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  profile: state.profile.profile,
+  profile: state.profile,
 });
 
 export default connect(mapStateToProps)(MyProfile);

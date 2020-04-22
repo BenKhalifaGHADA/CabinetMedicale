@@ -11,7 +11,9 @@ import {
 
 // Get current profile
 export const getCurrentProfile = () => async dispatch => {
+  dispatch(setProfileLoading())
   try {
+
     const res = await axios.get('/api/profile');
     dispatch({
       type: GET_PROFILE,
@@ -19,9 +21,9 @@ export const getCurrentProfile = () => async dispatch => {
     });
   } catch (err) {
     dispatch({
-      type: GET_PROFILE,
+      type: GET_ERRORS,
       // type: GET_PROFILE, (cest l'instruction d'origin)
-      payload: {},
+      payload: err.response.data,
     });
   }
 };
